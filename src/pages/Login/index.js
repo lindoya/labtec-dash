@@ -1,26 +1,37 @@
 import React, { Component } from 'react'
-import './index.css'
-import { Input, Tooltip, Icon } from 'antd';
-import 'antd/dist/antd.css';
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import * as R from 'ramda'
 
-class Login extends Component {
-  render() {
-    return (
-      <div className='div-main-login'>
-      <Input
-        className='formUserLogin'
-        placeholder='Digite seu username'
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-        suffix={
-          <Tooltip title="Extra information">
-            <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
-          </Tooltip>
+import LoginContainer from './LoginContainer'
+import uuidValidate from 'uuid-validate'
+
+class LoginPage extends Component {
+  hasAuth = R.has('auth')
+  hasToken = R.has('token')
+
+  render () {
+
+    if (this.hasAuth(this.props)){
+      if (this.hasToken(this.props.auth)){
+        if(uuidValidate(this.props.auth.token)){
+          return <Redirect to='/logged/dash' />
         }
-      />
-      </div>
+      }  
+    }
+    
+    return (
+      <LoginContainer />
     )
   }
 }
 
-export default Login;
+
+function mapStateToProps (state) {
+  return {
+    auth: state.auth,
+  }
+}
+
+export default connect (mapStateToProps)(LoginPage)
