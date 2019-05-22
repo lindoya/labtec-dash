@@ -1,6 +1,11 @@
 .formUserLogin{
-  width: 100% !important
+  width: 80% !important
 }
 .div-main-login{
-  width: 10px !important
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  height: 400px !important;
+  width: 350px !important
 }
