@@ -1,0 +1,5 @@
+.div-body{
+  height: 100vh !important;
+  width: calc(100% - 200px) !important;
+  margin-left: 200px !important;
+}

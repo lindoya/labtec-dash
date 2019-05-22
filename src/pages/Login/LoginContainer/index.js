@@ -16,24 +16,32 @@ class Login extends Component {
 
   render() {
     return (
+      <div className='div-all'>
       <div className='div-main-login'>
-      <label><h1 className='LabelLogin'>Tec - Lab</h1></label>
+      <label><h1 className='LabelLogin'>Lab - Tec</h1></label>
       <img src='../../retina.png' className='img-Login'/>
         <Input
           className='InputUsernameLogin'
           placeholder='Digite seu username'
+          name='username'
           prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          value={this.props.value.username} 
+          onChange={this.props.changeValue}
         />
         <Input.Password
           className='InputPasswordLogin'
           placeholder="Digite a senha"
+          name='password'
           prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+          value={this.props.value.password} 
+          onChange={this.props.changeValue}
         />
         <div className='div-ButtonLogin'>
         <Button 
           onClick={this.onSubmit}
           className='ButtonPaswordLogin'
           type="primary">Login</Button>
+      </div>
       </div>
       </div>
     )
