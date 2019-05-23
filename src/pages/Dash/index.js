@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Sider from '../../components/SideBar'
-
 
 class Dash extends Component{
   render(){
