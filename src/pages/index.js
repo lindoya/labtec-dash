@@ -6,6 +6,7 @@ import uuidValidate from 'uuid-validate'
 import Dash from "./Dash";
 
 import CompanyRoute from './Company'
+import EquipRoute from './Equip'
 
 
 class PagesRoute extends Component {
@@ -15,8 +16,9 @@ class PagesRoute extends Component {
     if (uuidValidate(this.props.auth.token)){
       return (
           <Switch>
-          <Route exact path='/logged/dash' component={Dash}/>
-          <Route path='/logged/company' component={CompanyRoute}/>
+            <Route exact path='/logged/dash' component={Dash}/>
+            <Route path='/logged/company' component={CompanyRoute}/>
+            <Route path='/logged/equip' component={EquipRoute}/>
           </Switch>
         ) 
     }else{
