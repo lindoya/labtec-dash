@@ -1,115 +1,145 @@
-h2{
-  color: rgb(107, 107, 107) !important;
+.div-comp-label{
+  color: #001529 !important;
   font-weight: bold !important;
-  font-size: 17px !important;
-  margin: 0 !important;
+  font-size: 14px !important;
+  margin: 0 0 0 5px !important;
 }
-.div-card{
+.div-comp-title{
+  margin-top: 10px;
+  color: aliceblue;
+  font-weight: bold !important;
+  font-size: 25px !important;
+}
+
+.div-comp-header{
+  background-color: #001529;
+  box-shadow: 0px 3px 25px #001529;
+  margin-bottom: 55px;
+}
+.div-comp-form{
+  width: 76% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.div-comp-card{
   margin-top: 10px;
   height: 96vh !important;
   width: 98% !important;
   box-shadow: 1px 5px 12px;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
+  align-items: center;
 }
-.div-primeiraLinha{
+.div-comp-primeiraLinha{
   display: flex;
   width: 100% !important;
   justify-content: center;
 }
+
 .input-rs{
   width: 100% !important
 }
-.div-rs{
-  width: 56% !important;
-  margin: 20px 0 20px 10px !important;
+.div-comp-rs{
+  width: 65% !important;
+  margin: 10px 0 10px 0 !important;
 }
-.div-cnpj{
-  width: 20% !important;
-  margin: 20px 30px 20px 0 !important;
+.div-comp-cnpj{
+  width: 35% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-cnpj{
   width: 100% !important
 }
-.div-nome{
-  width: 27% !important;
-  margin: 20px 30px 20px 10px !important;
+.div-comp-nome{
+  width: 40% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-nome{
   width: 100% !important
 }
-.div-email{
-  width: 33% !important;
-  margin: 20px 30px 20px 0 !important;
+.div-comp-email{
+  width: 40% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-email{
   width: 100% !important
 }
-.div-tel{
-  width: 16% !important;
-  margin: 20px 0 20px 0 !important;
+.div-comp-tel{
+  width: 20% !important;
+  margin: 10px 0 10px 0 !important;
 }
 .input-tel{
   width: 100% !important
 }
-.div-cep{
-  width: 12% !important;
-  margin: 20px 30px 20px 10px !important;
+.div-comp-cep{
+  width: 15% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-cep{
   width: 100% !important
 }
-.div-uf{
-  width: 6% !important;
-  margin: 20px 30px 20px 0 !important;
+.div-comp-uf{
+  width: 10% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-uf{
   width: 100% !important
 }
-.div-rua{
-  width: 58% !important;
-  margin: 20px 0 20px 0 !important;
+.div-comp-rua{
+  width: 80% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-rua{
   width: 100% !important
 }
-.div-city{
-  width: 35% !important;
-  margin: 20px 30px 20px 10px !important;
+.div-comp-city{
+  width: 40% !important;
+  margin: 10px 30px 10px 0px !important;
 }
 .input-city{
   width: 100% !important
 }
-.div-bairro{
-  width: 30% !important;
-  margin: 20px 30px 20px 0 !important;
+.div-comp-bairro{
+  width: 35% !important;
+  margin: 10px 0px 10px 0 !important;
 }
 .input-bairro{
   width: 100% !important
 }
-.div-compl{
-  width: 11% !important;
-  margin: 20px 0 20px 0 !important;
+.div-comp-compl{
+  width: 30% !important;
+  margin: 10px 30px 10px 0 !important;
 }
 .input-compl{
   width: 100% !important
 }
-.div-numero{
-  width: 13% !important;
-  margin: 20px 30px 20px 10px !important;
+.div-comp-numero{
+  width: 20% !important;
+  margin: 10px 0 10px 0 !important;
 }
 .input-numero{
   width: 100% !important
 }
-.div-refer{
-  width: 64% !important;
-  margin: 20px 0 0 20px !important;
+.div-comp-refer{
+  width: 70% !important;
+  margin: 10px 0 10px 0 !important;
 }
 .input-refer{
   width: 100% !important
 }
-.div-button{
+.div-comp-button{
   display: flex;
-  width: 90% !important;
+  margin-top: 10px;
+  width: 100% !important;
   justify-content: flex-end;
+}
+.comp-button{
+  background-color: #001529 !important;
+  border-color: #001529 !important;
+}
+
+.comp-button:hover{
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
 }
