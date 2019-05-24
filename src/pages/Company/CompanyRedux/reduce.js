@@ -23,30 +23,19 @@ const INICIAL_STATE_CREATE ={
 export function newCompany(state = INICIAL_STATE_CREATE, action) {
   switch(action.type){
     case actions.COMPANY.CREATE.CHANGE_VALUE:
-      return { ...state, [action.payload.name]: action.payload.value  }
+      return { ...state, [action.payload.name]: action.payload.value }
+    case actions.COMPANY.CREATE.SUBMIT:
+      let companyRequestState = {
+        ...state,
+      }
+      if (action.payload.status === 200){
+        companyRequestState = {
+          ...companyRequestState,
+          sucess: true,
+        }
+      }
+      return companyRequestState
     default:
       return state
   }
 }
-
-// export function auth(state = INICIAL_STATE_AUTH, action) {
-//   switch(action.type){
-//     case actions.LOGIN.AUTH:
-//       let auth = {
-//         ...state
-//       }
-//       if (action.payload.status === 200){
-//         if (action.payload.data.token) {
-//           auth = {
-//             ...auth,
-//             ...action.payload.data,
-//           }
-//         }
-//       }
-
-//       return auth
-//     default:
-//       return state
-//   }
-// }
-

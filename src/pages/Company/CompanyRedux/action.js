@@ -1,4 +1,5 @@
 import action from '../../../store/actions'
+import { newCompany } from '../../../services/company'
 
 export function changeValueCompany(e) {
   return {
@@ -7,13 +8,13 @@ export function changeValueCompany(e) {
   }
 }
 
-// export function onSubmit(value) {
-//   return dispatch => {
-//     authService.authentic(value).then(
-//       resp => dispatch({
-//         type: action.LOGIN.AUTH,
-//         payload: resp,
-//       })
-//     )
-//   }
-// }
+export function onSubmit(value) {
+  return dispatch => {
+    newCompany(value).then(
+      resp => dispatch({
+        type: action.COMPANY.CREATE.SUBMIT,
+        payload: resp,
+      })
+    )
+  }
+}
