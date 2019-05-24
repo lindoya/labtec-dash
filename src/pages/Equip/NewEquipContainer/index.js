@@ -5,7 +5,7 @@ import * as R from 'ramda'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { changeValueCompany, onSubmit } from '../CompanyRedux/action'
+import { changeValue, onSubmit } from '../EquipRedux/action'
 import './index.css'
 
 class NewCompany extends Component {
@@ -27,7 +27,7 @@ class NewCompany extends Component {
       <div className='div-comp-card'>
 
         <div className='div-comp-Linha div-comp-header'>
-          <h1 className='div-comp-title'>Cadastro Empresa</h1>
+          <h1 className='div-comp-title'>Cadastro Equipamento</h1>
         </div>
 
         <div className='div-comp-form'>
@@ -35,13 +35,13 @@ class NewCompany extends Component {
           <div className='div-comp-Linha'>
 
             <div className='div-comp-cnpj'>
-              <h2 className='div-comp-label'>Cnpj ou Cpf:</h2>
+              <h2 className='div-comp-label'>Número de Série:</h2>
               <Input
                 className='input-cnpj'
-                placeholder='Digite o cnpj ou cep'
-                name='cnpj'
-                value={this.props.value.cnpj}
-                onChange={this.props.changeValueCompany}
+                placeholder='Digite o numero de Série'
+                name='number'
+                value={this.props.value.number}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -52,7 +52,7 @@ class NewCompany extends Component {
                 placeholder='Digite a razão social'
                 name='razaoSocial'
                 value={this.props.value.razaoSocial}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
           </div>
@@ -67,7 +67,7 @@ class NewCompany extends Component {
                 placeholder='Digite o nome'
                 name='nameContact'
                 value={this.props.value.nameContact}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -78,7 +78,7 @@ class NewCompany extends Component {
                 placeholder='Digite o email'
                 name='email'
                 value={this.props.value.email}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -89,7 +89,7 @@ class NewCompany extends Component {
                 placeholder='(99)99999-9999'
                 name='telphone'
                 value={this.props.value.telphone}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
           </div>
@@ -103,7 +103,7 @@ class NewCompany extends Component {
                 placeholder='Digite o cep'
                 name='zipCode'
                 value={this.props.value.zipCode}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -114,7 +114,7 @@ class NewCompany extends Component {
                 placeholder='EX'
                 name='state'
                 value={this.props.value.state}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -125,7 +125,7 @@ class NewCompany extends Component {
                 placeholder='Digite a cidade'
                 name='city'
                 value={this.props.value.city}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
             
@@ -136,7 +136,7 @@ class NewCompany extends Component {
                 placeholder='Digite o bairro'
                 name='neighborhood'
                 value={this.props.value.neighborhood}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
           </div>
@@ -150,7 +150,7 @@ class NewCompany extends Component {
                 placeholder='Digite a rua'
                 name='street'
                 value={this.props.value.street}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -161,7 +161,7 @@ class NewCompany extends Component {
                 placeholder='123456789'
                 name='number'
                 value={this.props.value.number}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
           </div>
@@ -176,7 +176,7 @@ class NewCompany extends Component {
                 placeholder='Ex: Torre 3'
                 name='complement'
                 value={this.props.value.complement}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
 
@@ -187,7 +187,7 @@ class NewCompany extends Component {
                 placeholder='Digite o ponto de referência'
                 name='referencePoint'
                 value={this.props.value.referencePoint}
-                onChange={this.props.changeValueCompany}
+                onChange={this.props.changeValue}
               />
             </div>
           </div>
@@ -207,7 +207,7 @@ class NewCompany extends Component {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ changeValueCompany, onSubmit }, dispach)
+  return bindActionCreators({ changeValue, onSubmit }, dispach)
 }
 
 function mapStateToProps(state) {

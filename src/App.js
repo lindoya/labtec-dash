@@ -12,7 +12,7 @@ import reducers from './store/reducers'
 import Routes from './routes'
 
 
-const store = applyMiddleware(
+export const store = applyMiddleware(
   thunk, multi, promise)(
     createStore)(
       reducers, composeWithDevTools())

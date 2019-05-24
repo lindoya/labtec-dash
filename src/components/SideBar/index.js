@@ -9,13 +9,16 @@ class Sider extends Component {
 
   state = {
     current: '0',
-    redirect: false
+    redirect: false,
+    open: 'Empresas',
   };
 
   handleClick = e => {
+    console.log(e)
     this.setState({
       current: e.key,
-      redirect: true
+      redirect: true,
+      open: e.keyPath[1]
     })
   }
 
@@ -29,10 +32,12 @@ class Sider extends Component {
     if (this.state.redirect) {
       this.changeRedirectState()
       switch (this.state.current) {
-        case '1':
-          return <Redirect to='/logged/company/dash' />
-        case '2':
+        case 'company_add':
           return <Redirect to='/logged/company/add' />
+        case 'company_dash':
+          return <Redirect to='/logged/company/dash' />
+        case 'equip_addType':
+          return <Redirect to='/logged/equip/addType' />
         default:
           return <Redirect to='/logged/dash' />
       }
@@ -43,7 +48,7 @@ class Sider extends Component {
           className='menu'
           theme='dark'
           onClick={this.handleClick}
-          defaultOpenKeys={['Empresas']}
+          defaultOpenKeys={[this.state.open]}
           selectedKeys={[this.state.current]}
           mode="inline"
         >
@@ -56,8 +61,24 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="1">Gerenciar</Menu.Item>
-            <Menu.Item key="2">Cadastrar</Menu.Item>
+            <Menu.Item key="company_add">Cadastrar</Menu.Item>
+            <Menu.Item key="company_dash">Gerenciar</Menu.Item>
+          </SubMenu>
+          <SubMenu
+            key="Equipamento"
+            title={
+              <span>
+                <Icon type="bank" />
+                <span>Equipamento</span>
+              </span>
+            }
+          >
+            <Menu.Item key="equip_add"><Icon type="bank"/> Cadastrar</Menu.Item>
+            <Menu.Item key="equip_dash"><Icon type="bank"/> Gerenciar</Menu.Item>
+
+            <Menu.Item key="equip_addType"><Icon type="bank"/> Cadastrar Tipos</Menu.Item>
+            <Menu.Item key="equip_dashType"><Icon type="bank"/> Gerenciar Tipos</Menu.Item>
+
           </SubMenu>
         </Menu>
       </div>

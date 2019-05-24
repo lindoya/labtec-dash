@@ -1,0 +1,63 @@
+.div-equipType-label{
+  color: #001529 !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  margin: 0 0 0 5px !important;
+}
+.div-equipType-title{
+  margin-top: 10px;
+  color: aliceblue;
+  font-weight: bold !important;
+  font-size: 25px !important;
+}
+
+.div-equipType-header{
+  background-color: #001529;
+  box-shadow: 0px 3px 25px #001529;
+  margin-bottom: 55px;
+}
+.div-equipType-form{
+  width: 76% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.div-equipType-card{
+  margin-top: 10px;
+  height: 96vh !important;
+  width: 98% !important;
+  box-shadow: 1px 5px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.div-equipType-Linha{
+  display: flex;
+  width: 100% !important;
+  justify-content: center;
+}
+
+.input-equipType{
+  width: 100% !important;
+}
+
+
+
+.input-refer{
+  width: 100% !important
+}
+.div-comp-button{
+  display: flex;
+  margin-top: 10px;
+  width: 100% !important;
+  justify-content: flex-end;
+}
+.comp-button{
+  background-color: #001529 !important;
+  border-color: #001529 !important;
+}
+
+.comp-button:hover{
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
