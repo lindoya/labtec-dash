@@ -1,0 +1,21 @@
+.div-card-newCompany{
+  margin-top: 10px;
+  height: 96vh !important;
+  width: 98% !important;
+  box-shadow: 1px 5px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between
+}
+.div-table-newCompany{
+  width: 100% !important;
+  height: 80%;
+}
+.div-search-newCompany{
+  width: 100% !important;
+  height: 20% !important;
+}
+.search-newCompany{
+  margin: 10px !important;
+  width: 75% !important
+}
