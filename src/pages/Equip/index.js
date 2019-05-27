@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import NewEquip from './NewEquipContainer'
-import NewType from './markModelContainer'
+import NewType from './NewTypeContainer'
 // import DashContainer from './DashEquipContainer'
 
 class CompanyRoute extends Component{

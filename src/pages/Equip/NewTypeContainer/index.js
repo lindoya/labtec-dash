@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button } from 'antd';
+import { Input, Modal } from 'antd';
 import { Select } from 'antd';
 
 
@@ -38,39 +38,47 @@ class NewCompany extends Component {
 
           <div className='div-equipType-Linha'>
 
-            <div className='div-equipType-group'>
-              <h2 className='div-equipType-label'>Tipo:</h2>
-                <Select defaultValue="relogio" className='input-equipType-tipo'>
-                  <Option value="relogio">Relógio</Option>
-                  <Option value="catraca">Catraca</Option>
-                  <Option value="controleAcesso">Controle de Acesso</Option>
-                  <Option value="peca">Peça</Option>
-                  <Option value="sirene">Sirene</Option>
-                </Select>
-
-              {/* <Input
-                className='input-cnpj'
-                placeholder='Digite o numero de Série'
-                name='number'
-                value={this.props.value.number}
-                onChange={this.props.changeValue}
-              /> */}
-            </div>
-
             <div className='div-comp-rs'>
-              <h2 className='div-comp-label'>Razão Social:</h2>
+              <h2 className='div-comp-label'>Tipo do equipamento:</h2>
+              <Select defaultValue="relogio" className='input-type-tipo'>
+                <Option value="relogio">Relógio</Option>
+                <Option value="catraca">Catraca</Option>
+                <Option value="controleAcesso">Controle de Acesso</Option>
+                <Option value="peca">Peça</Option>
+                <Option value="sirene">Sirene</Option>
+              </Select>
+            </div>
+          </div>
+
+          <div className='div-equipType-Linha'>
+            <div className='div-comp-rs'>
+              <h2 className='div-comp-label'>Marca do equipamento:</h2>
               <Input
                 className='input-rs'
-                placeholder='Digite a razão social'
-                name='razaoSocial'
-                value={this.props.value.razaoSocial}
-                onChange={this.props.changeValue}
+                placeholder='Digite a marca do equipamento'
+                name='mark'
+                allowClear
+                // value={this.props.value.razaoSocial}
+                // onChange={this.props.changeValue}
               />
             </div>
           </div>
 
+          <div className='div-equipType-Linha'>
+            <div className='div-comp-rs'>
+              <h2 className='div-comp-label'>Modelo do equipamento:</h2>
+              <Input
+                className='input-rs'
+                placeholder='Digite o modelo do equipamento'
+                name='model'
+                allowClear
+                // value={this.props.value.razaoSocial}
+                // onChange={this.props.changeValue}
+              />
+            </div>
+          </div>
         </div>
-  
+
       </div>
     )
   }
