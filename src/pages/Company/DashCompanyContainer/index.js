@@ -56,21 +56,75 @@ const data = [
 ];
 
 class NewCompany extends Component {
+
+  state={
+    avancado: false,
+  }
+
+  buttonAvancado = () => {
+    this.setState({
+      avancado: !this.state.avancado
+    })
+  }
+
+
   render() {
+    if(this.state.avancado === true){
     return (
       <div className='div-card-newCompany'>
+       <div className='div-comp-Linha div-comp-header'>
+          <h1 className='div-comp-title'>Gerenciar Empresas</h1>
+        </div>
         <div className='div-search-newCompany'>
-          <Search className='search-newCompany' placeholder="Digite o que deseja" onSearch={value => console.log(value)} enterButton size='large' />
+          <div className='div-buttonAndSearch'>
+          <Search className='search-newCompany' 
+            placeholder="Digite o que deseja procurar" 
+            onSearch={value => console.log(value)} 
+            enterButton 
+            size='large' 
+          />
           <Button
+            onClick={this.buttonAvancado}
+            className='button-dashCompany'
             type='primary'>
-            Avançado
+            Ocultar
           </Button>
+        </div>
+        <input/>
         </div>
         <div className='div-table-newCompany'>
           <Table columns={columns} dataSource={data} size="middle" />
         </div>
       </div>
     )
+    }else{
+      return(
+        <div className='div-card-newCompany'>
+        <div className='div-comp-Linha div-comp-header'>
+           <h1 className='div-comp-title'>Gerenciar Empresas</h1>
+         </div>
+         <div className='div-search-newCompany'>
+           <div className='div-buttonAndSearch'>
+           <Search className='search-newCompany' 
+             placeholder="Digite o que deseja procurar" 
+             onSearch={value => console.log(value)} 
+             enterButton 
+             size='large' 
+           />
+           <Button
+              onClick={this.buttonAvancado}
+              className='button-dashCompany'
+              type='primary'>
+              Avançado
+           </Button>
+         </div>
+         </div>
+         <div className='div-table-newCompany'>
+           <Table columns={columns} dataSource={data} size="middle" />
+         </div>
+       </div>
+      )
+    }
   }
 }
 

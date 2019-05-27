@@ -17,7 +17,8 @@
   margin-bottom: 55px;
 }
 .div-equipType-form{
-  width: 76% !important;
+  width: 50% !important;
+  height: 30vh !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,14 +37,21 @@
   width: 100% !important;
   justify-content: center;
 }
-
-.input-equipType{
-  width: 100% !important;
+.div-type-group{
+  width: 100% !important
 }
 
+.input-equipType-group{
+  width: 100vh !important;
+}
 
-
-.input-refer{
+.input-type-tipo{
+  width: 100% !important
+}
+.div-comp-rs{
+  width: 100% !important
+}
+.input-rs{
   width: 100% !important
 }
 .div-comp-button{
