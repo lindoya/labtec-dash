@@ -3,8 +3,19 @@ import { newCompany } from '../../../services/company'
 
 export function changeValue(e) {
   return {
-    type: action.COMPANY.CREATE.CHANGE_VALUE,
+    type: action.EQUIP.TYPE.NEW,
     payload: e.target,
+  }
+}
+
+export function select(e, name) {
+  const payload = {
+    name,
+    value: e,
+  }
+  return {
+    type: action.EQUIP.TYPE.NEW,
+    payload,
   }
 }
 
