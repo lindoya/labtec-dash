@@ -1,0 +1,24 @@
+.div-entrance-linha1{
+  margin: 0 0 20px 0;
+  width: 76% !important;
+  display: flex;
+  justify-content: space-between
+}
+.div-entrance-cnpj{
+  width: 22% !important
+}
+.div-entrance-rs{
+  width: 70% !important
+}
+.div-entrance-ns{
+  width: 22% !important
+}
+.div-entrance-cor{
+  width: 20% !important
+}
+.div-entrance-desc{
+  width: 100% !important
+}
+.div-entrance-danos{
+  width: 100% !important
+}
