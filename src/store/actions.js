@@ -9,4 +9,9 @@ export default {
       SUBMIT: 'COMPANY_CREATE_SUBMIT',
     },
   },
+  EQUIP:{
+    TYPE: {
+      NEW:  'EQUIP_NEW_TYPE',
+    },
+  }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal } from 'antd';
+import { Input, Modal, Button } from 'antd';
 import { Select } from 'antd';
 
 
@@ -7,7 +7,7 @@ import * as R from 'ramda'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { changeValue, onSubmit } from '../EquipRedux/action'
+import { changeValue, onSubmit, select } from '../EquipRedux/action'
 import './index.css'
 
 const Option = Select.Option;
@@ -38,9 +38,15 @@ class NewCompany extends Component {
 
           <div className='div-equipType-Linha'>
 
-            <div className='div-comp-rs'>
-              <h2 className='div-comp-label'>Tipo do equipamento:</h2>
-              <Select defaultValue="relogio" className='input-type-tipo'>
+            <div className='div-type-group'>
+              <h2 className='div-equipType-label'>Tipo do equipamento:</h2>
+              <Select 
+                defaultValue="relogio" 
+                className='input-type-tipo'
+                name='type'
+                onChange={(e)=>this.props.select(e, 'type')}
+                >
+
                 <Option value="relogio">Relógio</Option>
                 <Option value="catraca">Catraca</Option>
                 <Option value="controleAcesso">Controle de Acesso</Option>
@@ -51,31 +57,38 @@ class NewCompany extends Component {
           </div>
 
           <div className='div-equipType-Linha'>
-            <div className='div-comp-rs'>
-              <h2 className='div-comp-label'>Marca do equipamento:</h2>
+            <div className='div-type-group'>
+              <h2 className='div-equipType-label'>Marca do equipamento:</h2>
               <Input
                 className='input-rs'
                 placeholder='Digite a marca do equipamento'
                 name='mark'
                 allowClear
                 // value={this.props.value.razaoSocial}
-                // onChange={this.props.changeValue}
+                onChange={this.props.changeValue}
               />
             </div>
           </div>
 
           <div className='div-equipType-Linha'>
-            <div className='div-comp-rs'>
-              <h2 className='div-comp-label'>Modelo do equipamento:</h2>
+            <div className='div-type-group'>
+              <h2 className='div-equipType-label'>Modelo do equipamento:</h2>
               <Input
                 className='input-rs'
                 placeholder='Digite o modelo do equipamento'
                 name='model'
                 allowClear
                 // value={this.props.value.razaoSocial}
-                // onChange={this.props.changeValue}
+                onChange={this.props.changeValue}
               />
             </div>
+          </div>
+          <div className='div-equipType-Button'>
+            <Button
+              className='equipType-button'
+              onClick={this.onSubmit}
+              type="primary">Salvar
+            </Button>
           </div>
         </div>
 
@@ -85,7 +98,7 @@ class NewCompany extends Component {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators({ changeValue, onSubmit }, dispach)
+  return bindActionCreators({ changeValue, onSubmit, select }, dispach)
 }
 
 function mapStateToProps(state) {

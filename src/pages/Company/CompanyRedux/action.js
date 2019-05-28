@@ -10,11 +10,10 @@ export function changeValueCompany(e) {
 
 export function onSubmit(value) {
   return dispatch => {
-    newCompany(value).then(
-      resp => dispatch({
-        type: action.COMPANY.CREATE.SUBMIT,
-        payload: resp,
-      })
-    )
+    const response = newCompany(value)
+    return dispatch({
+      type: action.COMPANY.CREATE.SUBMIT,
+      payload: response,
+    })
   }
 }

@@ -17,7 +17,8 @@
   margin-bottom: 55px;
 }
 .div-equipType-form{
-  width: 50% !important;
+  margin-top: 50px !important;
+  width: 30% !important;
   height: 30vh !important;
   display: flex;
   flex-direction: column;
@@ -37,8 +38,15 @@
   width: 100% !important;
   justify-content: center;
 }
+.div-equipType-Button{
+  display: flex;
+  width: 100% !important;
+  justify-content: flex-end !important;
+}
 .div-type-group{
-  width: 100% !important
+  width: 100% !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 .input-equipType-group{
@@ -46,26 +54,19 @@
 }
 
 .input-type-tipo{
-  width: 100% !important
-}
-.div-comp-rs{
-  width: 100% !important
-}
-.input-rs{
-  width: 100% !important
-}
-.div-comp-button{
-  display: flex;
-  margin-top: 10px;
   width: 100% !important;
-  justify-content: flex-end;
 }
-.comp-button{
+
+.div-type-group{
+  width: 100% !important;
+}
+
+.equipType-button{
   background-color: #001529 !important;
   border-color: #001529 !important;
 }
 
-.comp-button:hover{
+.equipType-button:hover{
   background-color: #1890ff !important;
   border-color: #1890ff !important;
 }
