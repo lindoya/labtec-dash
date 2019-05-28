@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 import { changeValue, onSubmit } from '../EquipRedux/action'
 import './index.css'
 
-class NewCompany extends Component {
+class NewEquip extends Component {
   onSubmit = () => {
     const body = R.omit(['sucess'], this.props.value)
     this.props.onSubmit(body)
@@ -216,4 +216,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, mapDispacthToProps)(NewCompany)
+export default connect(mapStateToProps, mapDispacthToProps)(NewEquip)

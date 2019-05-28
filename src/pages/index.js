@@ -7,6 +7,7 @@ import Dash from "./Dash";
 
 import CompanyRoute from './Company'
 import EquipRoute from './Equip'
+import EntranceRoute from "./Entrance";
 
 
 class PagesRoute extends Component {
@@ -17,6 +18,7 @@ class PagesRoute extends Component {
       return (
           <Switch>
             <Route exact path='/logged/dash' component={Dash}/>
+            <Route path='/logged/entrance' component={EntranceRoute}/>
             <Route path='/logged/company' component={CompanyRoute}/>
             <Route path='/logged/equip' component={EquipRoute}/>
           </Switch>
