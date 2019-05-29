@@ -20,5 +20,37 @@
   width: 100% !important
 }
 .div-entrance-danos{
-  width: 100% !important
+  width: 20% !important
+}
+.div-entrance-inputDanos{
+  width: 100%
+}
+.div-danos{
+  display: flex;
+  width: 100% !important;
+  align-items: center;
+}
+.ponto{
+  color: white
+}
+.div-entrance-acessorio{
+  width: 100%
+}
+.div-entrance-defeito{
+  width: 100%
+}
+.div-button-entrance{
+  width: 76% !important;
+  display: flex;
+  justify-content: flex-end;
+}
+.button-entrance{
+  color: white !important;
+  background-color: #001429 !important;
+  border: #001429 !important
+}
+.button-entrance:hover{
+  color: white !important;
+  background-color: #1790FF !important;
+  border: #1790FF !important
 }

@@ -83,6 +83,20 @@ class NewCompany extends Component {
               />
             </div>
           </div>
+
+          <div className='div-equipType-Linha'>
+            <div className='div-type-group'>
+              <h2 className='div-equipType-label'>Descrição:</h2>
+              <Input
+                className='input-rs'
+                placeholder='Digite a descrição'
+                name='descricao'
+                allowClear
+                // value={this.props.value.razaoSocial}
+                onChange={this.props.changeValue}
+              />
+            </div>
+          </div>
           <div className='div-equipType-Button'>
             <Button
               className='equipType-button'

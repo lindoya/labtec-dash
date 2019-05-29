@@ -1,5 +1,4 @@
 import actions from '../../../store/actions'
-import R from 'ramda'
 
 const INICIAL_STATE_CREATE = {
   razaoSocial: '',
@@ -18,19 +17,19 @@ const INICIAL_STATE_CREATE = {
   sucess: false,
   failed: false,
   fieldFalha: {
-    razaoSocial: '',
-    cnpj: '',
-    street: '',
-    number: '',
-    complement: '',
-    city: '',
-    state: '',
-    neighborhood: '',
-    referencePoint: '',
-    zipCode: '',
-    telphone: '',
-    email: '',
-    nameContact: '',
+    razaoSocial: false,
+    cnpj: false,
+    street: false,
+    number: false,
+    complement: false,
+    city: false,
+    state: false,
+    neighborhood: false,
+    referencePoint: false,
+    zipCode: false,
+    telphone: false,
+    email: false,
+    nameContact: false,
   },
   message: {
     razaoSocial: '',
@@ -60,7 +59,6 @@ export function newCompany(state = INICIAL_STATE_CREATE, action) {
         ...state,
       }
       try {
-        console.log(action.payload)
         if (action.payload.status === 200) {
           companyRequestState = {
             ...companyRequestState,

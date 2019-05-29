@@ -49,4 +49,8 @@ export const getAllCompany = async (query) => {
     }
   })
   return response
+} 
+
+export const buscaCep = async (values) => {
+  console.log(values)
 }

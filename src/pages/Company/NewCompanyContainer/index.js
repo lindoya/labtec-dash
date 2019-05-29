@@ -49,9 +49,9 @@ class NewCompany extends Component {
                 value={this.props.value.cnpj}
                 onChange={this.props.changeValueCompany}
               />
-                            {this.props.value.fieldFalha.cnpj ?
+              {this.props.value.fieldFalha.cnpj ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.cnpj}
+                  {this.props.value.message.cnpj}
                 </p> : null}
             </div>
 
@@ -73,7 +73,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.razaoSocial ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.razaoSocial}
+                  {this.props.value.message.razaoSocial}
                 </p> : null}
             </div>
           </div>
@@ -99,7 +99,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.nameContact ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.nameContact}
+                  {this.props.value.message.nameContact}
                 </p> : null}
             </div>
 
@@ -121,7 +121,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.nameContact ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.nameContact}
+                  {this.props.value.message.nameContact}
                 </p> : null}
             </div>
 
@@ -143,9 +143,9 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.telphone ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.telphone}
+                  {this.props.value.message.telphone}
                 </p> : null}
-              
+
             </div>
           </div>
 
@@ -169,7 +169,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.zipCode ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.zipCode}
+                  {this.props.value.message.zipCode}
                 </p> : null}
             </div>
 
@@ -191,7 +191,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.state ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.state}
+                  {this.props.value.message.state}
                 </p> : null}
             </div>
 
@@ -213,7 +213,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.city ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.city}
+                  {this.props.value.message.city}
                 </p> : null}
             </div>
 
@@ -235,7 +235,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.neighborhood ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.neighborhood}
+                  {this.props.value.message.neighborhood}
                 </p> : null}
             </div>
           </div>
@@ -260,7 +260,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.street ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.street}
+                  {this.props.value.message.street}
                 </p> : null}
             </div>
 
@@ -282,7 +282,7 @@ class NewCompany extends Component {
               />
               {this.props.value.fieldFalha.number ?
                 <p className='div-comp-feedbackError'>
-                {this.props.value.message.number}
+                  {this.props.value.message.number}
                 </p> : null}
             </div>
           </div>

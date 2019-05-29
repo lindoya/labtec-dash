@@ -13,7 +13,7 @@ const { Option } = Select;
 
 class NewEntrance extends Component {
 
-  state={
+  state = {
     radio: ''
   }
 
@@ -156,14 +156,47 @@ class NewEntrance extends Component {
           </div> */}
         </div>
         <div className='div-entrance-linha1'>
-          <div className='div-entrance-danos'>
-            <h2 className='div-comp-label'>Danos externos:</h2>
-            <Radio.Group name="radiogroup">
-              <Radio value={'sim'} nameRadio='sim' onChange={this.changeRadioSim}>Sim</Radio>
-              <Radio value={'nao'} nameRadio='nao' onChange={this.changeRadioNao}>Não</Radio> 
-            </Radio.Group>
-            {this.state.radio === 'sim' ? <Input placeholder='teste'/> : <h1>dwadwadwad</h1>}
+          <div className='div-danos'>
+            <div className='div-entrance-danos'>
+              <h2 className='div-comp-label'>Danos externos:</h2>
+              <Radio.Group name="radiogroup">
+                <Radio value={'sim'} nameRadio='sim' onChange={this.changeRadioSim}>Sim</Radio>
+                <Radio value={'nao'} nameRadio='nao' onChange={this.changeRadioNao}>Não</Radio>
+              </Radio.Group>
+            </div>
+            <div className='div-entrance-inputDanos'>
+              {this.state.radio === 'sim' ? <Input placeholder='Digite os danos no equipamento' /> : <p className='ponto'>.</p>}
+            </div>
           </div>
+        </div>
+        <div className='div-entrance-linha1'>
+          <div className='div-entrance-acessorio'>
+              <h2 className='div-comp-label'>Acessórios:</h2>
+              <Input
+              className='input-cnpj'
+              placeholder='Digite os acessórios'
+              name='acessorio'
+              allowClear
+            // value={this.props.value.cnpj}
+            // onChange={this.props.changeValueCompany}
+            />
+            </div>
+        </div>
+        <div className='div-entrance-linha1'>
+          <div className='div-entrance-defeito'>
+              <h2 className='div-comp-label'>Defeito apresentado:</h2>
+              <Input
+              className='input-cnpj'
+              placeholder='Digite o defeito'
+              name='acessorio'
+              allowClear
+            // value={this.props.value.cnpj}
+            // onChange={this.props.changeValueCompany}
+            />
+            </div>
+        </div>
+        <div className='div-button-entrance'>
+          <Button className='button-entrance'>Salvar</Button>
         </div>
       </div>
     )
