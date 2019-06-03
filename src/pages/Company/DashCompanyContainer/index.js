@@ -1,64 +1,55 @@
 import React, { Component } from 'react'
-import { Table, Input, Button, DatePicker } from 'antd';
+import { Select, Input, Button, DatePicker, Icon } from 'antd';
+import { getAllCompany } from '../../../services/company'
+
 import 'antd/dist/antd.css';
 import './index.css'
 
 
 const Search = Input.Search;
-
-const columns = [
-  {
-    title: 'Cnpj',
-    dataIndex: 'cnpj',
-  },
-  {
-    title: 'Razão social',
-    dataIndex: 'razaoSocial',
-  },
-  {
-    title: 'Criado em',
-    dataIndex: 'createdAt',
-  },
-  {
-    title: 'Nome contato',
-    dataIndex: 'contactName',
-  },
-  {
-    title: 'Telefone',
-    dataIndex: 'telphone',
-  },
-];
-const data = [
-  {
-    key: '1',
-    cnpj: '56.237.000/0001-64',
-    razaoSocial: 'Teste Teste TETTTTTTTTT TTTTTTTTTTTT TTTTTTTTTT YYYYYYYYYYY YYYYYYY YYYYY',
-    createdAt: '20-11-2001',
-    contactName: 'Guilherme',
-    telphone: '(11)99999-9999'
-  },
-  {
-    key: '2',
-    cnpj: '56.237.000/0001-64',
-    razaoSocial: 'Teste Teste',
-    createdAt: '20-11-2001',
-    contactName: 'Guilherme',
-    telphone: '(11)99999-9999'
-  },
-  {
-    key: '3',
-    cnpj: '56.237.000/0001-64',
-    razaoSocial: 'Teste Teste',
-    createdAt: '20-11-2001',
-    contactName: 'Guilherme',
-    telphone: '(11)99999-9999'
-  },
-];
+const { Option } = Select;
 
 class NewCompany extends Component {
 
-  state={
+  state = {
     avancado: false,
+    order: {
+      field: 'createdAt',
+      acendent: true,
+    },
+    global: '',
+    cnpj: '',
+    razaoSocial: '',
+    nameContact: '',
+    telphone: '',
+    createdAt: '',
+    page: 1,
+    total: 25,
+    count: 0,
+    show: 0,
+    rows: [],
+  }
+
+  onChange = (e) => {
+    const evento = e.target
+
+    this.setState({
+      [evento.name]: evento.value,
+    }, () => {
+      this.getAll()
+    })
+  }
+
+  changeOrder = (field) => {
+    this.setState({
+      order: {
+        field,
+        acendent: !this.state.order.acendent,
+      }
+    }, () => {
+      this.getAll()
+    })
+
   }
 
   buttonAvancado = () => {
@@ -67,105 +58,282 @@ class NewCompany extends Component {
     })
   }
 
-  render() {
-    if(this.state.avancado === true){
-    return (
-      <div className='div-card-newCompany'>
-       <div className='div-comp-Linha div-comp-header'>
-          <h1 className='div-comp-title'>Gerenciar Empresas</h1>
-        </div>
-        <div className='div-search-newCompany'>
-          <div className='div-buttonAndSearch'>
-          <Search className='search-newCompany' 
-            placeholder="Digite o que deseja procurar" 
-            onSearch={value => console.log(value)} 
-            size='large' 
-          />
-          <Button
-            onClick={this.buttonAvancado}
-            className='button-dashCompany'
-            type='primary'>
-            Ocultar
-          </Button>
-        </div>
-        <div className='div-linha1'>
-        <div className='div-cnpj-linha1'>
-        <h2 className='div-comp-label'>Cnpj:</h2>
+  buttonLimpar = () => {
+    this.setState({
+      global: '',
+      cnpj: '',
+      razaoSocial: '',
+      nameContact: '',
+      telphone: '',
+      createdAt: '',
+    }, () => {
+      this.getAll()
+    })
+  }
+
+  componentDidMount = () => {
+    this.getAll()
+  }
+
+  changeTotal = (value) => {
+    this.setState({
+      total: value
+    }, () => {
+      console.log(this.state)
+      this.getAll()
+    })
+  }
+
+  getAll = async () => {
+    const query = {
+      filters: {
+        company: {
+          global: {
+            fields: ['cnpj', 'razaoSocial', 'nameContact', 'telphone'],
+            value: this.state.global,
+          },
+          specific: {
+            cnpj: this.state.cnpj,
+            razaoSocial: this.state.razaoSocial,
+            nameContact: this.state.nameContact,
+            telphone: this.state.telphone,
+          }
+        }
+      },
+      page: 1,
+      total: 25,
+      order: this.state.order,
+    }
+
+    await getAllCompany(query).then(
+      resposta => this.setState({
+        page: resposta.data.page,
+        count: resposta.data.count,
+        show: resposta.data.show,
+        rows: resposta.data.rows,
+      })
+    )
+  }
+
+  SearchAdvanced = () => (
+    <div className='gerCmp-div-advanced'>
+
+      <div className='gerCmp-div-left'>
+        <h2 className='gerCmp-div-label'>Cnpj:</h2>
         <Input
           allowClear
+          name='cnpj'
           className='input-cnpjCompany'
           placeholder="Digite o cnpj"
+          value={this.state.cnpj}
+          onChange={this.onChange}
         />
-        </div>  
-        <div className='div-rs-linha1'>
-        <h2 className='div-comp-label'>Razão social:</h2>
+      </div>
+      <div className='gerCmp-div-left'>
+        <h2 className='gerCmp-div-label'>Razão social:</h2>
         <Input
           allowClear
+          name='razaoSocial'
           className='input-cnpjCompany'
           placeholder="Digite a razão social"
+          value={this.state.razaoSocial}
+          onChange={this.onChange}
         />
-        </div>
-        <div className='div-createdAt-linha1'>
-        <h2 className='div-comp-label'>Criado em:</h2>
-        <DatePicker 
+      </div>
+      <div className='gerCmp-div-left'>
+        <h2 className='gerCmp-div-label'>Nome contato:</h2>
+        <Input
+          allowClear
+          name='nameContact'
+          className='input-cnpjCompany'
+          placeholder="Digite o nome"
+          value={this.state.nameContact}
+          onChange={this.onChange}
+        />
+      </div>
+      <div className='gerCmp-div-left'>
+        <h2 className='gerCmp-div-label'>Telefone:</h2>
+        <Input
+          allowClear
+          name='telphone'
+          className='input-cnpjCompany'
+          placeholder="Digite o tel"
+          value={this.state.telphone}
+          onChange={this.onChange}
+        />
+      </div>
+      <div className='gerCmp-div-right'>
+        <h2 className='gerCmp-div-label'>Criado em:</h2>
+        <DatePicker.RangePicker
           placeholder='Digite a data'
           format='DD/MM/YYYY'
           dropdownClassName='poucas'
         />
+      </div>
+    </div>
+  )
+
+  TableCompanies = () => (
+    <div className='gerCmp-div-mainHeader'>
+      <div className='gerCmp-div-table-information'>
+        <div className='gerCmp-div-table-information-total'>
+          <label className='gerCmp-label-table-information'>
+            Quantidade por página:
+          </label>
+          <Select defaultValue="25" onChange={this.changeTotal}>
+            <Option value="10">10</Option>
+            <Option value="25">25</Option>
+            <Option value="50">50</Option>
+            <Option value="100">100</Option>
+          </Select>
         </div>
-        </div>
-        <div className='div-linha2'>
-        <div className='div-nome-linha1'>
-        <h2 className='div-comp-label'>Nome contato:</h2>
-        <Input
-          allowClear
-          className='input-cnpjCompany'
-          placeholder="Digite o nome"
-        />
-        </div>
-        <div className='div-tel-linha1'>
-        <h2 className='div-comp-label'>Telefone:</h2>
-        <Input
-          allowClear
-          className='input-cnpjCompany'
-          placeholder="Digite o tel"
-        />
-        </div>
-        </div>      
-        </div>
-        <div className='div-table-newCompany'>
-          <Table columns={columns} dataSource={data} size="middle" />
+        <div className='gerCmp-div-table-information-count'>
+          <label className='gerCmp-label-table-information'>
+            {`Mostrando ${this.state.show}/${this.state.count} empresas.`}
+          </label>
         </div>
       </div>
-    )
-    }else{
-      return(
-        <div className='div-card-newCompany'>
-        <div className='div-comp-Linha div-comp-header'>
-           <h1 className='div-comp-title'>Gerenciar Empresas</h1>
-         </div>
-         <div className='div-searchNormal-newCompany'>
-           <div className='div-buttonAndSearch'>
-           <Search className='search-newCompany' 
-             placeholder="Digite o que deseja procurar" 
-             onSearch={value => console.log(value)} 
-             size='large' 
-           />
-           <Button
+      <div className='gerCmp-div-table-separeteLineMain' />
+      <div className='gerCmp-div-table-header'>
+        <div className='gerCmp-div-table-cel-cnpj'
+          onClick={() => this.changeOrder('cnpj')}>
+          {this.state.order.field === 'cnpj' ?
+            <div className='gerCmp-div-icon'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='gerCmp-div-icon'></div>}
+          <h2 className='gerCmp-div-table-label'>Cnpj</h2>
+        </div>
+        <div className='gerCmp-div-table-cel-rs'
+          onClick={() => this.changeOrder('razaoSocial')}>
+          {this.state.order.field === 'razaoSocial' ?
+            <div className='gerCmp-div-icon'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='gerCmp-div-icon'></div>}
+          <h2 className='gerCmp-div-table-label'>Razão Social</h2>
+        </div>
+        <div className='gerCmp-div-table-cel-nameContact'
+          onClick={() => this.changeOrder('nameContact')}>
+          {this.state.order.field === 'nameContact' ?
+            <div className='gerCmp-div-icon'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='gerCmp-div-icon'></div>}
+          <h2 className='gerCmp-div-table-label'>Nome Contato</h2>
+        </div>
+        <div className='gerCmp-div-table-cel-tel'
+          onClick={() => this.changeOrder('telphone')}>
+          {this.state.order.field === 'telphone' ?
+            <div className='gerCmp-div-icon'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='gerCmp-div-icon'></div>}
+          <h2 className='gerCmp-div-table-label'>Telefone</h2>
+        </div>
+        <div className='gerCmp-div-table-cel-createdAt'
+          onClick={() => this.changeOrder('createdAt')}>
+          {this.state.order.field === 'createdAt' ?
+            <div className='gerCmp-div-icon'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='gerCmp-div-icon'></div>}
+          <h2 className='gerCmp-div-table-label'>Criado em</h2>
+        </div>
+      </div>
+      <div className='gerCmp-div-table-separeteLineMain' />
+      {
+        this.state.rows.map((line) =>
+          <div className='gerCmp-div-table-list'>
+            <div className='gerCmp-div-tableRow'>
+              <div className='gerCmp-div-table-cel-cnpj'>
+                <label className='gerCmp-div-table-label-cel'>
+                  {line.cnpj}
+                </label>
+              </div>
+              <div className='gerCmp-div-table-cel-rs'>
+                <label className='gerCmp-div-table-label-cel'>
+                  {line.razaoSocial}
+                </label>
+              </div>
+              <div className='gerCmp-div-table-cel-nameContact'>
+                <label className='gerCmp-div-table-label-cel'>
+                  {line.nameContact}
+                </label>
+              </div>
+              <div className='gerCmp-div-table-cel-tel'>
+                <label className='gerCmp-div-table-label-cel'>
+                  {line.telphone}
+                </label>
+              </div>
+              <div className='gerCmp-div-table-cel-createdAt'>
+                <label className='gerCmp-div-table-label-cel'>
+                  {line.createdAt}
+                </label>
+              </div>
+            </div>
+            <div className='gerCmp-div-table-separeteLinerow' />
+          </div>
+        )
+      }
+    </div>
+  )
+
+  render() {
+    return (
+      <div className='gerCmp-div-card'>
+
+        <div className='gerCmp-div-header'>
+          <h1 className='gerCmp-div-title'>Gerenciar Empresas</h1>
+        </div>
+
+        <div className='gerCmp-div-buttonAndSearch'>
+
+          <Search className='gerCmp-search'
+            placeholder="Digite o que deseja procurar"
+            onSearch={value => console.log(value)}
+            size='large'
+            name='global'
+            value={this.state.global}
+            onChange={this.onChange}
+          />
+
+          <Button
+            onClick={this.buttonLimpar}
+            className='gerCmp-button-dashCompany'
+            type='primary'
+          >Limpar
+          </Button>
+
+          {this.state.avancado ?
+            <Button
               onClick={this.buttonAvancado}
-              className='button-dashCompany'
-              type='primary'>
-              Avançado
-           </Button>
-         </div>
-         </div>
-         <div className='div-tableNormal-newCompany'>
-           <Table columns={columns} dataSource={data} size="middle" />
-         </div>
-       </div>
-      )
-    }
+              className='gerCmp-button-dashCompany'
+              type='primary'
+            >Ocultar
+          </Button> :
+            <Button
+              onClick={this.buttonAvancado}
+              className='gerCmp-button-dashCompany'
+              type='primary'
+            >Avançado
+          </Button>}
+        </div>
+        {this.state.avancado ? <this.SearchAdvanced /> : null}
+        <this.TableCompanies />
+      </div>
+    )
+
   }
 }
-
 export default NewCompany
