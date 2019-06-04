@@ -1,17 +1,20 @@
 export default {
   LOGIN: {
     CHANGE_VALUE: 'LOGIN_CHANGE_VALUE',
-    AUTH:'LOGIN_AUTH',
+    AUTH: 'LOGIN_AUTH',
   },
   COMPANY: {
-    CREATE:{
+    CREATE: {
       CHANGE_VALUE: 'COMPANY_CREATE_CHANGE_VALUE',
       SUBMIT: 'COMPANY_CREATE_SUBMIT',
     },
   },
-  EQUIP:{
+  EQUIP: {
     TYPE: {
-      NEW:  'EQUIP_NEW_TYPE',
+      CREATE: {
+        CHANGE_VALUE: 'EQUIP_TYPE_CHANGE_VALUE',
+        SUBMIT: 'EQUIP_NEW_TYPE_SUBMIT',
+      },
     },
   }
 }

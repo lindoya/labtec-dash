@@ -294,6 +294,7 @@ class NewCompany extends Component {
               <h2 className='div-comp-label'>Complemento:</h2>
               <Input
                 name='complement'
+                placeholder='Ex: Bloco 3, Torre 1'
                 value={this.props.value.complement}
                 onChange={this.props.changeValueCompany}
               />

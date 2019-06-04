@@ -1,14 +1,24 @@
+.div-entrance-card{
+  margin-top: 10px;
+  height: 150% !important;
+  width: 98% !important;
+  box-shadow: 1px 5px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .div-entrance-linha1{
   margin: 0 0 20px 0;
   width: 76% !important;
   display: flex;
-  justify-content: space-between
+  justify-content: space-between;
+  flex-wrap: wrap
 }
 .div-entrance-cnpj{
   width: 22% !important
 }
 .div-entrance-rs{
-  width: 70% !important
+  width: 75.5% !important
 }
 .div-entrance-ns{
   width: 22% !important
@@ -30,9 +40,6 @@
   width: 100% !important;
   align-items: center;
 }
-.ponto{
-  color: white
-}
 .div-entrance-acessorio{
   width: 100%
 }
@@ -53,4 +60,165 @@
   color: white !important;
   background-color: #1790FF !important;
   border: #1790FF !important
+}
+.div-entrance-selectInputs{
+  width: 75% !important;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap 
+}
+.div-entrance-cliente{
+  width: 35% !important
+}
+.div-entrance-rg{
+  width: 25% !important
+}
+.div-entrance-cpf{
+  width: 27% !important
+}
+.div-entrance-nomeReponsa{
+  width: 35% !important
+}
+.div-entrance-nomeMotoboy{
+  width: 35% !important
+}
+.div-entrance-externo{
+  width: 30% !important
+}
+.div-entrance-nomeRemetente{
+  width: 30% !important;
+}
+.div-entrance-selectInputs2lines{
+  width: 76% !important;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.div-entrance-linha1Motoboy{
+  margin-bottom: 20px !important;
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
+.div-entrance-linha2Motoboy{
+  margin-bottom: 20px !important;
+  display: flex;
+  width: 100%;
+}
+.div-entrance-embaladoMotoboy{
+  margin-left: 50px
+}
+.div-entrance-linha2Sedex{
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
+.div-entrance-inputEmbalagem{
+  width: 60%
+}
+.div-embalado{
+  display: flex;
+  width: 100% !important;
+  align-items: center;
+  justify-content: space-between
+}
+.div-embaladoSedex{
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+.div-entrance-cnpjcpf{
+  width: 22% 
+}
+.div-entrance-cep{
+  width: 15% 
+}
+.div-entrance-uf{
+  width: 8% 
+}
+.div-entrance-city{
+  width: 40% 
+}
+.div-entrance-bairro{
+  width: 30% 
+}
+.div-entrance-rua{
+  width: 80% 
+}
+.div-entrance-numero{
+  width: 17% 
+}
+.div-entrance-linha3Sedex{
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
+.div-entrance-comp{
+  width: 25% 
+}
+.div-entrance-ref{
+  width: 72% 
+}
+.div-entrance-tipo{
+  width: 16% 
+}
+.div-entrance-marca{
+  width: 16% 
+}
+.div-entrance-modelo{
+  width: 16% 
+}
+.div-embaladoExterno{
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+.div-entrance-embaladoExterno{
+  margin-left: 10px
+}
+.ant-btn{
+  color: white !important;
+  background-color: #001429 !important;
+  border: #001429 !important
+}
+.ant-btn:hover{
+  color: white !important;
+  background-color: #1790FF !important;
+  border: #1790FF !important
+}
+.ant-modal-body{
+  display: flex;
+  flex-direction: column
+}
+.card-modal{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px
+}
+.div-button-modal{
+  margin-top: 10px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end
+}
+.ant-modal-content{
+  width: 76vh !important
+}
+.p-carrinho-entrance-item{
+  cursor: pointer;
+}
+.p-carrinho-entrance-item:hover{
+  background-color: greenyellow
+}
+.p-carrinho-entrance-carrinho{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.p-carrinho-entrance-carrinho:hover{
+  background-color: rgba(243, 0, 0, 0.658)
 }

@@ -11,7 +11,7 @@ const INICIAL_STATE ={
 
 
 
-export function equip(state = INICIAL_STATE, action) {
+export function equipType(state = INICIAL_STATE, action) {
   switch(action.type){
     case actions.EQUIP.TYPE.NEW:
       console.log(action.payload)

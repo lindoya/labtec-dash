@@ -4,13 +4,13 @@ import { login, auth } from '../pages/Login/LoginRedux/reduce'
 
 import { newCompany } from '../pages/Company/CompanyRedux/reduce'
 
-import { equip } from '../pages/Equip/EquipRedux/reduce'
+import { equipType } from '../pages/Equip/EquipRedux/reduce'
 
 const rootReducer = combineReducers({
   login,
   auth,
   newCompany,
-  equip,
+  equipType,
 })
 
 export default rootReducer
