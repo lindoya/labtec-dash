@@ -222,3 +222,24 @@
 .p-carrinho-entrance-carrinho:hover{
   background-color: rgba(243, 0, 0, 0.658)
 }
+.div-quant-entrance-modal{
+  width: 100%
+}
+.input-addCarrinho-modal{
+  width: 100%
+}
+.div-modal-input{
+  display: flex;
+  width: 100%;
+  justify-content: space-between
+}
+.div-modal-input-normal{
+  display: flex;
+  flex-direction: column;
+  width: 85%
+}
+.div-modal-input-quant{
+  display: flex;
+  flex-direction: column;
+  width: 15%
+}

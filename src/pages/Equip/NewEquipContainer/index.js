@@ -1,201 +1,213 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button } from 'antd';
-
-import * as R from 'ramda'
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { changeValue, onSubmit } from '../EquipRedux/action'
+import { Input, Button, Select } from 'antd';
+import { validators } from './validator'
+import { getOneByCnpj } from '../../../services/company'
+import { getAllMarkByTypeService, getAllModelByMarkService } from '../../../services/equip'
 import './index.css'
 
+const { Option } = Select;
+
 class NewEquip extends Component {
-  onSubmit = () => {
-    const body = R.omit(['sucess'], this.props.value)
-    this.props.onSubmit(body)
+
+  state = {
+    message:{
+      razaoSocial: '',
+      cnpj: '',
+      serialNumber: '',
+      leitor: '',
+      type: '',
+      marksList: '',
+      modelsList: '', 
+      mark:'',
+      model:'',
+    },
+    fieldFalha:{
+      razaoSocial: false,
+      cnpj: false,
+      serialNumber: false,
+      leitor: false,
+      type: false,
+      marksList: false,
+      modelsList: false, 
+      mark:false,
+      model:false,
+    },
+    razaoSocial: '',
+    cnpj: '',
+    serialNumber: '',
+    leitor: '',
+    type: 'relogio',
+    marksList: [],
+    modelsList: [], 
+    mark:'',
+    model:'',
+  }
+
+  componentDidMount = () => {
+    this.getAllMarkByType()
+  }
+
+  getAllMarkByType = async () => {
+    const resposta = await getAllMarkByTypeService({ type: this.state.type })
+
+    this.setState({
+      marksList: resposta.data
+    })
+  }
+
+  getModelsByMark = async () => {
+    const resposta = await getAllModelByMarkService({ mark: this.state.mark.mark})
+
+    this.setState({
+      modelsList: resposta.data,
+    })
+  }
+
+  selectMark = async (value) => {
+
+    this.setState({
+      mark: value
+    }, this.getModelsByMark)
+  }
+
+  getRazaoSocial = async (e) => {
+    const cnpjWithMask= e.target.value
+    const cnpj = cnpjWithMask.replace(/\D/g, '')
+    try {
+      const company = await getOneByCnpj(cnpj)
+      this.setState({
+        razaoSocial: company.data.razaoSocial
+      }, console.log(company))
+    } catch (error) {
+    }
+  }
+
+  onChange = (e) => {
+    const { nome, valor, fieldFalha, message } = validators(e.target.name, e.target.value, this.state)
+    this.setState({
+      [nome]: valor,
+      fieldFalha,
+      message
+    })
+  }
+
+  handleChange(value) {
+    console.log(`selected ${value}`);
   }
 
   render() {
-    console.log(this.props.value.sucess)
-    if(this.props.value.sucess){
-      Modal.success({
-        title: 'Sucesso',
-        content: `A empresa foi cadastrada com sucesso`,
-      })
-    }
 
     return (
       <div className='div-comp-card'>
 
         <div className='div-comp-Linha div-comp-header'>
-          <h1 className='div-comp-title'>Cadastro Equipamento</h1>
+          <h1 className='div-comp-title'>Cadastro de equipamentos</h1>
         </div>
 
         <div className='div-comp-form'>
 
-          <div className='div-comp-Linha'>
+          <div className='div-newEquip-Linha'>
 
-            <div className='div-comp-cnpj'>
-              <h2 className='div-comp-label'>Número de Série:</h2>
+            <div className='div-newEquip-cnpj'>
+              <h2 className='div-comp-label'>Cnpj:</h2>
               <Input
-                className='input-cnpj'
-                placeholder='Digite o numero de Série'
-                name='number'
-                value={this.props.value.number}
-                onChange={this.props.changeValue}
+                className='input-newEquip'
+                placeholder='Digite o cnpj'
+                name='cnpj'
+                value={this.state.cnpj}
+                onChange={this.onChange}
+                onBlur={this.getRazaoSocial}
+                allowClear
+              // value={this.props.value.number}
+              // onChange={this.props.changeValue}
               />
             </div>
 
-            <div className='div-comp-rs'>
-              <h2 className='div-comp-label'>Razão Social:</h2>
+            <div className='div-newEquip-razaoSocial'>
+              <h2 className='div-comp-label'>Razão social:</h2>
               <Input
-                className='input-rs'
-                placeholder='Digite a razão social'
+                readOnly
+                className='input-newEquip'
                 name='razaoSocial'
-                value={this.props.value.razaoSocial}
-                onChange={this.props.changeValue}
+                value={this.state.razaoSocial === '' ? '-' : this.state.razaoSocial}
+              // value={this.props.value.number}
+              // onChange={this.props.changeValue}
               />
             </div>
           </div>
 
+          <div className='div-newEquip-Linha'>
 
-          <div className='div-comp-Linha'>
-
-            <div className='div-comp-nome'>
-              <h2 className='div-comp-label'>Nome:</h2>
+            <div className='div-newEquip-serialNumber'>
+              <h2 className='div-comp-label'>Número de série:</h2>
               <Input
-                className='input-nome'
-                placeholder='Digite o nome'
-                name='nameContact'
-                value={this.props.value.nameContact}
-                onChange={this.props.changeValue}
+                className='input-newEquip'
+                placeholder='Digite o número'
+                value={this.state.serialNumber}
+                name='serialNumber'
+                onChange={this.onChange}
+                allowClear
+              // value={this.props.value.number}
+              // onChange={this.props.changeValue}
               />
             </div>
 
-            <div className='div-comp-email'>
-              <h2 className='div-comp-label'>E-mail:</h2>
-              <Input
-                className='input-email'
-                placeholder='Digite o email'
-                name='email'
-                value={this.props.value.email}
-                onChange={this.props.changeValue}
-              />
+            <div className='div-newEquip-type'>
+              <h2 className='div-comp-label'>Tipo:</h2>
+              <Select
+                defaultValue="relogio" 
+                style={{ width: '100%' }} 
+                onChange={this.changeTypeSelected}
+              >
+                <Option value="relogio">Relógio</Option>
+                <Option value="catraca">Catraca</Option>
+                <Option value="controleAcesso">Controle de Acesso</Option>
+                <Option value="peca">Peça</Option>
+                <Option value="sirene">Sirene</Option>
+              </Select>
             </div>
 
-            <div className='div-comp-tel'>
-              <h2 className='div-comp-label'>Telefone:</h2>
-              <Input
-                className='input-tel'
-                placeholder='(99)99999-9999'
-                name='telphone'
-                value={this.props.value.telphone}
-                onChange={this.props.changeValue}
-              />
-            </div>
-          </div>
-
-          <div className='div-comp-Linha'>
-
-            <div className='div-comp-cep'>
-              <h2 className='div-comp-label'>Cep:</h2>
-              <Input
-                className='input-cep'
-                placeholder='Digite o cep'
-                name='zipCode'
-                value={this.props.value.zipCode}
-                onChange={this.props.changeValue}
-              />
-            </div>
-
-            <div className='div-comp-uf'>
-              <h2 className='div-comp-label'>Estado:</h2>
-              <Input
-                className='input-uf'
-                placeholder='EX'
-                name='state'
-                value={this.props.value.state}
-                onChange={this.props.changeValue}
-              />
-            </div>
-
-            <div className='div-comp-city'>
-              <h2 className='div-comp-label'>Cidade:</h2>
-              <Input
-                className='input-city'
-                placeholder='Digite a cidade'
-                name='city'
-                value={this.props.value.city}
-                onChange={this.props.changeValue}
-              />
-            </div>
-            
-            <div className='div-comp-bairro'>
-              <h2 className='div-comp-label'>Bairro:</h2>
-              <Input
-                className='input-bairro'
-                placeholder='Digite o bairro'
-                name='neighborhood'
-                value={this.props.value.neighborhood}
-                onChange={this.props.changeValue}
-              />
+            <div className='div-newEquip-mark'>
+              <h2 className='div-comp-label'>Marca:</h2>
+              <Select defaultValue="guilherme" style={{ width: '100%' }} onChange={this.handleChange}>
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+                <Option value="guilherme">Guilherme</Option>
+              </Select>
             </div>
           </div>
 
-          <div className='div-comp-Linha'>
 
-            <div className='div-comp-rua'>
-              <h2 className='div-comp-label'>Rua:</h2>
-              <Input
-                className='input-rua'
-                placeholder='Digite a rua'
-                name='street'
-                value={this.props.value.street}
-                onChange={this.props.changeValue}
-              />
+          <div className='div-newEquip-Linha'>
+
+           
+            <div className='div-newEquip-modelo'>
+              <h2 className='div-comp-label'>Modelo:</h2>
+              <Select defaultValue="guilherme" style={{ width: '100%' }} onChange={this.handleChange}>
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+                <Option value="guilherme">Guilherme</Option>
+              </Select>
             </div>
 
-            <div className='div-comp-numero'>
-              <h2 className='div-comp-label'>Número:</h2>
-              <Input
-                className='input-numero'
-                placeholder='123456789'
-                name='number'
-                value={this.props.value.number}
-                onChange={this.props.changeValue}
-              />
-            </div>
-          </div>
 
-          <div className='div-comp-Linha'>
-
-            <div className='div-comp-compl'>
-
-              <h2 className='div-comp-label'>Complemento:</h2>
-              <Input
-                className='input-compl'
-                placeholder='Ex: Torre 3'
-                name='complement'
-                value={this.props.value.complement}
-                onChange={this.props.changeValue}
-              />
+            <div className='div-newEquip-leitor'>
+              <h2 className='div-comp-label'>Leitor:</h2>
+              <Select defaultValue="NaoSeAplica" style={{ width: '100%' }} onChange={this.handleChange}>
+                <Option value="Branco">Branco</Option>
+                <Option value="Vermelho">Vermelho</Option>
+                <Option value="Azul">Azul</Option>
+                <Option value="Verde">Verde</Option>
+                <Option value="NaoSeAplica">Não se aplica</Option>
+              </Select>
             </div>
 
-            <div className='div-comp-refer'>
-              <h2 className='div-comp-label'>Ponto de referência:</h2>
-              <Input
-                className='input-refer'
-                placeholder='Digite o ponto de referência'
-                name='referencePoint'
-                value={this.props.value.referencePoint}
-                onChange={this.props.changeValue}
-              />
-            </div>
           </div>
 
           <div className='div-comp-button'>
             <Button
               className='comp-button'
-              onClick={this.onSubmit}
+              // onClick={this.onSubmit}
               type="primary">Salvar
             </Button>
           </div>
@@ -206,14 +218,4 @@ class NewEquip extends Component {
   }
 }
 
-function mapDispacthToProps(dispach) {
-  return bindActionCreators({ changeValue, onSubmit }, dispach)
-}
-
-function mapStateToProps(state) {
-  return {
-    value: state.newCompany,
-  }
-}
-
-export default connect(mapStateToProps, mapDispacthToProps)(NewEquip)
+export default NewEquip

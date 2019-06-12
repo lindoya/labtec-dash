@@ -1,32 +1,151 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button } from 'antd';
+import { Input, Button, message } from 'antd';
+import { newCompany, getAddressByZipCode } from '../../../services/company'
+import { validators }from './validator'
 
-import * as R from 'ramda'
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { changeValueCompany, onSubmit } from '../CompanyRedux/action'
 import './index.css'
 
 class NewCompany extends Component {
-  onSubmit = () => {
-    const body = R.omit(['sucess'], this.props.value)
-    this.props.onSubmit(body)
+
+  state = {
+    message: {
+      razaoSocial: '',
+      cnpj: '',
+      street: '',
+      number: '',
+      city: '',
+      state: '',
+      neighborhood: '',
+      referencePoint: '',
+      zipCode: '',
+      telphone: '',
+      email: '',
+      nameContact: '',
+    },
+    fieldFalha: {
+      razaoSocial: false,
+      cnpj: false,
+      street: false,
+      number: false,
+      city: false,
+      state: false,
+      neighborhood: false,
+      referencePoint: false,
+      zipCode: false,
+      telphone: false,
+      email: false,
+      nameContact: false,
+    },
+    razaoSocial: '',
+    cnpj: '',
+    street: '',
+    number: '',
+    city: '',
+    state: '',
+    neighborhood: '',
+    referencePoint: '',
+    zipCode: '',
+    telphone: '',
+    email: '',
+    nameContact: '',
+    complement: '',
+    messageError: false,
+    messageSuccess: false
   }
 
-  render() {
-    if (this.props.value.sucess) {
-      Modal.success({
-        title: 'Sucesso',
-        content: `A empresa foi cadastrada com sucesso`,
-      })
+  saveTargetNewCompany = async () => {
+    const values = {
+      razaoSocial: this.state.razaoSocial,
+      cnpj: this.state.cnpj,
+      street: this.state.street,
+      number: this.state.number,
+      city: this.state.city,
+      state: this.state.state,
+      neighborhood: this.state.neighborhood,
+      referencePoint: this.state.referencePoint,
+      zipCode: this.state.zipCode,
+      telphone: this.state.telphone,
+      email: this.state.email,
+      nameContact: this.state.nameContact,
+      complement: this.state.complement
     }
 
+    const resposta = await newCompany(values)
+    this.setState({
+      razaoSocial: '',
+      cnpj: '',
+      street: '',
+      number: '',
+      city: '',
+      state: '',
+      neighborhood: '',
+      referencePoint: '',
+      zipCode: '',
+      telphone: '',
+      email: '',
+      nameContact: '',
+      complement: ''
+    })
+
+    if (resposta.status === 422) {
+      this.setState({
+        messageError: true
+      })
+      await this.error()
+      this.setState({
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+      this.setState({
+        messageSuccess: true
+      })
+      await this.success()
+      this.setState({
+        messageSuccess: false
+      })
+    }
+  }
+
+  success = () => {
+      message.success('Empresa cadastrada com sucesso');
+  };
+
+  error = () => {
+    message.error('Empresa não foi cadastrada com sucesso');
+  };
+
+  onChange = (e) => {
+    const { nome, valor, fieldFalha, message } = validators(e.target.name, e.target.value, this.state)
+    console.log(nome, valor)
+    this.setState({
+      [ nome ]: valor,
+      fieldFalha,
+      message
+    })
+  }
+
+  getAddress = async (e) => { 
+    const zipCode = e.target.value
+    try {
+      const address = await getAddressByZipCode(zipCode)
+      this.setState({ 
+        street: address.data.logradouro,
+        city: address.data.localidade,
+        neighborhood: address.data.bairro,
+        state: address.data.uf
+      },  console.log(address))
+    } catch (error) {
+    }
+  }
+
+
+  render() {
+    console.log(this.state)
     return (
       <div className='div-comp-card'>
 
         <div className='div-comp-Linha div-comp-header'>
-          <h1 className='div-comp-title'>Cadastro Empresa</h1>
+          <h1 className='div-comp-title'>Cadastro de empresa</h1>
         </div>
 
         <div className='div-comp-form'>
@@ -35,45 +154,45 @@ class NewCompany extends Component {
 
             <div className='div-comp-cnpj'>
               <h2 className={
-                this.props.value.fieldFalha.cnpj ?
+                this.state.fieldFalha.cnpj ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Cnpj ou Cpf:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.cnpj ?
+                  this.state.fieldFalha.cnpj ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o cnpj ou cpf'
                 name='cnpj'
-                value={this.props.value.cnpj}
-                onChange={this.props.changeValueCompany}
+                value={this.state.cnpj}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.cnpj ?
+              {this.state.fieldFalha.cnpj ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.cnpj}
+                  {this.state.message.cnpj}
                 </p> : null}
             </div>
 
             <div className='div-comp-rs'>
               <h2 className={
-                this.props.value.fieldFalha.razaoSocial ?
+                this.state.fieldFalha.razaoSocial ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Razão Social:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.razaoSocial ?
+                  this.state.fieldFalha.razaoSocial ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite a razão social'
                 name='razaoSocial'
-                value={this.props.value.razaoSocial}
-                onChange={this.props.changeValueCompany}
+                value={this.state.razaoSocial}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.razaoSocial ?
+              {this.state.fieldFalha.razaoSocial ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.razaoSocial}
+                  {this.state.message.razaoSocial}
                 </p> : null}
             </div>
           </div>
@@ -83,67 +202,67 @@ class NewCompany extends Component {
 
             <div className='div-comp-nome'>
               <h2 className={
-                this.props.value.fieldFalha.nameContact ?
+                this.state.fieldFalha.nameContact ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Nome:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.nameContact ?
+                  this.state.fieldFalha.nameContact ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o nome'
                 name='nameContact'
-                value={this.props.value.nameContact}
-                onChange={this.props.changeValueCompany}
+                value={this.state.nameContact}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.nameContact ?
+              {this.state.fieldFalha.nameContact ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.nameContact}
+                  {this.state.message.nameContact}
                 </p> : null}
             </div>
 
             <div className='div-comp-email'>
               <h2 className={
-                this.props.value.fieldFalha.email ?
+                this.state.fieldFalha.email ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>E-mail:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.email ?
+                  this.state.fieldFalha.email ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o email'
                 name='email'
-                value={this.props.value.email}
-                onChange={this.props.changeValueCompany}
+                value={this.state.email}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.nameContact ?
+              {this.state.fieldFalha.nameContact ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.nameContact}
+                  {this.state.message.nameContact}
                 </p> : null}
             </div>
 
             <div className='div-comp-tel'>
               <h2 className={
-                this.props.value.fieldFalha.telphone ?
+                this.state.fieldFalha.telphone ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Telefone:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.telphone ?
+                  this.state.fieldFalha.telphone ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='(99)99999-9999'
                 name='telphone'
-                value={this.props.value.telphone}
-                onChange={this.props.changeValueCompany}
+                value={this.state.telphone}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.telphone ?
+              {this.state.fieldFalha.telphone ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.telphone}
+                  {this.state.message.telphone}
                 </p> : null}
 
             </div>
@@ -153,89 +272,90 @@ class NewCompany extends Component {
 
             <div className='div-comp-cep'>
               <h2 className={
-                this.props.value.fieldFalha.zipCode ?
+                this.state.fieldFalha.zipCode ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Cep:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.zipCode ?
+                  this.state.fieldFalha.zipCode ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o cep'
                 name='zipCode'
-                value={this.props.value.zipCode}
-                onChange={this.props.changeValueCompany}
+                value={this.state.zipCode}
+                onChange={this.onChange}
+                onBlur={this.getAddress}
               />
-              {this.props.value.fieldFalha.zipCode ?
+              {this.state.fieldFalha.zipCode ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.zipCode}
+                  {this.state.message.zipCode}
                 </p> : null}
             </div>
 
             <div className='div-comp-uf'>
               <h2 className={
-                this.props.value.fieldFalha.state ?
+                this.state.fieldFalha.state ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Estado:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.state ?
+                  this.state.fieldFalha.state ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='EX'
                 name='state'
-                value={this.props.value.state}
-                onChange={this.props.changeValueCompany}
+                value={this.state.state}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.state ?
+              {this.state.fieldFalha.state ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.state}
+                  {this.state.message.state}
                 </p> : null}
             </div>
 
             <div className='div-comp-city'>
               <h2 className={
-                this.props.value.fieldFalha.city ?
+                this.state.fieldFalha.city ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Cidade:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.city ?
+                  this.state.fieldFalha.city ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite a cidade'
                 name='city'
-                value={this.props.value.city}
-                onChange={this.props.changeValueCompany}
+                value={this.state.city}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.city ?
+              {this.state.fieldFalha.city ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.city}
+                  {this.state.message.city}
                 </p> : null}
             </div>
 
             <div className='div-comp-bairro'>
               <h2 className={
-                this.props.value.fieldFalha.neighborhood ?
+                this.state.fieldFalha.neighborhood ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Bairro:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.neighborhood ?
+                  this.state.fieldFalha.neighborhood ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o bairro'
                 name='neighborhood'
-                value={this.props.value.neighborhood}
-                onChange={this.props.changeValueCompany}
+                value={this.state.neighborhood}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.neighborhood ?
+              {this.state.fieldFalha.neighborhood ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.neighborhood}
+                  {this.state.message.neighborhood}
                 </p> : null}
             </div>
           </div>
@@ -244,45 +364,45 @@ class NewCompany extends Component {
 
             <div className='div-comp-rua'>
               <h2 className={
-                this.props.value.fieldFalha.street ?
+                this.state.fieldFalha.street ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Rua:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.street ?
+                  this.state.fieldFalha.street ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite a rua'
                 name='street'
-                value={this.props.value.street}
-                onChange={this.props.changeValueCompany}
+                value={this.state.street}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.street ?
+              {this.state.fieldFalha.street ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.street}
+                  {this.state.message.street}
                 </p> : null}
             </div>
 
             <div className='div-comp-numero'>
               <h2 className={
-                this.props.value.fieldFalha.number ?
+                this.state.fieldFalha.number ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Número:</h2>
               <Input
                 className={
-                  this.props.value.fieldFalha.number ?
+                  this.state.fieldFalha.number ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='123456789'
                 name='number'
-                value={this.props.value.number}
-                onChange={this.props.changeValueCompany}
+                value={this.state.number}
+                onChange={this.onChange}
               />
-              {this.props.value.fieldFalha.number ?
+              {this.state.fieldFalha.number ?
                 <p className='div-comp-feedbackError'>
-                  {this.props.value.message.number}
+                  {this.state.message.number}
                 </p> : null}
             </div>
           </div>
@@ -295,8 +415,8 @@ class NewCompany extends Component {
               <Input
                 name='complement'
                 placeholder='Ex: Bloco 3, Torre 1'
-                value={this.props.value.complement}
-                onChange={this.props.changeValueCompany}
+                value={this.state.complement}
+                onChange={this.onChange}
               />
             </div>
 
@@ -306,8 +426,8 @@ class NewCompany extends Component {
                 className='input-refer'
                 placeholder='Digite o ponto de referência'
                 name='referencePoint'
-                value={this.props.value.referencePoint}
-                onChange={this.props.changeValueCompany}
+                value={this.state.referencePoint}
+                onChange={this.onChange}
               />
             </div>
           </div>
@@ -315,7 +435,7 @@ class NewCompany extends Component {
           <div className='div-comp-button'>
             <Button
               className='comp-button'
-              onClick={this.onSubmit}
+              onClick={this.saveTargetNewCompany}
               type="primary">Salvar
             </Button>
           </div>
@@ -326,14 +446,5 @@ class NewCompany extends Component {
   }
 }
 
-function mapDispacthToProps(dispach) {
-  return bindActionCreators({ changeValueCompany, onSubmit }, dispach)
-}
 
-function mapStateToProps(state) {
-  return {
-    value: state.newCompany,
-  }
-}
-
-export default connect(mapStateToProps, mapDispacthToProps)(NewCompany)
+export default NewCompany

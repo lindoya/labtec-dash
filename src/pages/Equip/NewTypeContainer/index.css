@@ -70,3 +70,66 @@
   background-color: #1890ff !important;
   border-color: #1890ff !important;
 }
+.div-equipType-Linha-card{
+  display: flex;
+  width: 100% !important;
+  justify-content: space-between;
+}
+.div-equipType-cardMarca{
+  width: 47%;
+  flex-direction: column;
+}
+.div-equipType-cardModelo{
+  width: 47%;
+  flex-direction: column;
+}
+.div-equipType-buttonModelo{
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 5px
+}
+.iconArrow-equipType{
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.h2-type{
+  color: #001529 !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  margin: 0 0 0 5px !important;
+}
+.input-type-equipType{
+  width: 65%;
+  margin-left: 10px;
+}
+.div-type{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: center
+}
+.input-marca-equipType{
+  width: 90%;
+  margin-left: 10px;
+}
+.div-button-equipType-Modal{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.input-desc-equipType{
+  width: 85%;
+  margin-left: 10px;
+}
+.markList-equipType{
+  cursor: pointer;
+}
+.markList-equipType:hover{
+  background-color: greenyellow;
+}
+.markList-equipType-selecionado{
+  background-color: rgba(87, 135, 224, 0.288) !important
+}

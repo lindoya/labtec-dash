@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, DatePicker, Icon } from 'antd';
+import { Select, Input, Button, DatePicker, Icon } from 'antd'
 import { getAllCompany } from '../../../services/company'
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.css'
 import './index.css'
 
 
@@ -294,7 +294,7 @@ class NewCompany extends Component {
       <div className='gerCmp-div-card'>
 
         <div className='gerCmp-div-header'>
-          <h1 className='gerCmp-div-title'>Gerenciar Empresas</h1>
+          <h1 className='gerCmp-div-title'>Gerenciar empresas</h1>
         </div>
 
         <div className='gerCmp-div-buttonAndSearch'>

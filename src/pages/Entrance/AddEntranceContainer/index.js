@@ -18,6 +18,7 @@ class NewEntrance extends Component {
     selected: 'cliente',
     embalado: '',
     visible: false,
+    quantAcessorios: '',
     input: '',
     acessorios:[],
     acessoriosCarrinho: [],
@@ -35,14 +36,23 @@ class NewEntrance extends Component {
   }
 
   selected = (acessorio) => {
+    this.inputQuant.focus()
+
     this.setState({
-      input: acessorio
+      input: acessorio,
+      quantAcessorios: 1
     })
   }
 
   changeValue = (e) => {
     this.setState({
       input: e.target.value
+    })
+  }
+
+  changeQuant = (e) => {
+    this.setState({
+      quantAcessorios: e.target.value
     })
   }
 
@@ -55,15 +65,18 @@ class NewEntrance extends Component {
     })
   }
 
-  addArray = (acessorio) => {
+  addArray = () => {
     if(this.state.input !== ''){
+      const acessorio = `${this.state.quantAcessorios} - ${this.state.input}`
+
       return(
         this.setState({
           acessoriosCarrinho: [
             ...this.state.acessoriosCarrinho,
             acessorio
           ],
-          input:''
+          input:'',
+          quantAcessorios: '',
         })
       )
     }
@@ -271,26 +284,41 @@ class NewEntrance extends Component {
               </Card>
               <Card size="small" title="Itens" style={{ width: '45%' }}>
                 {this.state.acessoriosBack.map(item => <div className='p-carrinho-entrance-item' onClick={() => {
-                  this.selected(`1 - ${item}`)
+                  this.selected(item)
                 }}>{item}</div>)}
               </Card>
             </div>
             <div className='input-modal'>
-              <h2 className='div-comp-label'>Adicionar ao carrinho:</h2>
+              <h2 className='div-comp-label'>ADICIONAR AO CARRINHO:</h2>
+              <div className='div-modal-input'>
+                <div className='div-modal-input-quant'>
+              <h2 className='div-comp-label'>Qntd:</h2>
+              <Input
+                size="default" 
+                className='div-quant-entrance-modal' 
+                onChange={this.changeQuant} 
+                value={this.state.quantAcessorios}
+                ref={(input) => { this.inputQuant = input; }}
+              />
+                </div>
+                <div className='div-modal-input-normal'>
+              <h2 className='div-comp-label'>Item selecionado:</h2>
               <Input
                 value={this.state.input}
                 onChange={this.changeValue}
-                className='input-cnpj'
+                className='input-addCarrinho-modal'
                 name='adicionar'
                 placeholder='Digite o item a ser adicionado no carrinho'
                 allowClear
               // value={this.props.value.cnpj}
               // onChange={this.props.changeValueCompany}
               />
+                </div>
+              </div>
               <div className='div-button-modal'>
                 <Button
                   className='button-entrance'
-                  onClick={() => this.addArray(this.state.input)}>
+                  onClick={this.addArray}>
                   Adicionar
             </Button>
               </div>

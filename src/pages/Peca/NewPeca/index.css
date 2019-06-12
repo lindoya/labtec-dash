@@ -1,0 +1,72 @@
+.div-formAdd-peca{
+  display: flex;
+  flex-direction: column;
+  width: 76%;
+}
+.div-linha-peca{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.div-peca-peca{
+  width: 69%;
+  margin: 10px 0 10px 0;
+}
+.div-custo-peca{
+  width: 15%;
+  margin: 10px 0 10px 0;
+}
+.div-venda-peca{
+  width: 15%;
+  margin: 10px 0 10px 0;
+}
+.div-desc-peca{
+  width: 100%;
+  margin: 10px 0 10px 0;
+}
+.div-linhaBottom-peca{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end
+}
+.card-peca{
+  margin: 5px 0 10px 0
+}
+.ant-card-body{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+  padding: 0
+}
+.div-relacionar-peca{
+  width: 100%;
+  margin-top: 10px
+}
+.div-tipos-card-pecas{
+  width: 25%;
+  margin: 10px
+}
+.div-marcas-card-pecas{
+  width: 25%;
+  margin: 10px
+}
+.div-modelos-card-pecas{
+  width: 45%;
+  margin: 10px
+}
+.div-insideCard-pecas{
+  margin: 10px 0 0 5px
+}
+.div-searchCard-peca{
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center
+}
+.div-allCard-peca{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 15px
+}

@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import uuidValidate from 'uuid-validate'
-import Dash from "./Dash";
+import Dash from './Dash';
 
 import CompanyRoute from './Company'
 import EquipRoute from './Equip'
-import EntranceRoute from "./Entrance";
+import EntranceRoute from './Entrance';
+import PecaRoute from './Peca'
 
 
 class PagesRoute extends Component {
@@ -21,6 +22,7 @@ class PagesRoute extends Component {
             <Route path='/logged/entrance' component={EntranceRoute}/>
             <Route path='/logged/company' component={CompanyRoute}/>
             <Route path='/logged/equip' component={EquipRoute}/>
+            <Route path='/logged/peca' component={PecaRoute}/>
           </Switch>
         ) 
     }else{
