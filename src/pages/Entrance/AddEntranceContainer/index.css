@@ -21,10 +21,11 @@
   width: 75.5% !important
 }
 .div-entrance-ns{
-  width: 22% !important
+  width: 25% !important
 }
 .div-entrance-cor{
-  width: 20% !important
+  width: 25% !important;
+  padding-left: 15px;
 }
 .div-entrance-desc{
   width: 100% !important
@@ -162,13 +163,24 @@
   width: 72% 
 }
 .div-entrance-tipo{
-  width: 16% 
+  width: 25%;
+  padding-left: 15px;
 }
 .div-entrance-marca{
-  width: 16% 
+  width: 25%;
+  padding-left: 15px;
 }
 .div-entrance-modelo{
-  width: 16% 
+  width: 40%;
+}
+
+.div-entrance-garantia{
+  width: 30%;
+  padding-left: 15px; 
+}
+.div-entrance-condition{
+  width: 30%;
+  padding-left: 15px;
 }
 .div-embaladoExterno{
   width: 70%;
