@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button, Select, Radio, Card, Icon} from 'antd';
+import { Input, Modal, Button, Select, Radio, Card, Icon } from 'antd';
 
 import * as R from 'ramda'
 
@@ -20,7 +20,9 @@ class NewEntrance extends Component {
     visible: false,
     quantAcessorios: '',
     input: '',
-    acessorios:[],
+    conditionType: 'avulso',
+    garantia: 'none',
+    acessorios: [],
     acessoriosCarrinho: [],
     acessoriosBack: [
       'FONTE EXTERNA S/ NOBREAK',
@@ -66,16 +68,16 @@ class NewEntrance extends Component {
   }
 
   addArray = () => {
-    if(this.state.input !== ''){
+    if (this.state.input !== '') {
       const acessorio = `${this.state.quantAcessorios} - ${this.state.input}`
 
-      return(
+      return (
         this.setState({
           acessoriosCarrinho: [
             ...this.state.acessoriosCarrinho,
             acessorio
           ],
-          input:'',
+          input: '',
           quantAcessorios: '',
         })
       )
@@ -132,6 +134,18 @@ class NewEntrance extends Component {
     this.setState({
       selected: value
     })
+  }
+
+  handleChangeCondition = (value) => {
+    this.setState({
+      conditionType: `${value}`,
+    });
+  }
+
+  handleChangeGalantia = (value) => {
+    this.setState({
+      garantia: `${value}`,
+    });
   }
 
   onSubmit = () => {
@@ -198,6 +212,8 @@ class NewEntrance extends Component {
             // onChange={this.props.changeValueCompany}
             />
           </div>
+        </div>
+        <div className='div-entrance-linha1'>
           <div className='div-entrance-modelo'>
             <h2 className='div-comp-label'>Modelo:</h2>
             <Input
@@ -208,6 +224,23 @@ class NewEntrance extends Component {
             // value={this.props.value.cnpj}
             // onChange={this.props.changeValueCompany}
             />
+          </div>
+          <div className='div-entrance-condition'>
+          <h2 className='div-comp-label'>Tipo de serviço:</h2>
+          <Select defaultValue='avulso' style={{ width: '100%' }} onChange={this.handleChangeType}>
+            <Option value="avulso">Avulso</Option>
+            <Option value="contrato">Contrato</Option>
+            <Option value="emprestimo">Empréstimo</Option>
+          </Select>
+          </div>
+          <div className='div-entrance-garantia'>
+          <h2 className='div-comp-label'>Garantia:</h2>
+          <Select defaultValue='none' style={{ width: '100%' }} onChange={this.handleChangeType}>
+            <Option value="externo">Serviço externo</Option>
+            <Option value="laboratorio">Venda</Option>
+            <Option value="venda">Laboratório</Option>
+            <Option value="none">Sem garantia</Option>
+          </Select>
           </div>
         </div>
         <div className='div-entrance-linha1'>
@@ -253,8 +286,8 @@ class NewEntrance extends Component {
           <div className='div-entrance-acessorio'>
             <h2 className='div-comp-label'>Acessórios:</h2>
             <Card size="small" title="Acessórios selecionados" style={{ width: '100%' }}>
-              {this.state.acessorios.length === 0 ? <p>Nenhum item selecionado</p> : 
-              this.state.acessorios.map(item => <p>{item}</p>)}
+              {this.state.acessorios.length === 0 ? <p>Nenhum item selecionado</p> :
+                this.state.acessorios.map(item => <p>{item}</p>)}
             </Card>
           </div>
         </div>
@@ -273,13 +306,13 @@ class NewEntrance extends Component {
           >
             <div className='card-modal'>
               <Card size="small" title="Carrinho 🛒" style={{ width: '45%' }}>
-                {this.state.acessoriosCarrinho.map((item) => 
-                <div className='p-carrinho-entrance-carrinho' onClick={() => {
-                  this.removeAcessorio(item)
-                }}>
-                {item}
-                <Icon style={{color: 'gray'}} type="close-circle" theme="filled" />
-                </div>
+                {this.state.acessoriosCarrinho.map((item) =>
+                  <div className='p-carrinho-entrance-carrinho' onClick={() => {
+                    this.removeAcessorio(item)
+                  }}>
+                    {item}
+                    <Icon style={{ color: 'gray' }} type="close-circle" theme="filled" />
+                  </div>
                 )}
               </Card>
               <Card size="small" title="Itens" style={{ width: '45%' }}>
@@ -292,27 +325,27 @@ class NewEntrance extends Component {
               <h2 className='div-comp-label'>ADICIONAR AO CARRINHO:</h2>
               <div className='div-modal-input'>
                 <div className='div-modal-input-quant'>
-              <h2 className='div-comp-label'>Qntd:</h2>
-              <Input
-                size="default" 
-                className='div-quant-entrance-modal' 
-                onChange={this.changeQuant} 
-                value={this.state.quantAcessorios}
-                ref={(input) => { this.inputQuant = input; }}
-              />
+                  <h2 className='div-comp-label'>Qntd:</h2>
+                  <Input
+                    size="default"
+                    className='div-quant-entrance-modal'
+                    onChange={this.changeQuant}
+                    value={this.state.quantAcessorios}
+                    ref={(input) => { this.inputQuant = input; }}
+                  />
                 </div>
                 <div className='div-modal-input-normal'>
-              <h2 className='div-comp-label'>Item selecionado:</h2>
-              <Input
-                value={this.state.input}
-                onChange={this.changeValue}
-                className='input-addCarrinho-modal'
-                name='adicionar'
-                placeholder='Digite o item a ser adicionado no carrinho'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
-              />
+                  <h2 className='div-comp-label'>Item selecionado:</h2>
+                  <Input
+                    value={this.state.input}
+                    onChange={this.changeValue}
+                    className='input-addCarrinho-modal'
+                    name='adicionar'
+                    placeholder='Digite o item a ser adicionado no carrinho'
+                    allowClear
+                  // value={this.props.value.cnpj}
+                  // onChange={this.props.changeValueCompany}
+                  />
                 </div>
               </div>
               <div className='div-button-modal'>
