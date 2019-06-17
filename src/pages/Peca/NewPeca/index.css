@@ -1,0 +1,67 @@
+.div-formAdd-peca{
+  display: flex;
+  flex-direction: column;
+  width: 76%;
+}
+.div-linha-peca{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.div-peca-peca{
+  width: 69%;
+  margin: 10px 0 10px 0;
+}
+.div-custo-peca{
+  width: 15%;
+  margin: 10px 0 10px 0;
+}
+.div-venda-peca{
+  width: 15%;
+  margin: 10px 0 10px 0;
+}
+.div-desc-peca{
+  width: 100%;
+  margin: 10px 0 10px 0;
+}
+.div-linhaBottom-peca{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px
+}
+.div-type-peca{
+  width:100%;
+  margin-bottom: 15px
+}
+.div-marca-peca{
+  width: 100%
+}
+.div-modelo-peca{
+  width: 76%;
+}
+.div-typeAndMark-peca{
+  width: 22%;
+  display: flex;
+  flex-direction: column
+}
+.ant-card-body{
+  padding: 0
+}
+.div-relacionados-peca{
+  width: 100%;
+  margin-top: 15px
+}
+.card-relacionados-peca{
+  width: 100%
+}
+.p{
+  margin: 15px 0 15px 15px
+}
+.card-modelo-peca{
+  width: 100%;
+  height: 200px;
+}
+.div-dataCard-peca{
+  width: 100%;
+}

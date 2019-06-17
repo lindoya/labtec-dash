@@ -3,7 +3,7 @@ import { newCompany } from '../../../services/company'
 
 export function changeValue(e) {
   return {
-    type: action.EQUIP.TYPE.NEW,
+    type: action.EQUIP_TYPE_CHANGE_VALUE,
     payload: e.target,
   }
 }
@@ -14,7 +14,7 @@ export function select(e, name) {
     value: e,
   }
   return {
-    type: action.EQUIP.TYPE.NEW,
+    type: action.EQUIP_TYPE_CHANGE_VALUE,
     payload,
   }
 }

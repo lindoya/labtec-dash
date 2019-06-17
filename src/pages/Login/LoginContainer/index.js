@@ -10,6 +10,13 @@ import { changeValue, onSubmit } from '../LoginRedux/action'
 
 class Login extends Component {
 
+  enterKey = (e) => {
+    if(e.keyCode === 13){
+      console.log('dnuiwabdwvadvwa')
+      this.onSubmit()
+    }
+  }
+
   onSubmit = async() => {
     await this.props.onSubmit(this.props.value)
   }
@@ -27,6 +34,7 @@ class Login extends Component {
           prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
           value={this.props.value.username} 
           onChange={this.props.changeValue}
+          onKeyPress={this.enterKey}
         />
         <Input.Password
           className='InputPasswordLogin'
@@ -35,6 +43,7 @@ class Login extends Component {
           prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
           value={this.props.value.password} 
           onChange={this.props.changeValue}
+          onKeyPress={this.enterKey}
         />
         <div className='div-ButtonLogin'>
         <Button 

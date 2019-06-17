@@ -34,8 +34,6 @@ class Sider extends Component {
       switch (this.state.current) {
         case 'entrada_add':
           return <Redirect to='/logged/entrance/add' />
-        case 'entrada_dash':
-          return <Redirect to='/logged/entrance/dash' />
         case 'company_add':
           return <Redirect to='/logged/company/add' />
         case 'company_dash':
@@ -44,6 +42,10 @@ class Sider extends Component {
           return <Redirect to='/logged/equip/add' />
         case 'equip_addType':
           return <Redirect to='/logged/equip/addType' />
+        case 'peca_add':
+          return <Redirect to='/logged/peca/add' />
+        case 'peca_dash':
+          return <Redirect to='/logged/peca/dash' />
         default:
           return <Redirect to='/logged/dash' />
       }
@@ -67,8 +69,7 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="entrada_add">Nova entrada</Menu.Item>
-            <Menu.Item key="entrada_dash">Gerenciar</Menu.Item>
+            <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
           </SubMenu>
 
           <SubMenu
@@ -80,24 +81,35 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="company_add">Cadastrar</Menu.Item>
-            <Menu.Item key="company_dash">Gerenciar</Menu.Item>
+            <Menu.Item key="company_add"><Icon type="form" />Cadastrar</Menu.Item>
+            <Menu.Item key="company_dash"><Icon type="edit" />Gerenciar</Menu.Item>
           </SubMenu>
           <SubMenu
             key="Equipamento"
             title={
               <span>
-                <Icon type="bank" />
+                <Icon type="printer" />
                 <span>Equipamento</span>
               </span>
             }
           >
-            <Menu.Item key="equip_add"><Icon type="bank" /> Cadastrar</Menu.Item>
-            <Menu.Item key="equip_dash"><Icon type="bank" /> Gerenciar</Menu.Item>
+            <Menu.Item key="equip_add"><Icon type="form" /> Cadastrar</Menu.Item>
+            <Menu.Item key="equip_dash"><Icon type="edit" /> Gerenciar</Menu.Item>
 
-            <Menu.Item key="equip_addType"><Icon type="bank" /> Cadastrar Tipos</Menu.Item>
-            <Menu.Item key="equip_dashType"><Icon type="bank" /> Gerenciar Tipos</Menu.Item>
+            <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
+          </SubMenu>
 
+          <SubMenu
+            key="Pecas"
+            title={
+              <span>
+                <Icon type="setting" />
+                <span>Peças</span>
+              </span>
+            }
+          >
+            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
+            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
           </SubMenu>
         </Menu>
       </div>

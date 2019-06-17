@@ -16,6 +16,7 @@ const INICIAL_STATE_CREATE ={
   email: '',
   nameContact: '',
   sucess: false,
+  RG:'',
 }
 
 
