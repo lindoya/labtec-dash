@@ -169,7 +169,6 @@ class NewTypeEquip extends Component {
     //     content: `O tipo de equipamento foi cadastrado com sucesso`,
     //   })
     // }
-    console.log(this.state)
     return (
       <div className='div-equipType-card'>
 

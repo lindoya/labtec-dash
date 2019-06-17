@@ -11,7 +11,6 @@ import { changeValue, onSubmit } from '../LoginRedux/action'
 class Login extends Component {
 
   enterKey = (e) => {
-    console.log(e)
     if(e.keyCode === 13){
       console.log('dnuiwabdwvadvwa')
       this.onSubmit()
