@@ -10,7 +10,7 @@ class Sider extends Component {
   state = {
     current: '0',
     redirect: false,
-    open: 'Entrada',
+    open: 'LabTec',
   };
 
   handleClick = e => {
@@ -60,16 +60,29 @@ class Sider extends Component {
           selectedKeys={[this.state.current]}
           mode="inline"
         >
+          
           <SubMenu
-            key="Entrada"
+            key="LabTec"
             title={
               <span>
                 <Icon type="form" />
-                <span>Entrada</span>
+                <span>LabTec</span>
               </span>
             }
           >
             <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
+            <SubMenu
+            key="Pecas"
+            title={
+              <span>
+                <Icon type="setting" />
+                <span>Peças</span>
+              </span>
+            }
+          >
+            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
+            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
+          </SubMenu>
           </SubMenu>
 
           <SubMenu
@@ -84,6 +97,7 @@ class Sider extends Component {
             <Menu.Item key="company_add"><Icon type="form" />Cadastrar</Menu.Item>
             <Menu.Item key="company_dash"><Icon type="edit" />Gerenciar</Menu.Item>
           </SubMenu>
+
           <SubMenu
             key="Equipamento"
             title={
@@ -99,18 +113,21 @@ class Sider extends Component {
             <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
           </SubMenu>
 
-          <SubMenu
-            key="Pecas"
+          {/* <SubMenu
+            key="Modulo"
             title={
               <span>
-                <Icon type="setting" />
-                <span>Peças</span>
+                <Icon type="printer" />
+                <span>Módulos</span>
               </span>
             }
           >
-            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
-            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
-          </SubMenu>
+            <Menu.Item key="equip_add"><Icon type="form" /> Cadastrar</Menu.Item>
+            <Menu.Item key="equip_dash"><Icon type="edit" /> Gerenciar</Menu.Item>
+
+            <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
+          </SubMenu> */}
+  
         </Menu>
       </div>
     );
