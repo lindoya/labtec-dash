@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Button, message } from 'antd';
 import { newCompany, getAddressByZipCode } from '../../../services/company'
-import { validators }from './validator'
+import { validators, masks }from './validator'
 
 import './index.css'
 
@@ -115,8 +115,29 @@ class NewCompany extends Component {
   };
 
   onChange = (e) => {
-    const { nome, valor, fieldFalha, message } = validators(e.target.name, e.target.value, this.state)
-    console.log(nome, valor)
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    const { fieldFalha } = this.state
+
+    if (nome === 'cnpj') fieldFalha.cnpj = false
+    if (nome === 'razaoSocial') fieldFalha.razaoSocial = false
+
+    this.setState({
+      [ nome ]: valor,
+      fieldFalha,
+    })
+  }
+
+  onBlurValidator = (e) => {
+    const { 
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+    
     this.setState({
       [ nome ]: valor,
       fieldFalha,
@@ -135,6 +156,7 @@ class NewCompany extends Component {
         state: address.data.uf
       },  console.log(address))
     } catch (error) {
+      console.log('erro')
     }
   }
 
@@ -167,6 +189,8 @@ class NewCompany extends Component {
                 name='cnpj'
                 value={this.state.cnpj}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.cnpj ?
                 <p className='div-comp-feedbackError'>
@@ -189,6 +213,8 @@ class NewCompany extends Component {
                 name='razaoSocial'
                 value={this.state.razaoSocial}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.razaoSocial ?
                 <p className='div-comp-feedbackError'>

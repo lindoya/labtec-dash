@@ -1207,6 +1207,16 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
+"@fnando/cnpj@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@fnando/cnpj/-/cnpj-0.1.1.tgz#245c987fae5ebabd6869aaa05bd9af005032e375"
+  integrity sha512-lzV5HLTfo8ArEcV7Ahdg7UF1ar/YZM7bSRgvDKlaKU/YAVhREhCDO1AoIDJNuWkvTeqM4w/OknprtXd6cAZIGQ==
+
+"@fnando/cpf@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@fnando/cpf/-/cpf-0.1.1.tgz#b4170275fab4ba086f4e0b45bba6d70b0708fb0a"
+  integrity sha512-KWIk6uh7Z8fAefUmtcDrLfCUIf+gU1DVv6BkL/TgXO5oJFC82X6FferrvBQzVBSRNb+TFbd/na1R7PHRgynrkA==
+
 "@hapi/address@2.x.x":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
