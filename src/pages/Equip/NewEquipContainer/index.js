@@ -39,7 +39,10 @@ class NewEquip extends Component {
     type: 'relogio',
     marksList: [],
     modelsList: [], 
-    mark:'',
+    mark:{
+      id: '',
+      mark:'',
+    },
     model:'',
   }
 
@@ -91,12 +94,20 @@ class NewEquip extends Component {
     })
   }
 
-  handleChange(value) {
-    console.log(`selected ${value}`);
+ handleChangeType = (value) => {
+    this.setState({
+      type: `${value}`,
+    }, this.getAllMarkByType);
+  }
+
+  handleChangeMark = (value) => {
+    this.setState({
+      mark: `${value}`
+    });
   }
 
   render() {
-
+    console.log(this.state)
     return (
       <div className='div-comp-card'>
 
@@ -157,7 +168,7 @@ class NewEquip extends Component {
               <Select
                 defaultValue="relogio" 
                 style={{ width: '100%' }} 
-                onChange={this.changeTypeSelected}
+                onChange={this.handleChangeType}
               >
                 <Option value="relogio">Relógio</Option>
                 <Option value="catraca">Catraca</Option>
@@ -169,10 +180,8 @@ class NewEquip extends Component {
 
             <div className='div-newEquip-mark'>
               <h2 className='div-comp-label'>Marca:</h2>
-              <Select defaultValue="guilherme" style={{ width: '100%' }} onChange={this.handleChange}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="guilherme">Guilherme</Option>
+              <Select defaultValue="Não selecionado" style={{ width: '100%' }} onChange={this.handleChangeMark}>
+              {this.state.marksList.map(mark => <Option value={mark.id}>{mark.mark}</Option>)}
               </Select>
             </div>
           </div>
@@ -183,11 +192,9 @@ class NewEquip extends Component {
            
             <div className='div-newEquip-modelo'>
               <h2 className='div-comp-label'>Modelo:</h2>
-              <Select defaultValue="guilherme" style={{ width: '100%' }} onChange={this.handleChange}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="guilherme">Guilherme</Option>
-              </Select>
+              {/* <Select defaultValue="guilherme" style={{ width: '100%' }} onChange={this.handleChange}>
+              {this.state.modelsList.map(model => <Option value={model.id}>{model.mark}</Option>)}
+              </Select> */}
             </div>
 
 
