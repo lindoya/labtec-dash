@@ -353,7 +353,7 @@ class NewEntrance extends Component {
                   className='button-entrance'
                   onClick={this.addArray}>
                   Adicionar
-            </Button>
+                </Button>
               </div>
             </div>
           </Modal>
