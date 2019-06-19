@@ -35,15 +35,12 @@ class NewEquip extends Component {
     razaoSocial: '',
     cnpj: '',
     serialNumber: '',
-    leitor: '',
+    leitor: 'NaoSeAplica',
     type: 'relogio',
     marksList: [],
     modelsList: [], 
-    mark:{
-      id: '',
-      mark:'',
-    },
-    model:'',
+    mark:'Não selecionado',
+    model:'Não selecionado',
   }
 
   componentDidMount = () => {
@@ -59,18 +56,22 @@ class NewEquip extends Component {
   }
 
   getModelsByMark = async () => {
-    const resposta = await getAllModelByMarkService({ mark: this.state.mark.mark})
+    if (this.state.mark !== 'Nao selecionado') {
+      const resposta = await getAllModelByMarkService({ mark: this.state.mark })
 
-    this.setState({
-      modelsList: resposta.data,
-    })
+      this.setState({
+        modelsList: resposta.data,
+      })
+    }
   }
 
-  selectMark = async (value) => {
-
+  changeTypeSelected = (valueSelected) => {
     this.setState({
-      mark: value
-    }, this.getModelsByMark)
+      type: valueSelected,
+      modelsList: [],
+      model: 'Não selecionado',
+      mark: 'Não selecionado',
+    }, this.getAllMarkByType)
   }
 
   getRazaoSocial = async (e) => {
@@ -94,15 +95,21 @@ class NewEquip extends Component {
     })
   }
 
- handleChangeType = (value) => {
+  handleChangeMark = (mark) => {
     this.setState({
-      type: `${value}`,
-    }, this.getAllMarkByType);
+      mark,
+    }, this.getModelsByMark);
   }
 
-  handleChangeMark = (value) => {
+  handleChangeModel = (model) => {
     this.setState({
-      mark: `${value}`
+      model,
+    });
+  }
+
+  handleChangeLeitor= (value) => {
+    this.setState({
+      leitor: value,
     });
   }
 
@@ -168,7 +175,7 @@ class NewEquip extends Component {
               <Select
                 defaultValue="relogio" 
                 style={{ width: '100%' }} 
-                onChange={this.handleChangeType}
+                onChange={this.changeTypeSelected}
               >
                 <Option value="relogio">Relógio</Option>
                 <Option value="catraca">Catraca</Option>
@@ -180,8 +187,8 @@ class NewEquip extends Component {
 
             <div className='div-newEquip-mark'>
               <h2 className='div-comp-label'>Marca:</h2>
-              <Select defaultValue="Não selecionado" style={{ width: '100%' }} onChange={this.handleChangeMark}>
-              {this.state.marksList.map(mark => <Option value={mark.id}>{mark.mark}</Option>)}
+              <Select defaultValue={this.state.mark} style={{ width: '100%' }} value={this.state.mark} onChange={(mark) => this.handleChangeMark(mark)}>
+              {this.state.marksList.map(mark => <Option key={mark.mark} value={mark.mark}>{mark.mark}</Option>)}
               </Select>
             </div>
           </div>
@@ -192,15 +199,15 @@ class NewEquip extends Component {
            
             <div className='div-newEquip-modelo'>
               <h2 className='div-comp-label'>Modelo:</h2>
-              {/* <Select defaultValue="guilherme" style={{ width: '100%' }} onChange={this.handleChange}>
-              {this.state.modelsList.map(model => <Option value={model.id}>{model.mark}</Option>)}
-              </Select> */}
+              <Select defaultValue="Não selecionado" style={{ width: '100%' }} value={this.state.model} onChange={(model) => this.handleChangeModel(model)}>
+              {this.state.modelsList.length === 0 ? null : this.state.modelsList.map(model => <Option key={model.model} value={model.model}>{model.model}</Option>)}
+              </Select>
             </div>
 
 
             <div className='div-newEquip-leitor'>
               <h2 className='div-comp-label'>Leitor:</h2>
-              <Select defaultValue="NaoSeAplica" style={{ width: '100%' }} onChange={this.handleChange}>
+              <Select defaultValue="NaoSeAplica" style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
                 <Option value="Branco">Branco</Option>
                 <Option value="Vermelho">Vermelho</Option>
                 <Option value="Azul">Azul</Option>
