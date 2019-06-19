@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Input, Button, message } from 'antd';
+import * as R from 'ramda'
 import { newCompany, getAddressByZipCode } from '../../../services/company'
 import { validators, masks }from './validator'
+
 
 import './index.css'
 
@@ -71,33 +73,37 @@ class NewCompany extends Component {
     }
 
     const resposta = await newCompany(values)
-    this.setState({
-      razaoSocial: '',
-      cnpj: '',
-      street: '',
-      number: '',
-      city: '',
-      state: '',
-      neighborhood: '',
-      referencePoint: '',
-      zipCode: '',
-      telphone: '',
-      email: '',
-      nameContact: '',
-      complement: ''
-    })
+
+    console.log(resposta)    
 
     if (resposta.status === 422) {
+
       this.setState({
-        messageError: true
+        messageError: true,
+        fieldFalha: resposta.data.fields[0].field,
+        message: resposta.data.fields[0].message,
       })
       await this.error()
       this.setState({
         messageError: false
       })
     } if (resposta.status === 200) {
+
       this.setState({
-        messageSuccess: true
+        razaoSocial: '',
+        cnpj: '',
+        street: '',
+        number: '',
+        city: '',
+        state: '',
+        neighborhood: '',
+        referencePoint: '',
+        zipCode: '',
+        telphone: '',
+        email: '',
+        nameContact: '',
+        complement: '',
+        messageSuccess: true,
       })
       await this.success()
       this.setState({
@@ -123,6 +129,16 @@ class NewCompany extends Component {
 
     if (nome === 'cnpj') fieldFalha.cnpj = false
     if (nome === 'razaoSocial') fieldFalha.razaoSocial = false
+    if (nome === 'nameContact') fieldFalha.nameContact = false
+    if (nome === 'email') fieldFalha.email = false
+    if (nome === 'telphone') fieldFalha.telphone = false
+    if (nome === 'zipCode') fieldFalha.zipCode = false
+    if (nome === 'state') fieldFalha.state = false
+    if (nome === 'city') fieldFalha.city = false
+    if (nome === 'neighborhood') fieldFalha.neighborhood = false
+    if (nome === 'street') fieldFalha.street = false
+    if (nome === 'number') fieldFalha.number = false
+    if (nome === 'referencePoint') fieldFalha.referencePoint = false
 
     this.setState({
       [ nome ]: valor,
@@ -148,21 +164,43 @@ class NewCompany extends Component {
   getAddress = async (e) => { 
     const zipCode = e.target.value
     try {
+      const { fieldFalha } = this.state
+      
+      fieldFalha.zipCode = false
+      fieldFalha.state = false
+      fieldFalha.city = false
+      fieldFalha.neighborhood = false
+      fieldFalha.street = false
       const address = await getAddressByZipCode(zipCode)
+
+      if (R.has('erro', address.data)){
+        fieldFalha.zipCode = true
+        message.zipCode = 'Cep inválido.'
+      }
+
       this.setState({ 
         street: address.data.logradouro,
         city: address.data.localidade,
         neighborhood: address.data.bairro,
-        state: address.data.uf
-      },  console.log(address))
+        state: address.data.uf,
+        fieldFalha,
+      })
+
     } catch (error) {
-      console.log('erro')
+      const { fieldFalha, message } = this.state
+      
+      fieldFalha.zipCode = true
+      message.zipCode = 'Cep inválido.'
+        
+      this.setState({
+        fieldFalha,
+        message
+      })
     }
   }
 
 
   render() {
-    console.log(this.state)
     return (
       <div className='div-comp-card'>
 
@@ -241,6 +279,8 @@ class NewCompany extends Component {
                 name='nameContact'
                 value={this.state.nameContact}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.nameContact ?
                 <p className='div-comp-feedbackError'>
@@ -263,6 +303,8 @@ class NewCompany extends Component {
                 name='email'
                 value={this.state.email}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.nameContact ?
                 <p className='div-comp-feedbackError'>
@@ -285,6 +327,8 @@ class NewCompany extends Component {
                 name='telphone'
                 value={this.state.telphone}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.telphone ?
                 <p className='div-comp-feedbackError'>
@@ -312,6 +356,7 @@ class NewCompany extends Component {
                 value={this.state.zipCode}
                 onChange={this.onChange}
                 onBlur={this.getAddress}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.zipCode ?
                 <p className='div-comp-feedbackError'>
@@ -334,6 +379,8 @@ class NewCompany extends Component {
                 name='state'
                 value={this.state.state}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.state ?
                 <p className='div-comp-feedbackError'>
@@ -356,6 +403,8 @@ class NewCompany extends Component {
                 name='city'
                 value={this.state.city}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.city ?
                 <p className='div-comp-feedbackError'>
@@ -378,6 +427,8 @@ class NewCompany extends Component {
                 name='neighborhood'
                 value={this.state.neighborhood}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.neighborhood ?
                 <p className='div-comp-feedbackError'>
@@ -403,6 +454,8 @@ class NewCompany extends Component {
                 name='street'
                 value={this.state.street}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.street ?
                 <p className='div-comp-feedbackError'>
@@ -425,6 +478,8 @@ class NewCompany extends Component {
                 name='number'
                 value={this.state.number}
                 onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
               {this.state.fieldFalha.number ?
                 <p className='div-comp-feedbackError'>
@@ -443,6 +498,7 @@ class NewCompany extends Component {
                 placeholder='Ex: Bloco 3, Torre 1'
                 value={this.state.complement}
                 onChange={this.onChange}
+                onFocus={this.onChange}
               />
             </div>
 
@@ -454,6 +510,7 @@ class NewCompany extends Component {
                 name='referencePoint'
                 value={this.state.referencePoint}
                 onChange={this.onChange}
+                onFocus={this.onChange}
               />
             </div>
           </div>
