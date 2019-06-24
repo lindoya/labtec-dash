@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button, Select, Radio, Card, Icon } from 'antd';
+import { Input, Modal, Button, Select, Radio, Card, Icon, message } from 'antd';
 
 import * as R from 'ramda'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { changeValueCompany, onSubmit } from '../EntranceRedux/action'
+import { validators, masks }from './validator'
+import { getAddressByZipCode } from '../../../services/company'
+
+
 import './index.css'
 
 
@@ -14,6 +18,31 @@ const { Option } = Select;
 class NewEntrance extends Component {
 
   state = {
+    numeroSerie: '',
+    corLeitor: '',
+    tipo: '',
+    marca: '',
+    modelo: '',
+    cnpj: '',
+    razaoSocial: '',
+    defeito: '',
+    descricao: '',
+    nameCliente: '',
+    RG: '',
+    cpf: '',
+    devEmbalado: '',
+    nameRemetente: '',
+    cep: '',
+    state: '',
+    city: '',
+    neighborhood: '',
+    street: '',
+    number:'',
+    complement: '',
+    referencePoint: '',
+    nameMotoboy: '',
+    nameResponsavel: '',
+
     radio: '',
     selected: 'cliente',
     embalado: '',
@@ -34,7 +63,136 @@ class NewEntrance extends Component {
       'FITA',
       'BATERIA',
       'MODRP'
-    ]
+    ],
+    message: {
+      numeroSerie: '',
+      corLeitor: '',
+      tipo: '',
+      marca: '',
+      modelo: '',
+      cnpj: '',
+      razaoSocial: '',
+      defeito: '',
+      descricao: '',
+      danos: '',
+      nameCliente: '',
+      RG: '',
+      cpf: '',
+      devEmbalado: '',
+      nameRemetente: '',
+      cep: '',
+      state: '',
+      city: '',
+      neighborhood: '',
+      street: '',
+      number:'',
+      nameMotoboy: '',
+       nameResponsavel: '',
+    },
+    fieldFalha: {
+      numeroSerie: false,
+      corLeitor: false,
+      tipo: false,
+      marca: false,
+      modelo: false,
+      cnpj: false,
+      razaoSocial: false,
+      defeito: false,
+      descricao: false,
+      danos: false,
+      nameCliente: false,
+      RG: false,
+      cpf: false,
+      devEmbalado: false,
+      nameRemetente: false,
+      cep: false,
+      state: false,
+      city: false,
+      neighborhood: false,
+      street: false,
+      number:false,
+      nameMotoboy: false,
+      nameResponsavel: false,
+    },
+    messageError: false,
+    messageSuccess: false
+  }
+
+  onChange = (e) => {
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    const { fieldFalha } = this.state
+
+    if (nome === 'numeroSerie') fieldFalha.numeroSerie = false
+    if (nome === 'corLeitor') fieldFalha.corLeitor = false
+    if (nome === 'tipo') fieldFalha.tipo = false
+    if (nome === 'marca') fieldFalha.marca = false
+    if (nome === 'modelo') fieldFalha.modelo = false
+    if (nome === 'cnpj') fieldFalha.cnpj = false
+    if (nome === 'razaoSocial') fieldFalha.razaoSocial = false
+    if (nome === 'defeito') fieldFalha.defeito = false
+    if (nome === 'descricao') fieldFalha.descricao = false
+
+
+    this.setState({
+      [ nome ]: valor,
+      fieldFalha,
+    })
+  }
+
+  onBlurValidator = (e) => {
+    const { 
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+    
+    this.setState({
+      [ nome ]: valor,
+      fieldFalha,
+      message
+    })
+  }
+
+  getAddress = async (e) => { 
+    const cep = e.target.value
+    try {
+      const { fieldFalha } = this.state
+      
+      fieldFalha.cep = false
+      fieldFalha.state = false
+      fieldFalha.city = false
+      fieldFalha.neighborhood = false
+      fieldFalha.street = false
+      const address = await getAddressByZipCode(cep)
+
+      if (R.has('erro', address.data)){
+        fieldFalha.cep = true
+        message.cep = 'Cep inválido.'
+      }
+
+      this.setState({ 
+        street: address.data.logradouro,
+        city: address.data.localidade,
+        neighborhood: address.data.bairro,
+        state: address.data.uf,
+        fieldFalha,
+      })
+
+    } catch (error) {
+      const { fieldFalha, message } = this.state
+      
+      fieldFalha.cep = true
+      message.cep = 'Cep inválido.'
+        
+      this.setState({
+        fieldFalha,
+        message
+      })
+    }
   }
 
   selected = (acessorio) => {
@@ -114,7 +272,7 @@ class NewEntrance extends Component {
 
   changeRadioNao = () => {
     this.setState({
-      radio: 'nao'
+      radio: 'nao',
     })
   }
 
@@ -160,7 +318,7 @@ class NewEntrance extends Component {
         content: `Entrada feita com sucesso`,
       })
     }
-    console.log(this.state.acessorios)
+    console.log(this.state)
     return (
       <div className='div-entrance-card'>
         <div className='div-comp-Linha div-comp-header'>
@@ -169,61 +327,121 @@ class NewEntrance extends Component {
 
         <div className='div-entrance-linha1'>
           <div className='div-entrance-ns'>
-            <h2 className='div-comp-label'>Número de série:</h2>
+          <h2 className={
+                this.state.fieldFalha.numeroSerie ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Número de série:</h2>
             <Input
-              className='input-cnpj'
-              placeholder='Digite o número'
-              name='numeroSerie'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.numeroSerie ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o número'
+                name='numeroSerie'
+                value={this.state.numeroSerie}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.numeroSerie ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.numeroSerie}
+                </p> : null}
           </div>
           <div className='div-entrance-cor'>
-            <h2 className='div-comp-label'>Cor do leitor:</h2>
+          <h2 className={
+                this.state.fieldFalha.corLeitor ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cor do leitor:</h2>
             <Input
-              readOnly
-              className='input-cnpj'
-              name='corLeitor'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.corLeitor ?
+                    'div-comp-inputError' :
+                    ''}
+                // placeholder='Digite a cor'
+                name='corLeitor'
+                value={this.state.corLeitor}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.corLeitor ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.corLeitor}
+                </p> : null}
           </div>
           <div className='div-entrance-tipo'>
-            <h2 className='div-comp-label'>Tipo:</h2>
+          <h2 className={
+                this.state.fieldFalha.tipo ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Tipo:</h2>
             <Input
-              readOnly
-              className='input-cnpj'
-              name='acessorio'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.tipo ?
+                    'div-comp-inputError' :
+                    ''}
+                // placeholder='Digite o '
+                name='tipo'
+                value={this.state.tipo}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.tipo ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.tipo}
+                </p> : null}
           </div>
           <div className='div-entrance-marca'>
-            <h2 className='div-comp-label'>Marca:</h2>
+          <h2 className={
+                this.state.fieldFalha.marca ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Marca:</h2>
             <Input
-              readOnly
-              className='input-cnpj'
-              name='acessorio'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.marca ?
+                    'div-comp-inputError' :
+                    ''}
+                // placeholder='Digite a razão social'
+                name='marca'
+                value={this.state.marca}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.marca ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.marca}
+                </p> : null}
           </div>
         </div>
         <div className='div-entrance-linha1'>
           <div className='div-entrance-modelo'>
-            <h2 className='div-comp-label'>Modelo:</h2>
+          <h2 className={
+                this.state.fieldFalha.modelo ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Modelo:</h2>
             <Input
-              readOnly
-              className='input-cnpj'
-              name='acessorio'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.modelo ?
+                    'div-comp-inputError' :
+                    ''}
+                // placeholder='Digite a razão social'
+                name='modelo'
+                value={this.state.modelo}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.modelo ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.modelo}
+                </p> : null}
           </div>
           <div className='div-entrance-condition'>
           <h2 className='div-comp-label'>Tipo de serviço:</h2>
@@ -245,26 +463,50 @@ class NewEntrance extends Component {
         </div>
         <div className='div-entrance-linha1'>
           <div className='div-entrance-cnpj'>
-            <h2 className='div-comp-label'>Cnpj:</h2>
+          <h2 className={
+                this.state.fieldFalha.cnpj ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cnpj</h2>
             <Input
-              readOnly
-              className='input-cnpj'
-              name='cnpj'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.cnpj ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o Cnpj'
+                name='cnpj'
+                value={this.state.cnpj}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.cnpj ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.cnpj}
+                </p> : null}
           </div>
           <div className='div-entrance-rs'>
-            <h2 className='div-comp-label'>Empresa:</h2>
+            <h2 className={
+                this.state.fieldFalha.razaoSocial ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Empresa</h2>
             <Input
-              readOnly
-              className='input-cnpj'
-              name='razaoSocial'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.razaoSocial ?
+                    'div-comp-inputError' :
+                    ''}
+                // placeholder='Digite a razão social'
+                name='razaoSocial'
+                value={this.state.razaoSocial}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.razaoSocial ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.razaoSocial}
+                </p> : null}
           </div>
         </div>
 
@@ -278,7 +520,23 @@ class NewEntrance extends Component {
               </Radio.Group>
             </div>
             <div className='div-entrance-inputDanos'>
-              {this.state.radio === 'sim' ? <Input placeholder='Digite os danos no equipamento' /> : null}
+              {this.state.radio === 'sim' ? <Input 
+              className={
+                this.state.fieldFalha.danos ?
+                  'div-comp-inputError' :
+                  ''}
+              placeholder='Digite os danos no equipamento'
+              name='danos'
+              value={this.state.danos}
+              onChange={this.onChange}
+              onBlur={this.onBlurValidator}
+              onFocus={this.onChange}
+              />
+              : null}
+            {this.state.radio === 'sim'?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.danos}
+              </p> : null}
             </div>
           </div>
         </div>
@@ -360,29 +618,53 @@ class NewEntrance extends Component {
         </div>
         <div className='div-entrance-linha1'>
           <div className='div-entrance-defeito'>
-            <h2 className='div-comp-label'>Defeito apresentado:</h2>
+          <h2 className={
+                this.state.fieldFalha.defeito ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Defeito apresentado:</h2>
             <Input
-              className='input-cnpj'
-              placeholder='Digite o defeito'
-              name='acessorio'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.defeito ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o defeito apresentado'
+                name='defeito'
+                value={this.state.defeito}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.defeito ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.defeito}
+                </p> : null}
           </div>
         </div>
 
         <div className='div-entrance-linha1'>
           <div className='div-entrance-desc'>
-            <h2 className='div-comp-label'>Observação (opcional):</h2>
+          <h2 className={
+                this.state.fieldFalha.descricao ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Observação (opcional):</h2>
             <Input
-              className='input-cnpj'
-              placeholder='Digite a observação'
-              name='descricao'
-              allowClear
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.descricao ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Observações'
+                name='descricao'
+                value={this.state.descricao}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.descricao ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.descricao}
+                </p> : null}
           </div>
         </div>
 
@@ -398,50 +680,99 @@ class NewEntrance extends Component {
           </div>
           {this.state.selected === 'cliente' ? <div className='div-entrance-selectInputs'>
             <div className='div-entrance-cliente'>
-              <h2 className='div-comp-label'>Nome do cliente:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.nameCliente ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Nome do cliente:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.nameCliente ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o nome do cliente'
                 name='nameCliente'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.nameCliente}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.nameCliente ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.nameCliente}
+                </p> : null}
             </div>
             <div className='div-entrance-rg'>
-              <h2 className='div-comp-label'>RG:</h2>
-              <Input
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.RG ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>RG:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.RG ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o RG'
                 name='RG'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.RG}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.RG ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.RG}
+                </p> : null}
             </div>
             <div className='div-entrance-cpf'>
-              <h2 className='div-comp-label'>Cpf:</h2>
-              <Input
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.cpf ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cpf:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.cpf ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o cpf'
                 name='cpf'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.cpf}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
-            </div> </div> : null}
+              {this.state.fieldFalha.cpf ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.cpf}
+                </p> : null}
+            </div> 
+            </div> : null}
         </div>
         {this.state.selected === 'externo' ? <div className='div-entrance-selectInputs'>
           <div className='div-entrance-externo'>
-            <h2 className='div-comp-label'>Nome do técnico externo:</h2>
+          <h2 className={
+                this.state.fieldFalha.nameExterno ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Nome do técnico externo:</h2>
             <Input
-              allowClear
-              className='input-cnpj'
-              placeholder='Digite o nome do técnico'
-              name='nameExterno'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+                className={
+                  this.state.fieldFalha.nameExterno ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o nome do técnico'
+                name='nameExterno'
+                value={this.state.nameExterno}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+              />
+              {this.state.fieldFalha.nameExterno ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.nameExterno}
+                </p> : null}
           </div>
           <div className='div-embaladoExterno'>
             <div className='div-entrance-embaladoExterno'>
@@ -452,22 +783,50 @@ class NewEntrance extends Component {
               </Radio.Group>
             </div>
             <div className='div-entrance-inputEmbalagem'>
-              {this.state.embalado === 'nao' ? <Input placeholder='Digite o motivo' /> : null}
-            </div>
+              {this.state.embalado === 'nao' ?<Input
+                className={
+                  this.state.fieldFalha.devEmbalado ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o motivo'     
+                name='devEmbalado'
+                value={this.state.devEmbalado}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+                />
+                : null}
+              {this.state.embalado === 'nao'?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.devEmbalado}
+              </p> : null}
+              </div>
           </div>
         </div> : null}
         {this.state.selected === 'sedex' ? <div className='div-entrance-linha1'>
           <div className='div-entrance-linha1Motoboy'>
             <div className='div-entrance-nomeRemetente'>
-              <h2 className='div-comp-label'>Nome do remetente:</h2>
-              <Input
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.nameRemetente ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Nome do remetente:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.nameRemetente ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o nome do remetente'
                 name='nameRemetente'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.nameRemetente}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.nameRemetente ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.nameRemetente}
+                </p> : null}
             </div>
             <div className='div-embaladoSedex'>
               <div className='div-entrance-embaladoMotoboy'>
@@ -478,101 +837,193 @@ class NewEntrance extends Component {
                 </Radio.Group>
               </div>
               <div className='div-entrance-inputEmbalagem'>
-                {this.state.embalado === 'nao' ? <Input placeholder='Digite o motivo' /> : null}
+                {this.state.embalado === 'nao' ?<Input
+                className={
+                  this.state.fieldFalha.devEmbalado ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o motivo'     
+                name='devEmbalado'
+                value={this.state.devEmbalado}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+                />
+                : null}
+                {this.state.embalado === 'nao'?
+                <p className='div-comp-feedbackError'>
+                {this.state.message.devEmbalado}
+                </p> : null}
               </div>
             </div>
           </div>
           <div className='div-entrance-linha2Sedex'>
             <div className='div-entrance-cep'>
-              <h2 className='div-comp-label'>Cep:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.cep ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cep:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.cep ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o cep'
                 name='cep'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.cep}
+                onChange={this.onChange}
+                onBlur={this.getAddress}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.cep ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.cep}
+                </p> : null}
             </div>
             <div className='div-entrance-uf'>
-              <h2 className='div-comp-label'>Estado:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
-                placeholder='EX'
+            <h2 className={
+                this.state.fieldFalha.state ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Estado:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.state ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='UF'
                 name='state'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.state}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.state ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.state}
+                </p> : null}
             </div>
             <div className='div-entrance-city'>
-              <h2 className='div-comp-label'>Cidade:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.city ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cidade:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.city ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite a cidade'
                 name='city'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.city}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.city ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.city}
+                </p> : null}
             </div>
             <div className='div-entrance-bairro'>
-              <h2 className='div-comp-label'>Bairro:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.neighborhood ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Bairro:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.neighborhood ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o bairro'
                 name='neighborhood'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.neighborhood}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.neighborhood ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.neighborhood}
+                </p> : null}
             </div>
           </div>
           <div className='div-entrance-linha2Sedex'>
             <div className='div-entrance-rua'>
-              <h2 className='div-comp-label'>Rua:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.street ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Rua:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.street ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite a rua'
                 name='street'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.street}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.street ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.street}
+                </p> : null}
             </div>
             <div className='div-entrance-numero'>
-              <h2 className='div-comp-label'>Número:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
-                placeholder='123567891011121'
+            <h2 className={
+                this.state.fieldFalha.number ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Número:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.number ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='1235'
                 name='number'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.number}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.number ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.number}
+                </p> : null}
             </div>
           </div>
           <div className='div-entrance-linha3Sedex'>
             <div className='div-entrance-comp'>
-              <h2 className='div-comp-label'>Complemento:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className='div-comp-label'>Complemento:</h2>
+            <Input
+                className=''
                 placeholder='Ex: Torre 3, Bloco 7'
                 name='complement'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.complement}
+                onChange={this.onChange}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.complement ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.complement}
+                </p> : null}
             </div>
             <div className='div-entrance-ref'>
-              <h2 className='div-comp-label'>Ponto de referência:</h2>
-              <Input
-                allowClear
-                className='input-cnpj'
+            <h2 className='div-comp-label'>Ponto de referência:</h2>
+            <Input
+                className=''
                 placeholder='Digite o ponto de referência'
                 name='referencePoint'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.referencePoint}
+                onChange={this.onChange}
+                onFocus={this.onChange}
               />
             </div>
           </div>
@@ -580,61 +1031,125 @@ class NewEntrance extends Component {
         {this.state.selected === 'motoboy' ? <div className='div-entrance-selectInputs2lines'>
           <div className='div-entrance-linha1Motoboy'>
             <div className='div-entrance-nomeMotoboy'>
-              <h2 className='div-comp-label'>Nome do motoboy:</h2>
-              <Input
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.nameMotoboy ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Nome do motoboy:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.nameMotoboy ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o nome do motoboy'
                 name='nameMotoboy'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.nameMotoboy}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.nameMotoboy ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.nameMotoboy}
+                </p> : null}
             </div>
             <div className='div-entrance-rg'>
-              <h2 className='div-comp-label'>RG:</h2>
-              <Input
-                className='input-cnpj'
-                placeholder='Digite o RG do motoboy'
+              <h2 className={
+                this.state.fieldFalha.RG ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>RG:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.RG ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o RG'
                 name='RG'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.RG}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.RG ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.RG}
+                </p> : null}
             </div>
             <div className='div-entrance-cpf'>
-              <h2 className='div-comp-label'>Cpf:</h2>
-              <Input
-                className='input-cnpj'
-                placeholder='Digite o cpf do motoboy'
-                name='cpfMotoboy'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+            <h2 className={
+                this.state.fieldFalha.cpf ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cpf:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.cpf ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o cpf'
+                name='cpf'
+                value={this.state.cpf}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.cpf ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.cpf}
+                </p> : null}
             </div>
           </div>
           <div className='div-entrance-linha2Motoboy'>
             <div className='div-entrance-nomeReponsa'>
-              <h2 className='div-comp-label'>Nome do responsável:</h2>
-              <Input
-                className='input-cnpj'
+            <h2 className={
+                this.state.fieldFalha.nameResponsavel ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Nome do responsável:</h2>
+            <Input
+                className={
+                  this.state.fieldFalha.nameResponsavel ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o nome do responsável'
                 name='nameResponsavel'
-                allowClear
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+                value={this.state.nameResponsavel}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.nameResponsavel ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.nameResponsavel}
+                </p> : null}
             </div>
             <div className='div-embalado'>
               <div className='div-entrance-embaladoMotoboy'>
-                <h2 className='div-comp-label'>Devidamente embalado:</h2>
+              <h2 className='div-comp-label'>Devidamente embalado:</h2>
                 <Radio.Group name="radiogroup">
                   <Radio value={'sim'} nameRadio='sim' onChange={this.changeEmbaladoSim}>Sim</Radio>
                   <Radio value={'nao'} nameRadio='nao' onChange={this.changeEmbaladoNao}>Não</Radio>
                 </Radio.Group>
               </div>
               <div className='div-entrance-inputEmbalagem'>
-                {this.state.embalado === 'nao' ? <Input placeholder='Digite o motivo' /> : null}
+                {this.state.embalado === 'nao' ?<Input
+                className={
+                  this.state.fieldFalha.devEmbalado ?
+                    'div-comp-inputError' :
+                    ''}
+                placeholder='Digite o motivo'     
+                name='devEmbalado'
+                value={this.state.devEmbalado}
+                onChange={this.onChange}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
+                />
+                : null}
+                {this.state.embalado === 'nao'?
+                <p className='div-comp-feedbackError'>
+                {this.state.message.devEmbalado}
+                </p> : null}
               </div>
             </div>
           </div>

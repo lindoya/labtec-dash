@@ -9,101 +9,74 @@ export const masks = (nome, valor) => {
     value = value.slice(0, 14)
 
     if (value.length === 11) {
-      value = value.slice(0, 3) +
-        '.' + value.slice(3, 6) +
-        '.' + value.slice(6, 9) +
-        '-' + value.slice(9, 11)
+      value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
     }
     else if (value.length === 14) {
-      value = value.slice(0, 2) +
-        '.' + value.slice(2, 5) +
-        '.' + value.slice(5, 8) +
-        '/' + value.slice(8, 12) +
-        '-' + value.slice(12, 14)
+      value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
     }
 
     return {
       nome,
       valor: value,
     }
+  } else if (nome === 'telphone') {
+      let value = valor
+      value = value.replace(/\D/ig, '')
+      value = value.slice(0, 11)
 
-    // } else if (nome === 'zipCode') {
-    //   let value = valor
-    //   value = value.replace(/\D/ig, '')
-    //   value = value.slice(0, 8)
 
-    //   if (value.length === 8) {
-    //     value = value.slice(0, 5) + '-' + value.slice(5, 8)
-    //   }
+      if (value.length > 2 && value.length <= 6) {
+        value = value.replace(/(\d{2})(\d{4})?/, '($1) $2')
+      }
+      if (value.length > 6 && value.length < 11) {
+        value = value.replace(/(\d{2})(\d{4})(\d{1,4})/, '($1) $2-$3')
+      }
+      if (value.length === 11) {
+        value = value.replace(/(\d{2})(\d{5})(\d{1,4})/, '($1) $2-$3')
+      }
 
-    //   fieldFalha.zipCode = true
-    //   message.zipCode = 'Cep inválido'
+      return {
+        nome,
+        valor: value,
+      }
+    }else if (nome === 'zipCode'){
+      let value = valor
+      value = value.replace(/\D/ig, '')
+      value = value.slice(0, 8)
 
-    //   return {
-    //     nome,
-    //     valor: value,
-    //     fieldFalha,
-    //     message
-    //   }
 
-    // } else if (nome === 'telphone') {
-    //   let value = valor
-    //   value = value.replace(/\D/ig, '')
-    //   value = value.slice(0, 11)
+      if (value.length > 5) {
+        value = value.replace(/(\d{5})(\d{3})?/, '$1-$2')
+      }
 
-    //   if (value.length === 10) {
-    //     value = '(' + value.slice(0, 2) + ')' + value.slice(2, 6) + '-' + value.slice(6, 10)
-    //   }
-    //   else if (value.length === 11) {
-    //     value = '(' + value.slice(0, 2) + ')' + value.slice(2, 7) + '-' + value.slice(7, 11)
-    //   }
+      return {
+        nome,
+        valor: value,
+      }
+    } else if (nome === 'state') {
+        let value = valor
+        value = value.replace(/\W|\d/g, '')
+        value = value.slice(0, 2)
+        value = value.toUpperCase(0, 2)
+  
+        return {
+          nome,
+          valor: value,
+        }
+      } else if (nome === 'number') {
+      let value = valor
+      value = value.replace(/\D/ig, '')
 
-    //   fieldFalha.telphone = true
-    //   message.telphone = 'Telefone inválido'
-
-    //   return {
-    //     nome,
-    //     valor: value,
-    //     fieldFalha,
-    //     message
-    //   }
-
-    // } else if (nome === 'state') {
-    //   let value = valor
-    //   value = value.replace(/\W|\d/g, '')
-    //   value = value.slice(0, 2)
-    //   value = value.toUpperCase(0, 2)
-
-    //   fieldFalha.state = true
-    //   message.state = 'Estado inválido'
-
-    //   return {
-    //     nome,
-    //     valor: value,
-    //     fieldFalha,
-    //     message
-    //   }
-
-    // } else if (nome === 'number') {
-    //   let value = valor
-    //   value = value.replace(/\D/ig, '')
-
-    //   fieldFalha.number = true
-    //   message.number = 'Número inválido'
-
-    //   return {
-    //     nome,
-    //     valor: value,
-    //     fieldFalha,
-    //     message
-    //   }
-
+      return {
+        nome,
+        valor: value,
+      } 
     } else {
       return {
         nome,
         valor,
       }
-  }
+    }
 }
 
 export const validators = (nome, valor, state) => {
@@ -130,6 +103,87 @@ export const validators = (nome, valor, state) => {
       message.razaoSocial = 'É Obrigatório.'
       fieldFalha.razaoSocial = true
     } else fieldFalha.razaoSocial = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } 
+  else if (nome === 'nameContact'){
+    if (valor === '') {
+      message.nameContact = 'É Obrigatório.'
+      fieldFalha.nameContact = true
+    } else fieldFalha.nameContact = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'email') {
+    if (valor === '') {
+      message.email = 'É Obrigatório.'
+      fieldFalha.email = true
+    } else fieldFalha.email = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'telphone') {
+    if (valor === '') {
+      message.telphone = 'É Obrigatório.'
+      fieldFalha.telphone = true
+    } else fieldFalha.telphone = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'state') {
+    if (valor === '') {
+      message.state = 'É Obrigatório.'
+      fieldFalha.state = true
+    } else fieldFalha.state = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'city') {
+    if (valor === '') {
+      message.city = 'É Obrigatório.'
+      fieldFalha.city = true
+    } else fieldFalha.city = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'neighborhood') {
+    if (valor === '') {
+      message.neighborhood = 'É Obrigatório.'
+      fieldFalha.neighborhood = true
+    } else fieldFalha.neighborhood = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'street') {
+    if (valor === '') {
+      message.street = 'É Obrigatório.'
+      fieldFalha.street = true
+    } else fieldFalha.street = false
+
+    return {
+      fieldFalha,
+      message
+    }
+  } else if (nome === 'number') {
+    if (valor === '') {
+      message.number = 'É Obrigatório.'
+      fieldFalha.number = true
+    } else fieldFalha.number = false
 
     return {
       fieldFalha,

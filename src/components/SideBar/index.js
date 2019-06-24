@@ -14,7 +14,7 @@ class Sider extends Component {
   };
 
   handleClick = e => {
-    console.log(e)
+    
     this.setState({
       current: e.key,
       redirect: true,
