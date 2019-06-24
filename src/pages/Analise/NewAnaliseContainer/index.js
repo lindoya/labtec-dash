@@ -1,20 +1,63 @@
 import React, { Component } from 'react'
 import './index.css'
 
-import { Button, Input, Card, Checkbox } from 'antd';
+import { Button, Input, Card, Checkbox, Modal } from 'antd';
 
+const { TextArea } = Input;
 
 class NewAnalise extends Component {
 
   state = {
+    modal: false,
     checkList: {
 
     },
-    carrinho:[],
-    listaPecas:[{
-      id: '',
-      peca: ''
+    carrinho: [],
+    listaPecas: [{
+      id: 'peca',
+      peca: 'peca'
     }]
+  }
+
+  showModal = () => {
+    this.setState({
+      modal: true,
+    });
+  };
+
+  handleOk = () => {
+    this.setState({
+      modal: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      modal: false,
+    });
+  };
+
+  clickPeca = (selecionados) => {
+    const notExist = this.state.carrinho
+      .filter((valor) => valor.id === selecionados.id).length === 0
+
+    if (notExist) {
+      this.setState({
+        carrinho: [
+          ...this.state.carrinho,
+          selecionados
+        ]
+      })
+    }
+  }
+
+  removePecas = (value) => {
+    const oldPecasList = this.state.carrinho
+    const newPecasList = oldPecasList.filter(pecasList => pecasList !== value)
+
+    this.setState({
+      carrinho: newPecasList
+    })
   }
 
   onChange = (e) => {
@@ -31,6 +74,8 @@ class NewAnalise extends Component {
 
 
   render() {
+    console.log(this.state)
+
     return (
       <div className='div-card-analise'>
 
@@ -175,7 +220,8 @@ class NewAnalise extends Component {
 
             <Card className='card-analise'>
 
-            
+              {this.state.carrinho.length === 0 ? <p className='p-nao'>Não há nenhuma peça selecionada</p> : this.state.carrinho.map(pecasList =>
+                <div className='div-pai-newPeca' onClick={() => this.removePecas(pecasList)}>{pecasList.peca}</div>)}
 
             </Card>
 
@@ -191,24 +237,16 @@ class NewAnalise extends Component {
 
                 <div className='div-listaDasPecas-analise'>
 
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
-                  <div>peca</div>
+                  {this.state.listaPecas.length === 0 ? <p className='p-nao'>Nenhuma peça selecionada</p> : this.state.listaPecas.map(pecas => <div className='p-selecionados' onClick={() => this.clickPeca({ id: pecas.id, peca: pecas.peca })}>{pecas.peca}</div>)}
 
+                  <Modal
+                    title="Troca de peça"
+                    visible={this.state.modal}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                  >
+                    <p>TESTEEEE</p>
+                  </Modal>
                 </div>
 
               </div>
@@ -221,15 +259,15 @@ class NewAnalise extends Component {
 
         <div className='div-historico-analise'>Observções</div>
 
-        <Card className='card-analise'>
-
           <div className='div-linha-analise'>
 
-
+            <TextArea
+              className='textArea-analise'
+              placeholder="Digite a observação"
+              autosize={{ minRows: 5, maxRows: 10 }}
+            />
 
           </div>
-
-        </Card>
 
         <div className='div-linhaButton-analise'>
 
@@ -241,7 +279,7 @@ class NewAnalise extends Component {
 
         </div>
 
-      </div>
+      </div >
 
     )
   }
