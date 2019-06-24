@@ -15,10 +15,6 @@ class NewPeca extends Component {
     marksList: [],
     modelsList: [],
     modelListCard: [],
-    modelListRelacionados: {
-      id: '',
-      model: '',
-    },
     newPeca: {
       item: '',
       description: '',
@@ -196,12 +192,6 @@ class NewPeca extends Component {
     }
   }
 
-  handleChangeType = (value) => {
-    this.setState({
-      type: `${value}`,
-    }, this.getAllMarkByType);
-  }
-
   handleChangeMark = (mark) => {
     this.setState({
       mark,
@@ -232,7 +222,6 @@ class NewPeca extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className='div-newPeca-card'>
 

@@ -34,6 +34,8 @@ class Sider extends Component {
       switch (this.state.current) {
         case 'entrada_add':
           return <Redirect to='/logged/entrance/add' />
+        case 'analise_add':
+          return <Redirect to='/logged/analise/add' />
         case 'company_add':
           return <Redirect to='/logged/company/add' />
         case 'company_dash':
@@ -71,6 +73,7 @@ class Sider extends Component {
             }
           >
             <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
+            <Menu.Item key="analise_add"><Icon type="line-chart" />Análise</Menu.Item>
             <SubMenu
             key="Pecas"
             title={
