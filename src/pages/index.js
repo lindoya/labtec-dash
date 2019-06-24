@@ -9,6 +9,7 @@ import CompanyRoute from './Company'
 import EquipRoute from './Equip'
 import EntranceRoute from './Entrance';
 import PecaRoute from './Peca'
+import AnaliseRoute from './Analise'
 
 
 class PagesRoute extends Component {
@@ -20,6 +21,7 @@ class PagesRoute extends Component {
           <Switch>
             <Route exact path='/logged/dash' component={Dash}/>
             <Route path='/logged/entrance' component={EntranceRoute}/>
+            <Route path='/logged/analise' component={AnaliseRoute}/>
             <Route path='/logged/company' component={CompanyRoute}/>
             <Route path='/logged/equip' component={EquipRoute}/>
             <Route path='/logged/peca' component={PecaRoute}/>
