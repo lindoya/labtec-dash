@@ -31,8 +31,10 @@ export const masks = (nome, valor) => {
     }
   }else if (nome === 'RG'){
     let value = valor
-    value = value.replace(/\D/ig, '')
+    value = value.toUpperCase(0, 9)
+    value = value.replace(/[^\dX]/ig, '')
     value = value.slice(0, 9)
+    value = (value.slice(0, 8)).replace(/\D/ig, '') + (value.slice(8, 9)).replace(/[^\dX]/ig, '')
 
     if (value.length > 1 && value.length <= 4) {
       value = value.replace(/(\d{1,3})(\d{1})/, '$1-$2')
@@ -41,7 +43,7 @@ export const masks = (nome, valor) => {
       value = value.replace(/(\d{1,3})(\d{3})(\d{1})/, '$1.$2-$3')
     } 
     if (value.length === 9) {
-      value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4')
+      value = value.replace(/(\d{1,2})(\d{3})(\d{3})(\w{1})/, '$1.$2.$3-$4')
     }
 
 
@@ -53,6 +55,16 @@ export const masks = (nome, valor) => {
     let value = valor
     value = value.replace(/\D/ig, '')
     value = value.slice(0, 11)
+
+    if (value.length > 2 && value.length <= 5) {
+      value = value.replace(/(\d{1,3})(\d{2})/, '$1-$2')
+    }
+    if (value.length > 5 && value.length <= 9) {
+      value = value.replace(/(\d{1,3})(\d{3})(\d{2})/, '$1.$2-$3')
+    } 
+    if (value.length > 9) {
+      value = value.replace(/(\d{1,3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+    }
 
     return {
       nome,
@@ -220,17 +232,24 @@ export const validators = (nome, valor, state) => {
     if (valor === '') {
       message.RG = 'É Obrigatório.'
       fieldFalha.RG = true
-    } else fieldFalha.RG = false
-
-    return {
-      fieldFalha,
-      message
+    } else {
+      let value = valor
+      value = value.replace(/\W/ig, '')
+      value = value.slice(0, 9)
+      if (!(/\d{9}|(\d{8}(X))/.test(value))) {
+        message.RG = 'RG inválido.'
+        fieldFalha.RG = true
+      } else fieldFalha.RG = false
     }
-  } else if (nome === 'cpf') {
-    if (valor === '') {
-      message.cpf = 'É Obrigatório.'
-      fieldFalha.cpf = true
-    } else fieldFalha.cpf = false
+      return {
+        fieldFalha,
+        message
+      }
+    } else if (nome === 'cpf') {
+      if (valor === '') {
+        message.cpf = 'É Obrigatório.'
+        fieldFalha.cpf = true
+      } else fieldFalha.cpf = false
 
     return {
       fieldFalha,

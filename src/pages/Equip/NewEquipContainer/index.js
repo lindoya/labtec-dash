@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Input, Button, Select } from 'antd';
-import { validators } from './validator'
+import { Input, Button, Select, message } from 'antd';
+import { validators, masks } from './validator'
 import { getOneByCnpj } from '../../../services/company'
-import { getAllMarkByTypeService, getAllModelByMarkService } from '../../../services/equip'
+import { getAllMarkByTypeService, getAllModelByMarkService, newEquip } from '../../../services/equip'
 import './index.css'
 
 const { Option } = Select;
@@ -41,7 +41,61 @@ class NewEquip extends Component {
     modelsList: [], 
     mark:'Não selecionado',
     model:'Não selecionado',
+    companyId: '',
+    equipModelId: '',
+    messageError: false,
+    messageSuccess: false
   }
+
+  saveTargetNewEquip = async () => {
+    const values = {
+      serialNumber: this.state.serialNumber,
+      leitor: this.state.leitor,
+      companyId: this.state.companyId,
+      equipModelId: this.state.equipModelId,
+    }
+
+    const resposta = await newEquip(values)
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+        fieldFalha: resposta.data.fields[0].field,
+        message: resposta.data.fields[0].message,
+      })
+      await this.error()
+      this.setState({
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        razaoSocial: '',
+        cnpj: '',
+        serialNumber: '',
+        leitor: 'NaoSeAplica',
+        type: 'relogio',
+        marksList: [],
+        modelsList: [], 
+        mark:'Não selecionado',
+        model:'Não selecionado',
+        messageSuccess: true,
+      })
+      await this.success()
+      this.setState({
+        messageSuccess: false
+      })
+    }
+  }
+
+  success = () => {
+    message.success('Empresa cadastrada com sucesso');
+  };
+
+  error = () => {
+    message.error('Empresa não foi cadastrada com sucesso');
+  };
 
   componentDidMount = () => {
     this.getAllMarkByType()
@@ -79,19 +133,53 @@ class NewEquip extends Component {
     const cnpj = cnpjWithMask.replace(/\D/g, '')
     try {
       const company = await getOneByCnpj(cnpj)
+
       this.setState({
-        razaoSocial: company.data.razaoSocial
-      }, console.log(company))
+        razaoSocial: company.data.razaoSocial,
+        companyId: company.data.id,
+      })
     } catch (error) {
+      const { fieldFalha, message } = this.state
+      
+      fieldFalha.cnpj = true
+      message.cnpj = 'Cnpj inválido.'
+        
+      this.setState({
+        fieldFalha,
+        message,
+        razaoSocial: '',
+      })
     }
   }
 
-  onChange = (e) => {
-    const { nome, valor, fieldFalha, message } = validators(e.target.name, e.target.value, this.state)
+  onBlurValidator = (e) => {
+    const { 
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+    
     this.setState({
-      [nome]: valor,
+      [ nome ]: valor,
       fieldFalha,
       message
+    })
+  }
+
+  onChange = (e) => {
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    const { fieldFalha } = this.state
+
+    if (nome === 'cnpj') fieldFalha.cnpj = false
+    if (nome === 'serialNumber') fieldFalha.serialNumber = false
+
+    this.setState({
+      [ nome ]: valor,
+      fieldFalha,
     })
   }
 
@@ -102,8 +190,14 @@ class NewEquip extends Component {
   }
 
   handleChangeModel = (model) => {
+    const { fieldFalha } = this.state
+
+    fieldFalha.equipModelId = false
+
     this.setState({
-      model,
+      fieldFalha,
+      model: model,
+      equipModelId: model,
     });
   }
 
@@ -114,7 +208,6 @@ class NewEquip extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className='div-comp-card'>
 
@@ -127,18 +220,27 @@ class NewEquip extends Component {
           <div className='div-newEquip-Linha'>
 
             <div className='div-newEquip-cnpj'>
-              <h2 className='div-comp-label'>Cnpj:</h2>
+              <h2 className={
+                this.state.fieldFalha.cnpj ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Cnpj:</h2>
               <Input
-                className='input-newEquip'
+                className={
+                  this.state.fieldFalha.cnpj ?
+                    'div-comp-inputError' :
+                    ''}
                 placeholder='Digite o cnpj'
                 name='cnpj'
                 value={this.state.cnpj}
                 onChange={this.onChange}
                 onBlur={this.getRazaoSocial}
-                allowClear
-              // value={this.props.value.number}
-              // onChange={this.props.changeValue}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.cnpj ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.cnpj}
+                </p> : null}
             </div>
 
             <div className='div-newEquip-razaoSocial'>
@@ -148,8 +250,6 @@ class NewEquip extends Component {
                 className='input-newEquip'
                 name='razaoSocial'
                 value={this.state.razaoSocial === '' ? '-' : this.state.razaoSocial}
-              // value={this.props.value.number}
-              // onChange={this.props.changeValue}
               />
             </div>
           </div>
@@ -157,17 +257,27 @@ class NewEquip extends Component {
           <div className='div-newEquip-Linha'>
 
             <div className='div-newEquip-serialNumber'>
-              <h2 className='div-comp-label'>Número de série:</h2>
+              <h2 className={
+                this.state.fieldFalha.serialNumber ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Número de série:</h2>
               <Input
-                className='input-newEquip'
+                className={
+                this.state.fieldFalha.serialNumber ?
+                  'div-comp-inputError' :
+                  'input-newEquip'}
                 placeholder='Digite o número'
                 value={this.state.serialNumber}
                 name='serialNumber'
                 onChange={this.onChange}
-                allowClear
-              // value={this.props.value.number}
-              // onChange={this.props.changeValue}
+                onBlur={this.onBlurValidator}
+                onFocus={this.onChange}
               />
+              {this.state.fieldFalha.serialNumber ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.serialNumber}
+                </p> : null}
             </div>
 
             <div className='div-newEquip-type'>
@@ -198,10 +308,23 @@ class NewEquip extends Component {
 
            
             <div className='div-newEquip-modelo'>
-              <h2 className='div-comp-label'>Modelo:</h2>
-              <Select defaultValue="Não selecionado" style={{ width: '100%' }} value={this.state.model} onChange={(model) => this.handleChangeModel(model)}>
-              {this.state.modelsList.length === 0 ? null : this.state.modelsList.map(model => <Option key={model.model} value={model.model}>{model.model}</Option>)}
+              <h2 className={
+                this.state.fieldFalha.equipModelId ?
+                  'div-comp-labelError' :
+                  'div-comp-label'
+              }>Modelo:</h2>
+              <Select 
+              className={
+                this.state.fieldFalha.equipModelId ?
+                  'div-comp-inputError' :
+                  ''}
+              defaultValue="Não selecionado" style={{ width: '100%' }} value={this.state.model} onChange={(model) => this.handleChangeModel(model)}>
+              {this.state.modelsList.length === 0 ? null : this.state.modelsList.map(model => <Option key={model.id} value={model.id}>{model.model}</Option>)}
               </Select>
+              {this.state.fieldFalha.equipModelId ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.equipModelId}
+                </p> : null}
             </div>
 
 
@@ -221,7 +344,7 @@ class NewEquip extends Component {
           <div className='div-comp-button'>
             <Button
               className='comp-button'
-              // onClick={this.onSubmit}
+              onClick={this.saveTargetNewEquip}
               type="primary">Salvar
             </Button>
           </div>

@@ -1,45 +1,61 @@
-export const validators = (nome, valor, state) => {
-  const { fieldFalha, message } = state
+export const masks = (nome, valor) => {
+  
   if (nome === 'cnpj') {
     let value = valor
     value = value.replace(/\D/ig, '')
     value = value.slice(0, 14)
 
-    if (value.length === 14) {
-      value = value.slice(0, 2) + '.' + value.slice(2, 5) + '.' + value.slice(5, 8) + '/' + value.slice(8, 12) + '-' + value.slice(12, 14)
+    if (value.length > 2 && value.length <= 6) {
+      value = value.replace(/(\d{1,4})(\d{2})/, '$1-$2')
+    } else if (value.length > 6 && value.length <= 9) {
+      value = value.replace(/(\d{1,3})(\d{4})(\d{2})/, '$1/$2-$3')
+    } else if (value.length > 9 && value.length <= 12) {
+      value = value.replace(/(\d{1,3})(\d{3})(\d{4})(\d{2})/, '$1.$2/$3-$4')
+    } else if (value.length > 12) {
+      value = value.replace(/(\d{1,2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
     }
-
-    fieldFalha.cnpj = true
-    message.cnpj = 'Cnpj inválido'
 
     return {
       nome,
       valor: value,
-      fieldFalha,
-      message
     }
-
   } else if (nome === 'serialNumber') {
-    let value = valor
-    value = value.replace(/\D/ig, '')
-    value = value.slice(0, 17)
+      let value = valor
+      value = value.replace(/\D/ig, '')
 
-    fieldFalha.serialNumber = true
-    message.serialNumber = 'Número de série inválido'
+      return {
+        nome,
+        valor: value,
+      } 
+    } else {
+      return {
+        nome,
+        valor,
+      }
+    }
+}
+
+export const validators = (nome, valor, state) => {
+  const { fieldFalha, message } = state
+  
+  if (nome === 'cnpj') {
+    if (valor === '') {
+      message.cnpj = 'É Obrigatório.'
+      fieldFalha.cnpj = true
+    } else fieldFalha.cnpj = false
 
     return {
-      nome,
-      valor: value,
       fieldFalha,
       message
     }
-
   } 
-  
-  else {
+  else if (nome === 'serialNumber'){
+    if (valor === '') {
+      message.serialNumber = 'É Obrigatório.'
+      fieldFalha.serialNumber = true
+    } else fieldFalha.serialNumber = false
+
     return {
-      nome,
-      valor,
       fieldFalha,
       message
     }

@@ -1,6 +1,3 @@
-import * as cnpjLib from "@fnando/cnpj";
-import * as cpfLib from "@fnando/cpf";
-
 export const masks = (nome, valor) => {
   
   if (nome === 'costPrice') {
@@ -41,38 +38,6 @@ export const masks = (nome, valor) => {
         nome,
         valor: value,
       }
-    }else if (nome === 'zipCode'){
-      let value = valor
-      value = value.replace(/\D/ig, '')
-      value = value.slice(0, 8)
-
-
-      if (value.length > 5) {
-        value = value.replace(/(\d{5})(\d{3})?/, '$1-$2')
-      }
-
-      return {
-        nome,
-        valor: value,
-      }
-    // } else if (nome === 'state') {
-    //     let value = valor
-    //     value = value.replace(/\W|\d/g, '')
-    //     value = value.slice(0, 2)
-    //     value = value.toUpperCase(0, 2)
-  
-    //     return {
-    //       nome,
-    //       valor: value,
-    //     }
-    //   } else if (nome === 'number') {
-    //   let value = valor
-    //   value = value.replace(/\D/ig, '')
-
-    //   return {
-    //     nome,
-    //     valor: value,
-    //   } 
     } else {
       return {
         nome,
@@ -96,10 +61,6 @@ export const validators = (nome, valor, state) => {
     }
   } 
   else if (nome === 'description'){
-    if (valor === '') {
-      message.description = 'É Obrigatório.'
-      fieldFalha.description = true
-    } else fieldFalha.description = false
 
     return {
       fieldFalha,
@@ -125,55 +86,15 @@ export const validators = (nome, valor, state) => {
       fieldFalha,
       message
     }
-  // } else if (nome === 'state') {
-  //   if (valor === '') {
-  //     message.state = 'É Obrigatório.'
-  //     fieldFalha.state = true
-  //   } else fieldFalha.state = false
+  } else if (nome === 'modelListCard') {
+    if (valor.length === 0) {
+      message.modelListCard = 'É Obrigatório.'
+      fieldFalha.modelListCard = true
+    } else fieldFalha.modelListCard = false
 
-  //   return {
-  //     fieldFalha,
-  //     message
-  //   }
-  // } else if (nome === 'city') {
-  //   if (valor === '') {
-  //     message.city = 'É Obrigatório.'
-  //     fieldFalha.city = true
-  //   } else fieldFalha.city = false
-
-  //   return {
-  //     fieldFalha,
-  //     message
-  //   }
-  // } else if (nome === 'neighborhood') {
-  //   if (valor === '') {
-  //     message.neighborhood = 'É Obrigatório.'
-  //     fieldFalha.neighborhood = true
-  //   } else fieldFalha.neighborhood = false
-
-  //   return {
-  //     fieldFalha,
-  //     message
-  //   }
-  // } else if (nome === 'street') {
-  //   if (valor === '') {
-  //     message.street = 'É Obrigatório.'
-  //     fieldFalha.street = true
-  //   } else fieldFalha.street = false
-
-  //   return {
-  //     fieldFalha,
-  //     message
-  //   }
-  // } else if (nome === 'number') {
-  //   if (valor === '') {
-  //     message.number = 'É Obrigatório.'
-  //     fieldFalha.number = true
-  //   } else fieldFalha.number = false
-
-  //   return {
-  //     fieldFalha,
-  //     message
-  //   }
+    return {
+      fieldFalha,
+      message
+    }
   }
 }
