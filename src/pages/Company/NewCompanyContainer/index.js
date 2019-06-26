@@ -117,7 +117,7 @@ class NewCompany extends Component {
   };
 
   error = () => {
-    message.error('Empresa não foi cadastrada com sucesso');
+    message.error('Erro ao cadastrar empresa');
   };
 
   onChange = (e) => {
