@@ -202,9 +202,9 @@ class NewTypeEquip extends Component {
             <div className='div-equipType-cardMarca'>
               <Card size="small" title="Marcas" style={{ width: '100%' }}>
               {this.state.marksList.length === 0 ? <p>Nenhuma marca cadastrada</p> : 
-              this.state.marksList.map(item => <div className={this.state.mark.mark === item.mark ? 'markList-equipType-selecionado': 'markList-equipType'}
-              onClick={() => this.selectMark(item)}>
-              {item.mark}
+              this.state.marksList.map(mark => <div className={this.state.mark.mark === mark.mark ? 'markList-equipType-selecionado': 'markList-equipType'}
+              onClick={() => this.selectMark(mark)}>
+              {mark.mark}
               </div>
               )}
               </Card>
@@ -253,7 +253,7 @@ class NewTypeEquip extends Component {
             <div className='div-equipType-cardModelo'>
               <Card size="small" title="Modelos" style={{ width: '100%' }}>
               {this.state.modelsList.length === 0 ? this.state.mark.mark === '' ? <p>Nenhuma marca selecionada</p> : <p>Nenhum modelo cadastrado</p> :
-              this.state.modelsList.map(item => <div>{item}</div>)}
+              this.state.modelsList.map(model => <div>{model.model}</div>)}
               </Card>
               <div className='div-equipType-buttonModelo'>
                 <Button

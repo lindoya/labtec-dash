@@ -180,7 +180,7 @@ class NewCompany extends Component {
           <label className='gerCmp-label-table-information'>
             Quantidade por página:
           </label>
-          <Select defaultValue="25" onChange={this.changeTotal}>
+          <Select defaultValue="25" onChange={this.changeTotal} size='small'>
             <Option value="10">10</Option>
             <Option value="25">25</Option>
             <Option value="50">50</Option>
@@ -286,6 +286,13 @@ class NewCompany extends Component {
           </div>
         )
       }
+      <div className='gerCmp-div-table-footer'>
+        <button className='gerCmp-table-buttonFooter'>1</button>
+        <button className='gerCmp-table-buttonFooter'>2</button>
+        <button className='gerCmp-table-buttonFooter'>3</button>
+        <button className='gerCmp-table-buttonFooter'>4</button>
+        <button className='gerCmp-table-buttonFooter'>5</button>
+      </div>
     </div>
   )
 

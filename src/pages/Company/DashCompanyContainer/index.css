@@ -107,7 +107,24 @@
   height: 2px;
   background-color: #001529;
 }
+.gerCmp-table-buttonFooter{
+  height: 25px;
+  background-color: white;
+  color: #001529;
+  cursor: pointer;
+  outline: none;
+  margin: 3px;
+  border-radius: 3px
+}
 
+.gerCmp-div-table-footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 35px;
+  background-color: #001529;
+}
 .gerCmp-div-mainHeader{
   width: 100%;
   padding-left: 30px;
@@ -189,7 +206,7 @@
 
 .gerCmp-label-table-information{
   color: #35353591;
-  padding-left: 10px;
+  padding-left: 2px;
   font-size: 12px;
 }
 

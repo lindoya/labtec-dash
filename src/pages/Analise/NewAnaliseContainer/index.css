@@ -61,7 +61,7 @@
   align-items: flex-start;
   font-size: 17px;
   font-weight: bold;
-  margin-bottom: 15px
+  margin: 20px 0 15px 0
 }
 .div-historico-analise{
   width: 98%;
@@ -157,4 +157,25 @@
 }
 .textArea-analise{
   width: 98%
+}
+.div-pecaModal-analise{
+  width: 100% !important;
+}
+.div-motivoModal-analise{
+  width: 100% !important;
+  margin-top: 10px;
+}
+.textArea-motivoTroca-analise{
+  width: 100%
+}
+.div-label-analise{
+  font-size: 18px;
+  font-weight: bold
+}
+.time-analise{
+  width: 100%
+}
+.textArea-motivoPausa-analise{
+  width: 100%;
+  margin-top: 10px
 }
