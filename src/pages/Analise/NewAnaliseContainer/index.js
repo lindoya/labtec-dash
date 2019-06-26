@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import './index.css'
-import * as moment from 'moment'
 
-import { Button, Input, Card, Checkbox, Modal, TimePicker } from 'antd';
+import { Button, Input, Card, Checkbox, Modal } from 'antd';
 
 const { TextArea } = Input;
-const format = 'HH:mm';
 
 class NewAnalise extends Component {
 
@@ -18,7 +16,6 @@ class NewAnalise extends Component {
       id: '',
       peca: '',
       motivoTroca: '',
-      tempoTroca: '',
     },
     carrinho: [],
     listaPecas: [{
@@ -68,15 +65,6 @@ class NewAnalise extends Component {
     })
   }
 
-  onChangeTempo = (e) => {
-    moment.locale('pt-br')
-    const hora = moment(e).format('HH:mm')
-
-    this.setState({
-      peca: { ...this.state.peca, tempoTroca: hora }
-    })
-  }
-
   showModal = (selecionados) => {
     this.setState({
       modal: true,
@@ -84,7 +72,6 @@ class NewAnalise extends Component {
         id: selecionados.id,
         peca: selecionados.peca,
         motivoTroca: '',
-        tempoTroca: ''
       }
     });
   };
@@ -100,7 +87,6 @@ class NewAnalise extends Component {
         id: '',
         peca: '',
         motivoTroca: '',
-        tempoTroca: ''
       }
     })
   };
@@ -112,7 +98,6 @@ class NewAnalise extends Component {
         id: '',
         peca: '',
         motivoTroca: '',
-        tempoTroca: ''
       }
     });
   };
@@ -360,13 +345,6 @@ class NewAnalise extends Component {
                       />
                     </div>
 
-                    <div className='div-motivoModal-analise'>
-                      <h2 className='div-comp-label'>Tempo para troca:</h2>
-                      <TimePicker
-                        className='time-analise'
-                        onChange={this.onChangeTempo}
-                        format={format} />
-                    </div>
                   </Modal>
                 </div>
 

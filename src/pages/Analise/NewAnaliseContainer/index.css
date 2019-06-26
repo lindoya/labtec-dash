@@ -1,7 +1,7 @@
 .div-nosEservico-analise{
   display: flex;
   justify-content: space-between;
-  width: 100%
+  width: 93%
 }
 .div-nos-analise{
   width: 15%;
@@ -21,7 +21,7 @@
 }
 .div-linha-analise{
   display: flex;
-  width: 100% !important;
+  width: 93% !important;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px
@@ -38,25 +38,25 @@
   margin-right: 10px
 }
 .div-razaoSocial-analise{
-  width: 80% !important;
+  width: 83% !important;
 }
 .div-type-analise{
   width: 22% !important;
   margin-right: 10px
 }
 .div-mark-analise{
-  width: 18% !important;
+  width: 20% !important;
   margin-right: 10px
 }
 .div-model-analise{
-  width: 35% !important;  
+  width: 38% !important;  
   margin-right: 10px
 }
 .div-leitor-analise{
   width:  20% !important;  
 }
 .div-dadosDoEquipamento-analise{
-  width: 98%;
+  width: 93%;
   display: flex;
   align-items: flex-start;
   font-size: 17px;
@@ -64,7 +64,7 @@
   margin: 20px 0 15px 0
 }
 .div-historico-analise{
-  width: 98%;
+  width: 93%;
   display: flex;
   align-items: flex-start;
   font-size: 17px;
@@ -72,11 +72,11 @@
   margin: 20px 0 10px 0
 }
 .card-analise{
-  width: 98%;
+  width: 93%;
   padding: 10px
 }
 .div-defeito-analise{
-  width: 98%;
+  width: 93%;
   display: flex;
   align-items: flex-start;
   font-size: 17px;
@@ -127,9 +127,8 @@
 }
 .div-linhaSpace-analise{
   display: flex;
-  width: 100% !important;
+  width: 93% !important;
   justify-content: space-between;
-  padding: 10px;
   margin-bottom: 10px
 }
 .div-listaDasPecas-analise{
@@ -150,13 +149,13 @@
 }
 .div-linhaButton-analise{
   display: flex;
-  width: 100% !important;
+  width: 93% !important;
   justify-content: flex-end;
   padding: 10px;
   margin-bottom: 10px
 }
 .textArea-analise{
-  width: 98%
+  width: 100%
 }
 .div-pecaModal-analise{
   width: 100% !important;

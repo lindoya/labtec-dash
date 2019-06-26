@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Select, Input, Button } from 'antd'
-// import { getAllParts } from '../../../services/peca'
+import { Select, Input, Button, Icon } from 'antd'
+import { getAllParts } from '../../../services/peca'
 
 import './index.css'
 
@@ -11,22 +11,57 @@ class DashPeca extends Component {
 
   state = {
     searchAvancado: false,
+    order: {
+      field: 'peca',
+      acendent: true,
+    },
     global: '',
-    cnpj: '',
-    razaoSocial: '',
-    nameContact: '',
-    telphone: '',
-    teste: '',
-    
+    peca: '',
+    descricao: '',
+    precoCusto: '',
+    precoVenda: '',
+    page: 1,
+    total: 25,
+    count: 0,
+    show: 0,
+    rows: [],
   }
 
-  // getAllPecas = async () => {
-  //   const resposta = await getAllParts({ })
+  
+  getAll = async () => {
+    const query = {
+      filters: {
+        part: {
+          global: {
+            fields: ['item', 'description'],
+            value: this.state.global,
+          },
+          specific: {
+            item: this.state.peca,
+            description: this.state.descricao,
+            costPrice: this.state.precoCusto,
+            salePrice: this.state.precoVenda,
+          }
+        }
+      },
+      page: 1,
+      total: 25,
+      order: this.state.order,
+    }
 
-  //   this.setState({
-  //     modelsList: resposta.data,
-  //   })
-  // }
+    await getAllParts(query).then(
+      resposta => this.setState({
+        page: resposta.data.page,
+        count: resposta.data.count,
+        show: resposta.data.show,
+        rows: resposta.data.rows,
+      })
+    )
+  }
+
+  componentDidMount = () => {
+    this.getAll()
+  }
 
   buttonAvancado = () => {
     this.setState({
@@ -37,11 +72,20 @@ class DashPeca extends Component {
   buttonLimpar = () => {
     this.setState({
       global: '',
-      cnpj: '',
-      razaoSocial: '',
-      nameContact: '',
-      telphone: '',
-      teste: '',
+      peca: '',
+      descricao: '',
+      precoCusto: '',
+      precoVenda: '',
+    }, () => {
+      this.getAll()
+    })
+  }
+
+  changeTotal = (value) => {
+    this.setState({
+      total: value
+    }, () => {
+      this.getAll()
     })
   }
 
@@ -50,54 +94,66 @@ class DashPeca extends Component {
 
     this.setState({
       [evento.name]: evento.value,
+    }, () => {
+      this.getAll()
     })
+  }
+  
+  changeOrder = (field) => {
+    this.setState({
+      order: {
+        field,
+        acendent: !this.state.order.acendent,
+      }
+    } )
+
   }
 
 
   SearchAdvanced = () => (
     <div className='div-advanced-dashPeca'>
 
-      <div className='div-left-dashPeca'>
+      <div className='div-avancado-peca-dashPeca'>
         <h2 className='gerCmp-div-label'>Peça:</h2>
         <Input
           allowClear
-          name='cnpj'
+          name='peca'
           className='input-cnpjCompany'
-          placeholder="teste"
-          value={this.state.cnpj}
+          placeholder="Digite a peça"
+          value={this.state.peca}
           onChange={this.onChange} 
         />
       </div>
-      <div className='div-left-dashPeca'>
+      <div className='div-avancado-desc-dashPeca'>
         <h2 className='gerCmp-div-label'>Descrição:</h2>
         <Input
           allowClear
-          name='razaoSocial'
+          name='descricao'
           className='input-cnpjCompany'
-          placeholder="teste"
-          value={this.state.razaoSocial}
+          placeholder="Digite a descrição"
+          value={this.state.descricao}
           onChange={this.onChange}
         />
       </div>
-      <div className='div-left-dashPeca'>
+      <div className='div-avancado-venda-dashPeca'>
         <h2 className='gerCmp-div-label'>Preço de venda:</h2>
         <Input
           allowClear
-          name='teste'
+          name='precoVenda'
           className='input-cnpjCompany'
-          placeholder="teste"
-          value={this.state.teste}
+          placeholder="R$"
+          value={this.state.precoVenda}
           onChange={this.onChange}
         />
       </div>
-      <div className='div-left-dashPeca'>
+      <div className='div-avancado-custo-dashPeca'>
         <h2 className='gerCmp-div-label'>Preço de custo:</h2>
         <Input
           allowClear
-          name='nameContact'
+          name='precoCusto'
           className='input-cnpjCompany'
-          placeholder="teste"
-          value={this.state.nameContact}
+          placeholder="R$"
+          value={this.state.precoCusto}
           onChange={this.onChange}
         />
       </div>
@@ -114,7 +170,7 @@ class DashPeca extends Component {
           </label>
           <Select 
             defaultValue="25"
-            // onChange={this.changeTotal}
+            onChange={this.changeTotal}
             size='small'
           >
             <Option value="10">10</Option>
@@ -132,80 +188,75 @@ class DashPeca extends Component {
       </div>
       <div className='div-table-separeteLineMain-dashPeca' />
       <div className='div-table-header-dashPeca'>
-        <div className='div-table-cel-cnpj-dashPeca'
-          // onClick={() => this.changeOrder('cnpj')}
+        <div className='div-table-cel-peca-dashPeca'
+          onClick={() => this.changeOrder('peca')}
         >
-          {/* {this.state.order.field === 'cnpj' ?
+         {this.state.order.field === 'peca' ?
             <div className='div-icon-dashPeca'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
             : <div className='div-icon-dashPeca'></div>}
-          <h2 className='div-table-label-dashPeca'>Cnpj</h2>
-        </div>
-        <div className='div-table-cel-rs-dashPeca'
-          onClick={() => this.changeOrder('razaoSocial')}>
-          {this.state.order.field === 'razaoSocial' ?
+          <h2 className='div-table-label-dashPeca'>Peça</h2>
+        </div> 
+        <div className='div-table-cel-desc-dashPeca'
+          onClick={() => this.changeOrder('descricao')}>
+          {this.state.order.field === 'descricao' ?
             <div className='div-icon-dashPeca'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
             : <div className='div-icon-dashPeca'></div>}
-          <h2 className='div-table-label-dashPeca'>Razão Social</h2>
+          <h2 className='div-table-label-dashPeca'>Descrição</h2>
         </div>
-        <div className='div-table-cel-nameContact-dashPeca'
-          onClick={() => this.changeOrder('nameContact')}>
-          {this.state.order.field === 'nameContact' ?
+        <div className='div-table-cel-precoCusto-dashPeca'
+          onClick={() => this.changeOrder('precoCusto')}>
+          {this.state.order.field === 'precoCusto' ?
             <div className='div-icon-dashPeca'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
             : <div className='div-icon-dashPeca'></div>}
-          <h2 className='div-table-label-dashPeca'>Nome Contato</h2>
+          <h2 className='div-table-label-dashPeca'>Custo</h2>
         </div>
-        <div className='div-table-cel-tel-dashPeca'
-          onClick={() => this.changeOrder('telphone')}>
-          {this.state.order.field === 'telphone' ?
+        <div className='div-table-cel-precoVenda-dashPeca'
+          onClick={() => this.changeOrder('precoVenda')}>
+          {this.state.order.field === 'precoVenda' ?
             <div className='div-icon-dashPeca'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashPeca'></div>} */}
-          {/* <h2 className='div-table-label-dashPeca'>Telefone</h2> */}
+            : <div className='div-icon-dashPeca'></div>}
+          <h2 className='div-table-label-dashPeca'>Venda</h2>
         </div>
       </div>
-      {/* <div className='div-table-separeteLineMain-dashPeca' /> */}
-      {/* {
+     {/* <div className='div-table-separeteLineMain-dashPeca' /> 
+     {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow'>
-              <div className='gerCmp-div-table-cel-cnpj'>
+              <div className='div-table-cel-peca-dashPeca'>
                 <label className='div-table-label-dashPeca-cel'>
-                  {line.cnpj}
+                  {line.peca}
                 </label>
               </div>
-              <div className='gerCmp-div-table-cel-rs'>
+              <div className='div-table-cel-desc-dashPeca'>
                 <label className='div-table-label-dashPeca-cel'>
-                  {line.razaoSocial}
+                  {line.descricao}
                 </label>
               </div>
-              <div className='gerCmp-div-table-cel-nameContact'>
+              <div className='div-table-cel-precoCusto-dashPeca'>
                 <label className='div-table-label-dashPeca-cel'>
-                  {line.nameContact}
+                  {line.precoCusto}
                 </label>
               </div>
-              <div className='gerCmp-div-table-cel-tel'>
+              <div className='div-table-cel-precoVenda-dashPeca'>
                 <label className='div-table-label-dashPeca-cel'>
-                  {line.telphone}
-                </label>
-              </div>
-              <div className='gerCmp-div-table-cel-createdAt'>
-                <label className='div-table-label-dashPeca-cel'>
-                  {line.createdAt}
+                  {line.precoVenda}
                 </label>
               </div>
             </div>
@@ -225,6 +276,7 @@ class DashPeca extends Component {
 
 
   render() {
+    console.log(this.state)
     return (
       <div className='div-comp-card'>
 
