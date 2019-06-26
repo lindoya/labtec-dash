@@ -25,16 +25,26 @@
 .div-advanced-dashPeca{
   display: flex;
   justify-content: center;
-  width: 100% !important;
+  width: 96% !important;
   margin-bottom: 30px;
   padding-left: 10px;
   padding-right: 10px;
 }
-.div-left-dashPeca{
-  width: calc(25% - 20px) !important;
+.div-avancado-peca-dashPeca{
+  width: 23%;
+}
+.div-avancado-desc-dashPeca{
+  width: 45%;
   margin-left: 20px !important;
 }
-
+.div-avancado-custo-dashPeca{
+  width: 13%;
+  margin-left: 20px !important;
+}
+.div-avancado-venda-dashPeca{
+  width: 14%;
+  margin-left: 20px !important;
+}
 
 
 
@@ -89,23 +99,23 @@
   width: 100%;
   background-color: #001529;
 }
-.div-table-cel-cnpj-dashPeca{
-  width: 20% !important;
+.div-table-cel-peca-dashPeca{
+  width: 23% !important;
   display: flex;
   cursor: pointer;
 }
-.div-table-cel-rs-dashPeca{
-  width: 30% !important;
+.div-table-cel-desc-dashPeca{
+  width: 57% !important;
   display: flex;
   cursor: pointer;
 }
-.div-table-cel-nameContact-dashPeca{
-  width: 20% !important;
+.div-table-cel-precoCusto-dashPeca{
+  width: 10% !important;
   display: flex;
   cursor: pointer;
 }
-.div-table-cel-tel-dashPeca{
-  width: 15% !important;
+.div-table-cel-precoVenda-dashPeca{
+  width: 10% !important;
   display: flex;
   cursor: pointer;
 }
@@ -121,7 +131,6 @@
   -ms-user-select: none; /* Internet Explorer/Edge */
 }
 .div-table-label-dashPeca{
-  background-color: red;
   color: #ffffff !important;
   font-weight: bold !important;
   font-size: 15px !important;
