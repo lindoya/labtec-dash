@@ -69,7 +69,7 @@ class NewCompany extends Component {
       telphone: this.state.telphone,
       email: this.state.email,
       nameContact: this.state.nameContact,
-      complement: this.state.complement
+      complement: this.state.complement,
     }
 
     const resposta = await newCompany(values)
@@ -161,30 +161,35 @@ class NewCompany extends Component {
     })
   }
 
-  getAddress = async (e) => { 
+    getAddress = async (e) => { 
     const zipCode = e.target.value
     try {
-      const { fieldFalha } = this.state
+      const { fieldFalha, message } = this.state
       
-      fieldFalha.zipCode = false
       fieldFalha.state = false
       fieldFalha.city = false
       fieldFalha.neighborhood = false
       fieldFalha.street = false
       const address = await getAddressByZipCode(zipCode)
 
+      // console.log(address)
+
       if (R.has('erro', address.data)){
         fieldFalha.zipCode = true
-        message.zipCode = 'Cep inválido.'
-      }
+        message.zipCode = 'Cep não encontrado.'
 
-      this.setState({ 
-        street: address.data.logradouro,
-        city: address.data.localidade,
-        neighborhood: address.data.bairro,
-        state: address.data.uf,
-        fieldFalha,
-      })
+        this.setState({
+          fieldFalha,
+          message,
+        })
+      } else {
+        this.setState({ 
+          street: address.data.logradouro,
+          city: address.data.localidade,
+          neighborhood: address.data.bairro,
+          state: address.data.uf,
+        })
+      }
 
     } catch (error) {
       const { fieldFalha, message } = this.state
@@ -201,6 +206,7 @@ class NewCompany extends Component {
 
 
   render() {
+    // console.log(this.state)
     return (
       <div className='div-comp-card'>
 
