@@ -27,12 +27,14 @@ class NewPeca extends Component {
       description: '',
       costPrice: '',
       salePrice: '',
+      modelListCard: '',
     },
     fieldFalha: {
       item: false,
       description: false,
       costPrice: false,
       salePrice: false,
+      modelListCard: false,
     },
     messageError: false,
     messageSuccess: false
@@ -51,7 +53,7 @@ class NewPeca extends Component {
 
     const resposta = await add(values)
 
-    console.log(resposta)    
+    // console.log(this.state)
 
     if (resposta.status === 422) {
 
@@ -122,8 +124,13 @@ class NewPeca extends Component {
     const notExist = this.state.modelListCard
       .filter((valor) => valor.id === selecionados.id).length === 0
 
+    const { fieldFalha } = this.state
+
+    fieldFalha.modelListCard = false
+
     if (notExist) {
       this.setState({
+        fieldFalha,
         modelListCard: [
           ...this.state.modelListCard,
           selecionados
@@ -222,6 +229,7 @@ class NewPeca extends Component {
   }
 
   render() {
+    // console.log(this.state)
     return (
       <div className='div-newPeca-card'>
 
@@ -335,7 +343,7 @@ class NewPeca extends Component {
               <div className='div-type-peca'>
                 <h2 className='div-comp-label'>Tipo:</h2>
                 <Select defaultValue={this.state.type} style={{ width: '100%' }} onChange={this.changeTypeSelected}>
-                  <Option value="relogio">Relógio</Option>
+                  <Option value="relogio" >Relógio</Option>
                   <Option value="catraca">Catraca</Option>
                   <Option value="controleAcesso">Controle de Acesso</Option>
                   <Option value="peca">Peça</Option>
@@ -365,14 +373,21 @@ class NewPeca extends Component {
           <div className='div-linha-peca'>
 
             <div className='div-relacionados-peca'>
-              <h2 className='div-comp-label'>Modelos relacionados:</h2>
+            <h2 className={this.state.fieldFalha.modelListCard ?
+                  'div-comp-labelError' :
+                  'div-comp-label'}>Modelos relacionados:</h2>
               <Card className='card-relacionados-peca'>
               <div className='cabecalho-newPeca-card'>
                   <div className='type-newPeca-cabecalho'>Tipo</div>
                   <div className='mark-newPeca-cabecalho'>Marca</div>
                   <div className='model-newPeca-cabecalho'>Modelo</div>
                 </div>
-                {this.state.modelListCard.length === 0 ? <p className='p-nao'>Não há nenhum modelo relacionado</p> : this.state.modelListCard.map(modelList => 
+                {this.state.modelListCard.length === 0 ? <p 
+                className={
+                  this.state.fieldFalha.modelListCard ?
+                    'p-nao-error' :
+                    'p-nao'}
+                >Não há nenhum modelo relacionado</p> : this.state.modelListCard.map(modelList => 
                 <div className='div-pai-newPeca' onClick={() => this.removeAcessorio(modelList)}>
                   <div className='div-filha-newPeca-type'>
                     <p className='p'>{`${modelList.type}`}</p>
@@ -384,6 +399,10 @@ class NewPeca extends Component {
                     <p className='p'>{`${modelList.model}`}</p>
                   </div>
                 </div>)}
+                {this.state.fieldFalha.modelListCard ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.modelListCard}
+                </p> : null}
               </Card>
             </div>
 
