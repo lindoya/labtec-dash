@@ -52,6 +52,7 @@ export const getAllParts = async (query) => {
   return response
 } 
 
+
 // item: 'teclado',
 // description: '',
 // costPrice: '100,00',

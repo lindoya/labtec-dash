@@ -1,0 +1,156 @@
+.div-searchMain-dashPeca{
+  display: flex;
+  width: 100% !important;
+  align-items: center;
+  justify-content: space-between !important;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 20px;
+  padding-bottom: 12px;
+}
+.searchMain-dashPeca{
+  width: 70%;
+  height: 40px
+}
+.buttonAvancado-dashPeca{
+  height: 40px !important;
+  width: 105px !important;
+  background-color: #001529 !important;
+  border-color: #001529 !important;
+}
+.buttonAvancado-dashPeca:hover{
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+}
+.div-advanced-dashPeca{
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
+  margin-bottom: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.div-left-dashPeca{
+  width: calc(25% - 20px) !important;
+  margin-left: 20px !important;
+}
+
+
+
+
+
+.div-mainHeader-dashPeca{
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.div-table-information-dashPeca{
+  display: flex;
+  justify-content: space-between;
+}
+.div-table-information-total-dashPeca{
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  margin-bottom: 5px;
+}
+.label-table-information-dashPeca{
+  color: #35353591;
+  padding-left: 2px;
+  font-size: 12px;
+}
+.div-table-information-count-dashPeca{
+  display: flex;
+  align-items: flex-end;
+}
+.div-table-separeteLineMain-dashPeca{
+  width: 100%;
+  height: 2px;
+  background-color: #001529;
+}
+.div-icon-dashPeca{
+  width: 10px;
+  cursor: pointer;
+  color: #ffffff !important;
+  align-self: center;
+}
+
+.div-tableRow-dashPeca{
+  padding-top: 3px;
+  display: flex;
+}
+
+.div-tableRow-dashPeca:hover{
+  background-color: #0084ff77;
+}
+
+.div-table-header-dashPeca{
+  display: flex;
+  width: 100%;
+  background-color: #001529;
+}
+.div-table-cel-cnpj-dashPeca{
+  width: 20% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-rs-dashPeca{
+  width: 30% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-nameContact-dashPeca{
+  width: 20% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-tel-dashPeca{
+  width: 15% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-label-cel-dashPeca{
+  margin-left: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+.div-table-label-dashPeca{
+  background-color: red;
+  color: #ffffff !important;
+  font-weight: bold !important;
+  font-size: 15px !important;
+  margin: 0 0 0 5px !important;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+.div-table-separeteLinerow-dashPeca{
+  width: 100%;
+  height: 1px;
+  background-color: rgba(153, 153, 153, 0.788);
+}
+.div-table-footer-dashPeca{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 35px;
+  background-color: #001529;
+}
+.table-buttonFooter-dashPeca{
+  height: 25px;
+  background-color: white;
+  color: #001529;
+  cursor: pointer;
+  outline: none;
+  margin: 3px;
+  border-radius: 3px
+}

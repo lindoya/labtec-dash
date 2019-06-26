@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import './index.css'
+import * as moment from 'moment'
 
-import { Button, Input, Card, Checkbox, Modal } from 'antd';
+import { Button, Input, Card, Checkbox, Modal, TimePicker } from 'antd';
 
 const { TextArea } = Input;
+const format = 'HH:mm';
 
 class NewAnalise extends Component {
 
@@ -12,28 +14,106 @@ class NewAnalise extends Component {
     checkList: {
 
     },
+    peca: {
+      id: '',
+      peca: '',
+      motivoTroca: '',
+      tempoTroca: '',
+    },
     carrinho: [],
     listaPecas: [{
-      id: 'peca',
-      peca: 'peca'
-    }]
+      id: 'bobina',
+      peca: 'Bobina',
+    }],
+    observções: '',
+    modalPausa: false,
+    motivoPausa: ''
   }
 
-  showModal = () => {
+  onChangeMotivo = (e) => {
+    this.setState({
+      peca: { ...this.state.peca, motivoTroca: e.target.value }
+    })
+  }
+
+  onChangeMotivoPausa = (e) => {
+    this.setState({
+      motivoPausa: e.target.value
+    })
+  }
+
+  handleOkPausa = () => {
+    this.setState({
+      openModalPausa: false,
+      motivoPausa: ''
+    })
+  }
+
+  handleCancelPausa = () => {
+    this.setState({
+      openModalPausa: false,
+      motivoPausa: ''
+    })
+  }
+
+  openModalPausa = () => {
+    this.setState({
+      openModalPausa: true
+    })
+  }
+
+  onChangeObservacao = (e) => {
+    this.setState({
+      observções: e.target.value
+    })
+  }
+
+  onChangeTempo = (e) => {
+    moment.locale('pt-br')
+    const hora = moment(e).format('HH:mm')
+
+    this.setState({
+      peca: { ...this.state.peca, tempoTroca: hora }
+    })
+  }
+
+  showModal = (selecionados) => {
     this.setState({
       modal: true,
+      peca: {
+        id: selecionados.id,
+        peca: selecionados.peca,
+        motivoTroca: '',
+        tempoTroca: ''
+      }
     });
   };
 
   handleOk = () => {
     this.setState({
       modal: false,
+      carrinho: [...this.state.carrinho, this.state.peca]
     });
+
+    this.setState({
+      peca: {
+        id: '',
+        peca: '',
+        motivoTroca: '',
+        tempoTroca: ''
+      }
+    })
   };
 
   handleCancel = () => {
     this.setState({
       modal: false,
+      peca: {
+        id: '',
+        peca: '',
+        motivoTroca: '',
+        tempoTroca: ''
+      }
     });
   };
 
@@ -90,7 +170,26 @@ class NewAnalise extends Component {
 
         <div className='div-linha-analise'>
           <div className='div-tempo-analise'>01:30:27</div>
-          <Button type="primary">Pausar</Button>
+          <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>
+
+          <Modal
+            visible={this.state.openModalPausa}
+            onOk={this.handleOkPausa}
+            okText='Pausar'
+            onCancel={this.handleCancelPausa}
+          >
+            <div className='div-motivoModal-analise'>
+              <h2 className='div-comp-label'>Motivo da pausa:</h2>
+              <TextArea
+                value={this.state.motivoPausa}
+                className='textArea-motivoPausa-analise'
+                placeholder="Digite o motivo da pausa"
+                autosize={{ minRows: 3, maxRows: 10 }}
+                onChange={this.onChangeMotivoPausa}
+              />
+            </div>
+
+          </Modal>
         </div>
 
         <div className='div-dadosDoEquipamento-analise'>Dados do equipamento</div>
@@ -237,15 +336,37 @@ class NewAnalise extends Component {
 
                 <div className='div-listaDasPecas-analise'>
 
-                  {this.state.listaPecas.length === 0 ? <p className='p-nao'>Nenhuma peça selecionada</p> : this.state.listaPecas.map(pecas => <div className='p-selecionados' onClick={() => this.clickPeca({ id: pecas.id, peca: pecas.peca })}>{pecas.peca}</div>)}
+                  {this.state.listaPecas.length === 0 ? <p className='p-nao'>Nenhuma peça selecionada</p> : this.state.listaPecas.map(pecas => <div className='p-selecionados' onClick={() => this.showModal({ id: pecas.id, peca: pecas.peca })}>{pecas.peca}</div>)}
 
                   <Modal
                     title="Troca de peça"
                     visible={this.state.modal}
                     onOk={this.handleOk}
+                    okText='Salvar'
                     onCancel={this.handleCancel}
                   >
-                    <p>TESTEEEE</p>
+                    <div className='div-pecaModal-analise'>
+                      <h2 className='div-label-analise'>{this.state.peca.peca}</h2>
+                    </div>
+
+                    <div className='div-motivoModal-analise'>
+                      <h2 className='div-comp-label'>Motivo da troca:</h2>
+                      <TextArea
+                        value={this.state.peca.motivoTroca}
+                        className='textArea-motivoTroca-analise'
+                        placeholder="Digite a observação"
+                        autosize={{ minRows: 2, maxRows: 10 }}
+                        onChange={this.onChangeMotivo}
+                      />
+                    </div>
+
+                    <div className='div-motivoModal-analise'>
+                      <h2 className='div-comp-label'>Tempo para troca:</h2>
+                      <TimePicker
+                        className='time-analise'
+                        onChange={this.onChangeTempo}
+                        format={format} />
+                    </div>
                   </Modal>
                 </div>
 
@@ -259,15 +380,16 @@ class NewAnalise extends Component {
 
         <div className='div-historico-analise'>Observções</div>
 
-          <div className='div-linha-analise'>
+        <div className='div-linha-analise'>
 
-            <TextArea
-              className='textArea-analise'
-              placeholder="Digite a observação"
-              autosize={{ minRows: 5, maxRows: 10 }}
-            />
+          <TextArea
+            className='textArea-analise'
+            placeholder="Digite o motivo"
+            onChange={this.onChangeObservacao}
+            autosize={{ minRows: 5, maxRows: 10 }}
+          />
 
-          </div>
+        </div>
 
         <div className='div-linhaButton-analise'>
 
