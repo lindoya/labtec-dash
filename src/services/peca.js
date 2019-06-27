@@ -4,7 +4,6 @@ import { store } from '../App'
 
 
 export const add = async (partMock) => {
-  // console.log(partMock)
   const storeObject = store.getState()
 
   const headers = {
@@ -51,13 +50,6 @@ export const getAllParts = async (query) => {
   })
   return response
 } 
-
-
-// item: 'teclado',
-// description: '',
-// costPrice: '100,00',
-// salePrice: '150,00',
-// equipModels: [modelMock.id],
 
 // export const updateByCostPrince = async (custo) => {
 //   console.log(custo)

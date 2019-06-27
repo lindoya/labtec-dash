@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import NewEquip from './NewEquipContainer'
 import NewType from './NewTypeContainer'
-// import DashContainer from './DashEquipContainer'
+import DashEquip from './DashEquipContainer'
 
 class CompanyRoute extends Component{
 
@@ -12,7 +12,7 @@ class CompanyRoute extends Component{
         <Switch>
           <Route exact path='/logged/equip/add' component={NewEquip}/> 
           <Route exact path='/logged/equip/addType' component={NewType}/> 
-          {/* <Route exact path='/logged/equip/dash' component={DashContainer}/>  */}
+          <Route exact path='/logged/equip/dash' component={DashEquip}/> 
         </Switch>
     )
   }
