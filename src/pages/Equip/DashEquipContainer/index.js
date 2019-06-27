@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, Icon } from 'antd'
+import { Select, Input, Button, Icon, Modal } from 'antd'
 
 import './index.css'
 
@@ -10,10 +10,32 @@ const { Option } = Select;
 class DashEquip extends Component {
 
   state = {
+    modalDetalhes: false,
     searchAvancado: false,
     order: {
       field: 'peca',
       acendent: true,
+    },
+    equipSelected: {
+      razaoSocial: '',
+      cnpj: '',
+      street: '',
+      number: '',
+      city: '',
+      state: '',
+      neighborhood: '',
+      referencePoint: '',
+      zipCode: '',
+      telphone: '',
+      email: '',
+      nameContact: '',
+      type: '',
+      mark: '',
+      model: '',
+      description: '',
+      serialNumber: '',
+      readerColor: '',
+      details: '',
     },
     global: '',
     serialNumber: '',
@@ -28,14 +50,14 @@ class DashEquip extends Component {
     count: 0,
     show: 0,
     rows: [],
-   
+
     obj: [{
-      serialNumber : '11111111111111111',
-      cnpj : '87.787.165/0001-33',
-      razaoSocial : 'Panificadora Jose',
-      type : 'Controle de acesso',
-      mark : 'nao sei',
-      model : 'sei la',
+      serialNumber: '11111111111111111',
+      cnpj: '87.787.165/0001-33',
+      razaoSocial: 'Panificadora Jose',
+      type: 'Controle de acesso',
+      mark: 'nao sei',
+      model: 'sei la',
     }],
   }
 
@@ -128,6 +150,25 @@ class DashEquip extends Component {
     })
   }
 
+  openModalDetalhes = (equipamento) => {
+    this.setState({
+      modalDetalhes: true,
+      equipSelected: equipamento
+    })
+  }
+
+  okModalDetalhes = () => {
+    this.setState({
+      modalDetalhes: false
+    })
+  }
+
+  cancelModalDetalhes = () => {
+    this.setState({
+      modalDetalhes: false
+    })
+  }
+
 
   SearchAdvanced = () => (
     <div className='div-searchAdvanced-dashEquip'>
@@ -173,7 +214,7 @@ class DashEquip extends Component {
           <Select
             defaultValue={this.state.type}
             value={this.state.type}
-            style={{ width: '100%' }} 
+            style={{ width: '100%' }}
             onChange={this.onChangeTipo}
           >
             <Option value="Todos">Todos</Option>
@@ -223,6 +264,32 @@ class DashEquip extends Component {
         </div>
       </div>
     </div>
+  )
+
+  ModalDetalhes = () => (
+    <Modal
+      title="Detalhes"
+      visible={this.state.modalDetalhes}
+      onOk={this.okModalDetalhes}
+      onCancel={this.cancelModalDetalhes}
+    >
+      <p>{this.state.equipSelected.serialNumber}</p>
+      <p>{this.state.equipSelected.zipCode}</p>
+      <p>{this.state.equipSelected.razaoSocial}</p>
+      <p>{this.state.equipSelected.cnpj}</p>
+      <p>{this.state.equipSelected.city}</p>
+      <p>{this.state.equipSelected.neighborhood}</p>
+      <p>{this.state.equipSelected.state}</p>
+      <p>{this.state.equipSelected.street}</p>
+      <p>{this.state.equipSelected.referencePoint}</p>
+      <p>{this.state.equipSelected.email}</p>
+      <p>{this.state.equipSelected.nameContact}</p>
+      <p>{this.state.equipSelected.telphone}</p>
+      <p>{this.state.equipSelected.type}</p>
+      <p>{this.state.equipSelected.mark}</p>
+      <p>{this.state.equipSelected.model}</p>
+      <p>{this.state.equipSelected.readerColor}</p>
+  </Modal>
   )
 
 
@@ -321,11 +388,12 @@ class DashEquip extends Component {
           <h2 className='div-table-label-dashEquip'>Modelo</h2>
         </div>
       </div>
-     <div className='div-table-separeteLineMain-dashEquip' /> 
-       {
-         this.state.obj.map((teste) =>
+      <div className='div-table-separeteLineMain-dashEquip' />
+      {
+        this.state.obj.map((teste) =>
           <div className='div-table-list-dashEquip'>
-            <div className='div-tableRow-dashEquip'>
+            <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(teste)}>
+
               <div className='div-table-cel-serialNumber-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
                   {teste.serialNumber}
@@ -376,6 +444,7 @@ class DashEquip extends Component {
     console.log(this.state)
     return (
       <div className='div-comp-card'>
+        <this.ModalDetalhes />
 
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Gerenciar equipamentos</h1>
