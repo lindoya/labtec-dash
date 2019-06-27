@@ -335,6 +335,9 @@ class NewEquip extends Component {
                 <Option value="Vermelho">Vermelho</Option>
                 <Option value="Azul">Azul</Option>
                 <Option value="Verde">Verde</Option>
+                <Option value="DedoVivo">Dedo vivo</Option>
+                <Option value="BioLFD">BioLFD</Option>
+                <Option value="BioLC">BioLC</Option>
                 <Option value="NaoSeAplica">Não se aplica</Option>
               </Select>
             </div>
