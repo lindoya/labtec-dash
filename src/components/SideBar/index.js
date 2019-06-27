@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Tooltip } from 'antd';
 import './index.css'
 import { Redirect } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ class Sider extends Component {
   state = {
     current: '0',
     redirect: false,
-    open: 'LabTec',
+    open: ['LabTec'],
   };
 
   handleClick = e => {
@@ -18,7 +18,10 @@ class Sider extends Component {
     this.setState({
       current: e.key,
       redirect: true,
-      open: e.keyPath[1]
+      open: [
+        ...this.state.open, 
+        e.keyPath[1]
+      ]
     })
   }
 
@@ -54,11 +57,33 @@ class Sider extends Component {
     }
     return (
       <div>
+        <div className='menuIcon'>
+          <Tooltip placement="bottom" title={'Logout'}>
+            <Icon className='menuIcon-icon' type="logout" />
+          </Tooltip>
+
+          <Tooltip placement="bottom" title={'Minha Conta'}>
+            <Icon className='menuIcon-icon' type="user" />
+          </Tooltip>
+
+          <Tooltip placement="bottom" title={'MinhaTela1'}>
+            <Icon className='menuIcon-icon' type="dashboard" />
+          </Tooltip>
+
+          <Tooltip placement="bottom" title={'MinhaTela2'}>
+            <Icon className='menuIcon-icon' type="eye" />
+          </Tooltip>
+ 
+          <Tooltip placement="bottom" title={'MinhaTela3'}>
+            <Icon className='menuIcon-icon' type="fire" />
+          </Tooltip>
+
+        </div>
         <Menu
           className='menu'
           theme='dark'
           onClick={this.handleClick}
-          defaultOpenKeys={[this.state.open]}
+          defaultOpenKeys={this.state.open}
           selectedKeys={[this.state.current]}
           mode="inline"
         >
