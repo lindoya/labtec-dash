@@ -46,9 +46,6 @@
   margin-left: 20px !important;
 }
 
-
-
-
 .div-mainHeader-dashPeca{
   width: 100%;
   padding-left: 30px;
@@ -162,4 +159,11 @@
   outline: none;
   margin: 3px;
   border-radius: 3px
+}
+
+
+.table-spaceFooter-dashPeca{
+  background-color: #001529;
+  color: white;
+  margin: 9px;
 }
