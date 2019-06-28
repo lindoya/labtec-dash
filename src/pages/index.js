@@ -10,6 +10,7 @@ import EquipRoute from './Equip'
 import EntranceRoute from './Entrance';
 import PecaRoute from './Peca'
 import AnaliseRoute from './Analise'
+import TecnicoRoute from './Tecnico';
 
 
 class PagesRoute extends Component {
@@ -22,6 +23,7 @@ class PagesRoute extends Component {
             <Route exact path='/logged/dash' component={Dash}/>
             <Route path='/logged/entrance' component={EntranceRoute}/>
             <Route path='/logged/analise' component={AnaliseRoute}/>
+            <Route path='/logged/tecnico' component={TecnicoRoute}/>
             <Route path='/logged/company' component={CompanyRoute}/>
             <Route path='/logged/equip' component={EquipRoute}/>
             <Route path='/logged/peca' component={PecaRoute}/>

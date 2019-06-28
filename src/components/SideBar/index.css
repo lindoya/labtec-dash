@@ -6,7 +6,8 @@
 }
 
 .menuIcon { 
-  background-color: #001529;
+  background-color: #000C17;
+  border-bottom: 1px solid rgb(90, 91, 92);
   color: white;
   width: 220px !important;
   position: fixed;
