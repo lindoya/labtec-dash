@@ -318,7 +318,6 @@ class NewEntrance extends Component {
         content: `Entrada feita com sucesso`,
       })
     }
-    console.log(this.state)
     return (
       <div className='div-entrance-card'>
         <div className='div-comp-Linha div-comp-header'>
@@ -361,6 +360,7 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite a cor'
+                readOnly
                 name='corLeitor'
                 value={this.state.corLeitor}
                 onChange={this.onChange}
@@ -384,6 +384,7 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite o '
+                readOnly
                 name='tipo'
                 value={this.state.tipo}
                 onChange={this.onChange}
@@ -407,6 +408,7 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite a razão social'
+                readOnly
                 name='marca'
                 value={this.state.marca}
                 onChange={this.onChange}
@@ -432,6 +434,7 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite a razão social'
+                readOnly
                 name='modelo'
                 value={this.state.modelo}
                 onChange={this.onChange}
@@ -473,7 +476,7 @@ class NewEntrance extends Component {
                   this.state.fieldFalha.cnpj ?
                     'div-comp-inputError' :
                     ''}
-                placeholder='Digite o Cnpj'
+                readOnly
                 name='cnpj'
                 value={this.state.cnpj}
                 onChange={this.onChange}
@@ -496,7 +499,6 @@ class NewEntrance extends Component {
                   this.state.fieldFalha.razaoSocial ?
                     'div-comp-inputError' :
                     ''}
-                // placeholder='Digite a razão social'
                 name='razaoSocial'
                 value={this.state.razaoSocial}
                 onChange={this.onChange}
