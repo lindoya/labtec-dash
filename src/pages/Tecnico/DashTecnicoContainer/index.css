@@ -40,5 +40,177 @@
   font-weight: bold
 }
 .div-linha-dashTec{
-  width: 100%
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  align-items: center
+}
+.text-info-dashTec{
+  width: 96%;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(132, 132, 133);
+  margin: 40px 0 3px 0
+}
+
+
+
+
+
+.div-mainHeader-dashTec{
+  width: 96%;
+}
+.div-table-information-dashTec{
+  display: flex;
+  justify-content: space-between;
+}
+.div-table-information-total-dashTec{
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  margin-bottom: 5px;
+}
+.label-table-information-dashTec{
+  color: #35353591;
+  padding-left: 2px;
+  font-size: 12px;
+}
+.div-table-information-count-dashTec{
+  display: flex;
+  align-items: flex-end;
+}
+.div-table-separeteLineMain-dashTec{
+  width: 100%;
+  height: 2px;
+  background-color: #001529;
+}
+.div-icon-dashTec{
+  width: 10px;
+  cursor: pointer;
+  color: #ffffff !important;
+  align-self: center;
+}
+
+.div-tableRow-dashTec{
+  padding-top: 3px;
+  display: flex;
+}
+
+.div-tableRow-dashTec:hover{
+  background-color: #0084ff77;
+}
+
+.div-table-header-dashTec{
+  display: flex;
+  width: 100%;
+  background-color: #001529;
+}
+.div-table-cel-Os-dashTec{
+  width: 8% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-contrato-dashTec{
+  width: 15% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-garantia-dashTec{
+  width: 15% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-serialNumber-dashTec{
+  width: 18% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-razaoSocial-dashTec{
+  width: 18% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-tipoMarcaModelo-dashTec{
+  width: 26% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-label-dashTec{
+  color: #ffffff !important;
+  font-weight: bold !important;
+  font-size: 15px !important;
+  margin: 0 0 0 5px !important;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+.div-table-separeteLinerow-dashTec{
+  width: 100%;
+  height: 1px;
+  background-color: rgba(153, 153, 153, 0.788);
+}
+.div-table-footer-dashTec{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 35px;
+  background-color: #001529;
+}
+.table-buttonFooter-dashTec{
+  height: 25px;
+  background-color: white;
+  color: #001529;
+  cursor: pointer;
+  outline: none;
+  margin: 3px;
+  border-radius: 3px
+}
+
+
+.div-table-cel-Os-retornoFabrica-dashTec{
+  width: 50% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-cel-dataIdaFabrica-retornoFabrica-dashTec{
+  width: 50% !important;
+  display: flex;
+  cursor: pointer;
+}
+
+
+.div-table-list-dashTec{
+  width: 100%;
+  display: flex;
+  flex-direction: column
+}
+.div-tableRow-dashTec{
+  width: 100%;
+  padding-top: 3px;
+  display: flex;
+}
+.div-table-cel-cnpj-dashTec{
+  width: 15% !important;
+  display: flex;
+  cursor: pointer;
+}
+.div-table-label-cel-dashTec{
+  margin-left: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.div-table-separeteLinerow-dashTec{
+  width: 100%;
+  height: 1px;
+  background-color: rgba(153, 153, 153, 0.788);
 }

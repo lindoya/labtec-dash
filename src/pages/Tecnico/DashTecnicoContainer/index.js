@@ -17,7 +17,9 @@ class DashTecnico extends Component {
     razaoSocial: '',
     type: '',
     mark: '',
-    model: ''
+    model: '',
+    OsRetorno: '',
+    dataFabrica: '',
   }
 
 
@@ -30,137 +32,193 @@ class DashTecnico extends Component {
     })
   }
 
-  TableCompanies = () => (
-    <div className='div-mainHeader-dashEquip'>
-      <div className='div-table-separeteLineMain-dashEquip' />
-      <div className='div-table-header-dashEquip'>
-        <div className='div-table-cel-Os-dashEquip'
+  TableAgAnalise = () => (
+    <div className='div-mainHeader-dashTec'>
+      <div className='div-table-separeteLineMain-dashTec' />
+      <div className='div-table-header-dashTec'>
+        <div className='div-table-cel-Os-dashTec'
           onClick={() => this.changeOrder('Os')}
         >
           {this.state.order.field === 'Os' ?
-            <div className='div-icon-dashEquip'>
+            <div className='div-icon-dashTec'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>OS</h2>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>OS</h2>
         </div>
-        <div className='div-table-cel-contrato-dashEquip'
+        <div className='div-table-cel-contrato-dashTec'
           onClick={() => this.changeOrder('contrato')}>
           {this.state.order.field === 'contrato' ?
-            <div className='div-icon-dashEquip'>
+            <div className='div-icon-dashTec'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Contrato</h2>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>Contrato</h2>
         </div>
-        <div className='div-table-cel-garantia-dashEquip'
+        <div className='div-table-cel-garantia-dashTec'
           onClick={() => this.changeOrder('garantia')}>
           {this.state.order.field === 'garantia' ?
-            <div className='div-icon-dashEquip'>
+            <div className='div-icon-dashTec'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Garantia</h2>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>Garantia</h2>
         </div>
-        <div className='div-table-cel-serialNumber-dashEquip'
+        <div className='div-table-cel-serialNumber-dashTec'
           onClick={() => this.changeOrder('serialNumber')}>
           {this.state.order.field === 'serialNumber' ?
-            <div className='div-icon-dashEquip'>
+            <div className='div-icon-dashTec'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Número de série</h2>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>Número de série</h2>
         </div>
-        <div className='div-table-cel-razaoSocial-dashEquip'
+        <div className='div-table-cel-razaoSocial-dashTec'
           onClick={() => this.changeOrder('razaoSocial')}>
           {this.state.order.field === 'razaoSocial' ?
-            <div className='div-icon-dashEquip'>
+            <div className='div-icon-dashTec'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Razão social</h2>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>Razão social</h2>
         </div>
-        <div className='div-table-cel-type-dashEquip'
+        <div className='div-table-cel-tipoMarcaModelo-dashTec'
           onClick={() => this.changeOrder('type')}>
           {this.state.order.field === 'type' ?
-            <div className='div-icon-dashEquip'>
+            <div className='div-icon-dashTec'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
                 <Icon type="caret-up" />}
             </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Tipo</h2>
-        </div>
-        <div className='div-table-cel-mark-dashEquip'
-          onClick={() => this.changeOrder('mark')}>
-          {this.state.order.field === 'mark' ?
-            <div className='div-icon-dashEquip'>
-              {this.state.order.acendent ?
-                <Icon type="caret-down" /> :
-                <Icon type="caret-up" />}
-            </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Marca</h2>
-        </div>
-        <div className='div-table-cel-model-dashEquip'
-          onClick={() => this.changeOrder('model')}>
-          {this.state.order.field === 'model' ?
-            <div className='div-icon-dashEquip'>
-              {this.state.order.acendent ?
-                <Icon type="caret-down" /> :
-                <Icon type="caret-up" />}
-            </div>
-            : <div className='div-icon-dashEquip'></div>}
-          <h2 className='div-table-label-dashEquip'>Modelo</h2>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>Tipo - Marca - Modelo</h2>
         </div>
       </div>
-     <div className='div-table-separeteLineMain-dashEquip' /> 
+     <div className='div-table-separeteLineMain-dashTec' /> 
        {/* {
          this.state.obj.map((teste) =>
-          <div className='div-table-list-dashEquip'>
-            <div className='div-tableRow-dashEquip'>
-              <div className='div-table-cel-serialNumber-dashEquip'>
-                <label className='div-table-label-cel-dashEquip'>
+          <div className='div-table-list-dashTec'>
+            <div className='div-tableRow-dashTec'>
+              <div className='div-table-cel-serialNumber-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
                   {teste.serialNumber}
                 </label>
               </div>
-              <div className='div-table-cel-cnpj-dashEquip'>
-                <label className='div-table-label-cel-dashEquip'>
+              <div className='div-table-cel-cnpj-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
                   {teste.cnpj}
                 </label>
               </div>
-              <div className='div-table-cel-razaoSocial-dashEquip'>
-                <label className='div-table-label-cel-dashEquip'>
+              <div className='div-table-cel-razaoSocial-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
                   {teste.razaoSocial}
                 </label>
               </div>
-              <div className='div-table-cel-tipo-dashEquip'>
-                <label className='div-table-label-cel-dashEquip'>
+              <div className='div-table-cel-tipo-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
                   {teste.type}
                 </label>
               </div>
-              <div className='div-table-cel-marca-dashEquip'>
-                <label className='div-table-label-cel-dashEquip'>
+              <div className='div-table-cel-marca-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
                   {teste.mark}
                 </label>
               </div>
-              <div className='div-table-cel-modelo-dashEquip'>
-                <label className='div-table-label-cel-dashEquip'>
+              <div className='div-table-cel-modelo-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
                   {teste.model}
                 </label>
               </div>
             </div>
-            <div className='div-table-separeteLinerow-dashEquip' />
+            <div className='div-table-separeteLinerow-dashTec' />
+          </div>
+        )
+      } */}
+      <div className='gerCmp-div-table-footer'>
+        <button className='gerCmp-table-buttonFooter'>1</button>
+        <button className='gerCmp-table-buttonFooter'>2</button>
+        <button className='gerCmp-table-buttonFooter'>3</button>
+        <button className='gerCmp-table-buttonFooter'>4</button>
+        <button className='gerCmp-table-buttonFooter'>5</button>
+      </div>
+    </div>
+  )
+
+  TableAgRetornoFabrica = () => (
+    <div className='div-mainHeader-dashTec'>
+      <div className='div-table-separeteLineMain-dashTec' />
+      <div className='div-table-header-dashTec'>
+        <div className='div-table-cel-Os-retornoFabrica-dashTec'
+          onClick={() => this.changeOrder('OsRetorno')}
+        >
+          {this.state.order.field === 'OsRetorno' ?
+            <div className='div-icon-dashTec'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>OS</h2>
+        </div>
+        <div className='div-table-cel-dataIdaFabrica-retornoFabrica-dashTec'
+          onClick={() => this.changeOrder('dataFabrica')}>
+          {this.state.order.field === 'dataFabrica' ?
+            <div className='div-icon-dashTec'>
+              {this.state.order.acendent ?
+                <Icon type="caret-down" /> :
+                <Icon type="caret-up" />}
+            </div>
+            : <div className='div-icon-dashTec'></div>}
+          <h2 className='div-table-label-dashTec'>Data de ida para fábrica</h2>
+        </div>
+      </div>
+     <div className='div-table-separeteLineMain-dashTec' /> 
+       {/* {
+         this.state.obj.map((teste) =>
+          <div className='div-table-list-dashTec'>
+            <div className='div-tableRow-dashTec'>
+              <div className='div-table-cel-serialNumber-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {teste.serialNumber}
+                </label>
+              </div>
+              <div className='div-table-cel-cnpj-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {teste.cnpj}
+                </label>
+              </div>
+              <div className='div-table-cel-razaoSocial-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {teste.razaoSocial}
+                </label>
+              </div>
+              <div className='div-table-cel-tipo-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {teste.type}
+                </label>
+              </div>
+              <div className='div-table-cel-marca-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {teste.mark}
+                </label>
+              </div>
+              <div className='div-table-cel-modelo-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {teste.model}
+                </label>
+              </div>
+            </div>
+            <div className='div-table-separeteLinerow-dashTec' />
           </div>
         )
       } */}
@@ -215,8 +273,37 @@ class DashTecnico extends Component {
         </div>
 
         <div className='div-linha-dashTec'>
+          
+          <div className='text-info-dashTec'>Aguardando análise</div>
+          <this.TableAgAnalise />
         
-          <this.TableCompanies />
+        </div>
+
+        <div className='div-linha-dashTec'>
+          
+          <div className='text-info-dashTec'>Aguardando retorno da fábrica</div>
+          <this.TableAgRetornoFabrica />
+        
+        </div>
+
+        <div className='div-linha-dashTec'>
+          
+          <div className='text-info-dashTec'>Revisão testes</div>
+          <this.TableAgAnalise />
+        
+        </div>
+
+        <div className='div-linha-dashTec'>
+          
+          <div className='text-info-dashTec'>Aguardando aprovação</div>
+          <this.TableAgAnalise />
+        
+        </div>
+
+        <div className='div-linha-dashTec'>
+          
+          <div className='text-info-dashTec'>Revisão testes finais</div>
+          <this.TableAgAnalise />
         
         </div>
 
