@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Select, Input, Button, Icon, Modal } from 'antd'
+import { getAllEquip } from '../../../services/equip'
 
 import './index.css'
 
@@ -13,7 +14,7 @@ class DashEquip extends Component {
     modalDetalhes: false,
     searchAvancado: false,
     order: {
-      field: 'peca',
+      field: 'serialNumber',
       acendent: true,
     },
     equipSelected: {
@@ -61,40 +62,37 @@ class DashEquip extends Component {
     }],
   }
 
-  // getAll = async () => {
-  //   const query = {
-  //     filters: {
-  //       part: {
-  //         global: {
-  //           fields: ['item', 'description'],
-  //           value: this.state.global,
-  //         },
-  //         specific: {
-  //           item: this.state.peca,
-  //           description: this.state.descricao,
-  //           costPrice: this.state.precoCusto,
-  //           salePrice: this.state.precoVenda,
-  //         }
-  //       }
-  //     },
-  //     page: 1,
-  //     total: 25,
-  //     order: this.state.order,
-  //   }
+  getAll = async () => {
+    const query = {
+      filters: {
+        equip: {
+          global: {
+            fields: ['serialNumber'],
+            value: this.state.global,
+          },
+          specific: {
+            serialNumber: this.state.serialNumber,
+          }
+        }
+      },
+      page: 1,
+      total: 25,
+      order: this.state.order,
+    }
 
-  //   await getAllParts(query).then(
-  //     resposta => this.setState({
-  //       page: resposta.data.page,
-  //       count: resposta.data.count,
-  //       show: resposta.data.show,
-  //       rows: resposta.data.rows,
-  //     })
-  //   )
-  // }
+    await getAllEquip(query).then(
+      resposta => this.setState({
+        page: resposta.data.page,
+        count: resposta.data.count,
+        show: resposta.data.show,
+        rows: resposta.data.rows,
+      })
+    )
+  }
 
-  // componentDidMount = () => {
-  //   this.getAll()
-  // }
+  componentDidMount = () => {
+    this.getAll()
+  }
 
   buttonAvancado = () => {
     this.setState({
@@ -112,12 +110,16 @@ class DashEquip extends Component {
       mark: '',
       model: '',
       leitor: 'Escolha o leitor',
+    }, () => {
+      this.getAll()
     })
   }
 
   changeTotal = (value) => {
     this.setState({
       total: value
+    }, () => {
+      this.getAll()
     })
   }
 
@@ -126,6 +128,8 @@ class DashEquip extends Component {
 
     this.setState({
       [evento.name]: evento.value,
+    }, () => {
+      this.getAll()
     })
   }
 
@@ -135,18 +139,24 @@ class DashEquip extends Component {
         field,
         acendent: !this.state.order.acendent,
       }
+    }, () => {
+      this.getAll()
     })
   }
 
   onChangeTipo = (valueSelected) => {
     this.setState({
       type: valueSelected
+    }, () => {
+      this.getAll()
     })
   }
 
   onChangeLeitor = (value) => {
     this.setState({
       leitor: value
+    }, () => {
+      this.getAll()
     })
   }
 
@@ -390,38 +400,38 @@ class DashEquip extends Component {
       </div>
       <div className='div-table-separeteLineMain-dashEquip' />
       {
-        this.state.obj.map((teste) =>
+        this.state.rows.map((line) =>
           <div className='div-table-list-dashEquip'>
-            <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(teste)}>
+            <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(line)}>
 
               <div className='div-table-cel-serialNumber-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {teste.serialNumber}
+                  {line.serialNumber}
                 </label>
               </div>
               <div className='div-table-cel-cnpj-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {teste.cnpj}
+                  {line.cnpj}
                 </label>
               </div>
               <div className='div-table-cel-razaoSocial-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {teste.razaoSocial}
+                  {line.razaoSocial}
                 </label>
               </div>
               <div className='div-table-cel-tipo-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {teste.type}
+                  {line.type}
                 </label>
               </div>
               <div className='div-table-cel-marca-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {teste.mark}
+                  {line.mark}
                 </label>
               </div>
               <div className='div-table-cel-modelo-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {teste.model}
+                  {line.model}
                 </label>
               </div>
             </div>

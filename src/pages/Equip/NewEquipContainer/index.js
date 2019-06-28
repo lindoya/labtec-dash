@@ -90,11 +90,11 @@ class NewEquip extends Component {
   }
 
   success = () => {
-    message.success('Empresa cadastrada com sucesso');
+    message.success('Equipamento cadastrada com sucesso');
   };
 
   error = () => {
-    message.error('Empresa não foi cadastrada com sucesso');
+    message.error('Erro ao cadastrar equipamento');
   };
 
   componentDidMount = () => {

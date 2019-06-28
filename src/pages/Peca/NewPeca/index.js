@@ -117,7 +117,7 @@ class NewPeca extends Component {
   };
 
   error = () => {
-    message.error('Peça não foi cadastrada com sucesso');
+    message.error('Erro ao cadastrar peça');
   };
 
   clickModel = (selecionados) => {
