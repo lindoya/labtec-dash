@@ -215,3 +215,115 @@
   height: 1px;
   background-color: rgba(153, 153, 153, 0.788);
 }
+
+
+
+.div-form-modal-dashEquip{
+  display: flex;
+  flex-direction: column
+}
+.h3-modal-dashEquip{
+  width: 100%;
+  font-size: 15px;
+  font-weight: bold;
+  color: #9e9e9e
+}
+.div-linhaModal-dashEquip{
+  width: 100%;
+  display: flex;
+  justify-content: space-between
+}
+.p-dashEquip{
+  color: black
+}
+.div-textSerialNumber-modal-dashEquip{
+  width: 33%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textType-modal-dashEquip{
+  width: 33%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textMark-modal-dashEquip{
+  width: 33%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textModel-modal-dashEquip{
+  width: 40%;
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 20px
+}
+.div-textLeitor-modal-dashEquip{
+  width: 35%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-linhaModal2-dashEquip{
+  width: 100%;
+  display: flex;
+}
+.div-textCnpj-modal-dashEquip{
+  width: 30%;
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 20px
+}
+.div-textRazaoSocial-modal-dashEquip{
+  width: 70%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textCep-modal-dashEquip{
+  width: 17%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textRua-modal-dashEquip{
+  width: 33%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textNumero-modal-dashEquip{
+  width: 15%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textBairro-modal-dashEquip{
+  width: 35%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textCity-modal-dashEquip{
+  width: 25%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textState-modal-dashEquip{
+  width: 25%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textRef-modal-dashEquip{
+  width: 60%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textNome-modal-dashEquip{
+  width: 35%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textEmail-modal-dashEquip{
+  width: 40%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textTel-modal-dashEquip{
+  width: 25%;
+  font-size: 15px;
+  font-weight: bold;
+}

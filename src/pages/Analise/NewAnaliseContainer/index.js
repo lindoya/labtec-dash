@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import './index.css'
 
-import { Button, Input, Card, Checkbox, Modal } from 'antd';
+import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 class NewAnalise extends Component {
 
   state = {
     modal: false,
+    status: 'prontoParaOrcamento',
     checkList: {
 
     },
@@ -127,6 +129,12 @@ class NewAnalise extends Component {
 
   onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
+  }
+
+  changeSelect = (value) => {
+    this.setState({
+      status: value
+    })
   }
 
   // onChange = (value) => {
@@ -370,6 +378,12 @@ class NewAnalise extends Component {
         </div>
 
         <div className='div-linhaButton-analise'>
+
+        <Select defaultValue={this.state.status} onChange={this.changeSelect} className='select-analise'>
+          <Option value="irParaFabrica">Ir para fábrica</Option>
+          <Option value="irParaTestes">Ir para testes</Option>
+          <Option value="prontoParaOrcamento">Pronto para orçamento</Option>
+        </Select>
 
           <Button
             type="primary"

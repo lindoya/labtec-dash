@@ -228,7 +228,7 @@ export const validators = (nome, valor, state) => {
       fieldFalha,
       message
     }
-  } else if (nome === 'RG') {
+  } else if (nome === 'rg') {
     if (valor === '') {
       message.RG = 'É obrigatório.'
       fieldFalha.RG = true

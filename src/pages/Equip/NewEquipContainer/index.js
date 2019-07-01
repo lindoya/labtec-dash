@@ -50,7 +50,7 @@ class NewEquip extends Component {
   saveTargetNewEquip = async () => {
     const values = {
       serialNumber: this.state.serialNumber,
-      leitor: this.state.leitor,
+      readerColor: this.state.leitor,
       companyId: this.state.companyId,
       equipModelId: this.state.equipModelId,
     }
@@ -208,6 +208,7 @@ class NewEquip extends Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className='div-comp-card'>
 

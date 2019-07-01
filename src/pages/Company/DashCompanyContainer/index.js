@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, DatePicker, Icon } from 'antd'
+import { Select, Input, Button, DatePicker, Icon, Modal } from 'antd'
 import { getAllCompany } from '../../../services/company'
 
 import 'antd/dist/antd.css'
@@ -13,6 +13,8 @@ class NewCompany extends Component {
 
   state = {
     avancado: false,
+    modalDetalhesCompany: false,
+    companySelected: '',
     order: {
       field: 'createdAt',
       acendent: true,
@@ -115,6 +117,25 @@ class NewCompany extends Component {
     )
   }
 
+  openModalDetalhesCompany = (company) => {
+    this.setState({
+      modalDetalhesCompany: true,
+      companySelected: company
+    })
+  }
+
+  okModalDetalhesCompany = () => {
+    this.setState({
+      modalDetalhesCompany: false
+    })
+  }
+
+  cancelModalDetalhesCompany = () => {
+    this.setState({
+      modalDetalhesCompany: false
+    })
+  }
+
   SearchAdvanced = () => (
     <div className='gerCmp-div-advanced'>
 
@@ -172,6 +193,56 @@ class NewCompany extends Component {
       </div>
     </div>
   )
+
+  ModalDetalhes = () => (
+    <Modal
+      title="Detalhes da empresa"
+      visible={this.state.modalDetalhesCompany}
+      onOk={this.okModalDetalhesCompany}
+      onCancel={this.cancelModalDetalhesCompany}
+    >
+      <div className='gercomp-div-form-modal'>
+        <h3 className='gercomp-h3-modal'>Dados da empresa</h3>
+        <div className='gercomp-div-linhaModal2'>
+          <div className='gercomp-div-textCnpj-modal'>
+            Cnpj
+        <p className='gercomp-p'>{this.state.companySelected.cnpj}</p>
+          </div>
+          <div className='gercomp-div-textRazaoSocial-modal'>
+            Razão social
+        <p className='gercomp-p'>{this.state.companySelected.razaoSocial}</p>
+          </div>
+        </div>
+        <h3 className='gercomp-h3-modal'>Dados do registro</h3>
+        <div className='gercomp-div-linhaModal'>
+          <div className='gercomp-div-textCriado-modal'>
+            Criado em
+        <p className='gercomp-p'>{this.state.companySelected.createdAt}</p>
+          </div>
+          <div className='gercomp-div-textAtualizado-modal'>
+            Atualizado em
+        <p className='gercomp-p'>{this.state.companySelected.updatedAt}</p>
+          </div>
+        </div>
+        <h3 className='gercomp-h3-modal'>Dados para contato</h3>
+        <div className='gercomp-div-linhaModal'>
+          <div className='gercomp-div-textNome-modal'>
+            Nome do responsável
+        <p className='gercomp-p'>{this.state.companySelected.nameContact}</p>
+          </div>
+          <div className='gercomp-div-textTel-modal'>
+            Telefone
+        <p className='gercomp-p'>{this.state.companySelected.telphone}</p>
+          </div>
+        </div>
+        <Button type="primary">
+          Editar
+            <Icon type="edit" />
+        </Button>
+      </div>
+    </Modal>
+  )
+
 
   TableCompanies = () => (
     <div className='gerCmp-div-mainHeader'>
@@ -255,7 +326,8 @@ class NewCompany extends Component {
       {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
-            <div className='gerCmp-div-tableRow'>
+            <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhesCompany(line)}>
+
               <div className='gerCmp-div-table-cel-cnpj'>
                 <label className='gerCmp-div-table-label-cel'>
                   {line.cnpj}
@@ -299,6 +371,8 @@ class NewCompany extends Component {
   render() {
     return (
       <div className='gerCmp-div-card'>
+
+        <this.ModalDetalhes />
 
         <div className='gerCmp-div-header'>
           <h1 className='gerCmp-div-title'>Gerenciar empresas</h1>

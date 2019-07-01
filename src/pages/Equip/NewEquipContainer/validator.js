@@ -22,6 +22,7 @@ export const masks = (nome, valor) => {
   } else if (nome === 'serialNumber') {
       let value = valor
       value = value.replace(/\D/ig, '')
+      value = value.slice(0, 17)
 
       return {
         nome,
@@ -40,7 +41,7 @@ export const validators = (nome, valor, state) => {
   
   if (nome === 'cnpj') {
     if (valor === '') {
-      message.cnpj = 'É Obrigatório.'
+      message.cnpj = 'É obrigatório.'
       fieldFalha.cnpj = true
     } else fieldFalha.cnpj = false
 
@@ -51,7 +52,7 @@ export const validators = (nome, valor, state) => {
   } 
   else if (nome === 'serialNumber'){
     if (valor === '') {
-      message.serialNumber = 'É Obrigatório.'
+      message.serialNumber = 'É obrigatório.'
       fieldFalha.serialNumber = true
     } else fieldFalha.serialNumber = false
 
