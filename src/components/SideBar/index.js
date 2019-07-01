@@ -19,7 +19,6 @@ class Sider extends Component {
       current: e.key,
       redirect: true,
       open: [
-        ...this.state.open, 
         e.keyPath[1]
       ]
     })
@@ -32,6 +31,7 @@ class Sider extends Component {
   }
 
   render() {
+    console.log(this.state)
     if (this.state.redirect) {
       this.changeRedirectState()
       switch (this.state.current) {

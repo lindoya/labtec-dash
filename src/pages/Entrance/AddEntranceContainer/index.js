@@ -3,12 +3,11 @@ import { Input, Modal, Button, Select, Radio, Card, Icon, message } from 'antd';
 
 import * as R from 'ramda'
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { changeValueCompany, onSubmit } from '../EntranceRedux/action'
 import { validators, masks }from './validator'
 import { getAddressByZipCode } from '../../../services/company'
 
+import { getOneBySerialNumber } from '../../../services/equip'
+import { add } from '../../../services/entrance'
 
 import './index.css'
 
@@ -18,17 +17,20 @@ const { Option } = Select;
 class NewEntrance extends Component {
 
   state = {
+    messageSuccess: false,    
+    messageError: false,
     numeroSerie: '',
+    equipId: '',
     corLeitor: '',
-    tipo: '',
-    marca: '',
-    modelo: '',
+    type: '',
+    mark: '',
+    model: '',
     cnpj: '',
     razaoSocial: '',
     defeito: '',
     descricao: '',
     nameCliente: '',
-    RG: '',
+    rg: '',
     cpf: '',
     devEmbalado: '',
     nameRemetente: '',
@@ -42,7 +44,6 @@ class NewEntrance extends Component {
     referencePoint: '',
     nameMotoboy: '',
     nameResponsavel: '',
-
     radio: '',
     selected: 'cliente',
     embalado: '',
@@ -76,7 +77,7 @@ class NewEntrance extends Component {
       descricao: '',
       danos: '',
       nameCliente: '',
-      RG: '',
+      rg: '',
       cpf: '',
       devEmbalado: '',
       nameRemetente: '',
@@ -87,7 +88,7 @@ class NewEntrance extends Component {
       street: '',
       number:'',
       nameMotoboy: '',
-       nameResponsavel: '',
+      nameResponsavel: '',
     },
     fieldFalha: {
       numeroSerie: false,
@@ -101,7 +102,7 @@ class NewEntrance extends Component {
       descricao: false,
       danos: false,
       nameCliente: false,
-      RG: false,
+      rg: false,
       cpf: false,
       devEmbalado: false,
       nameRemetente: false,
@@ -114,8 +115,6 @@ class NewEntrance extends Component {
       nameMotoboy: false,
       nameResponsavel: false,
     },
-    messageError: false,
-    messageSuccess: false
   }
 
   onChange = (e) => {
@@ -155,6 +154,37 @@ class NewEntrance extends Component {
       fieldFalha,
       message
     })
+  }
+
+  getSerialNumber = async (e) => {
+    const serialNumberWithMask= e.target.value
+    const serialNumber = serialNumberWithMask.replace(/\D/g, '')
+    try {
+      const equipament = await getOneBySerialNumber(serialNumber)
+      this.setState({
+        equipId: equipament.data.id,
+        corLeitor: equipament.data.readerColor,
+        razaoSocial: equipament.data.company.razaoSocial,
+        cnpj: equipament.data.company.cnpj,
+        model: equipament.data.equipModel.model,
+        mark: equipament.data.equipModel.equipMark.mark,
+        type: equipament.data.equipModel.equipMark.equipType.type,
+      }, console.log(equipament))
+    } catch (error) {
+      const { fieldFalha, message } = this.state
+      
+      fieldFalha.serialNumber = true
+      message.serialNumber = 'Número de série inválido.'
+        
+      this.setState({
+        fieldFalha,
+        message,
+        corLeitor: '',
+        razaoSocial: '',
+        cnpj: '',
+        model: '',
+      })
+    }
   }
 
   getAddress = async (e) => { 
@@ -273,18 +303,20 @@ class NewEntrance extends Component {
   changeRadioNao = () => {
     this.setState({
       radio: 'nao',
+      danos: ''
     })
   }
 
   changeEmbaladoSim = () => {
     this.setState({
-      embalado: 'sim'
+      embalado: 'sim',
+      devEmbalado: ''
     })
   }
 
   changeEmbaladoNao = () => {
     this.setState({
-      embalado: 'nao'
+      embalado: 'nao',
     })
   }
 
@@ -311,14 +343,87 @@ class NewEntrance extends Component {
     this.props.onSubmit(body)
   }
 
-  render() {
-    if (this.props.value.sucess) {
-      Modal.success({
-        title: 'Sucesso',
-        content: `Entrada feita com sucesso`,
+  saveTargetEntrance = async () => {
+
+    const values = {
+      equipId: this.state.equipId,
+      defect: this.state.defeito,
+      externalDamage: this.state.radio,
+      details: this.state.danos,
+      observation: this.state.descricao,
+      delivery: this.state.selected,
+      clientName: this.state.nameCliente,
+      RG: this.state.rg,
+      Cpf: this.state.cpf,
+      senderName: this.state.nameRemetente,
+      properlyPacked: this.state.devEmbalado,
+      zipCode: this.state.cep,
+      state: this.state.state,
+      city: this.state.city,
+      neighborhood: this.state.neighborhood,
+      street: this.state.street,
+      number: this.state.number,
+      motoboyName: this.state.nameMotoboy,
+      responsibleName: this.state.nameResponsavel,
+      technicianName: this.state.nameExterno,
+      accessories: this.state.acessorios
+    }
+
+    const resposta = await add (values)
+
+    console.log(resposta)    
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+        fieldFalha: resposta.data.fields[0].field,
+        message: resposta.data.fields[0].message,
+      })
+      await this.error()
+      this.setState({
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        equipId: '',
+        defeito: '',
+        descricao: '',
+        danos: '',
+        radio: '',
+        selected: 'cliente',
+        nameCliente: '',
+        rg: '',
+        cpf: '',
+        nameRemetente: '',
+        devEmbalado: '',
+        referencePoint: '',
+        cep: '',
+        state: '',
+        city: '',
+        neighborhood: '',
+        street: '',
+        number: '',
+        nameMotoboy: '',
+        nameResponsavel: '',
+        nameExterno: '',
+        messageSuccess: true,
+      })
+      await this.success()
+      this.setState({
+        messageSuccess: false
       })
     }
-    console.log(this.state)
+  }
+
+  render() {
+    // if (this.props.value.sucess) {
+    //   Modal.success({
+    //     title: 'Sucesso',
+    //     content: `Entrada feita com sucesso`,
+    //   })
+    // }
     return (
       <div className='div-entrance-card'>
         <div className='div-comp-Linha div-comp-header'>
@@ -341,7 +446,7 @@ class NewEntrance extends Component {
                 name='numeroSerie'
                 value={this.state.numeroSerie}
                 onChange={this.onChange}
-                onBlur={this.onBlurValidator}
+                onBlur={this.getSerialNumber}
                 onFocus={this.onChange}
               />
               {this.state.fieldFalha.numeroSerie ?
@@ -361,6 +466,7 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite a cor'
+                readOnly
                 name='corLeitor'
                 value={this.state.corLeitor}
                 onChange={this.onChange}
@@ -384,8 +490,9 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite o '
+                readOnly
                 name='tipo'
-                value={this.state.tipo}
+                value={this.state.type}
                 onChange={this.onChange}
                 onBlur={this.onBlurValidator}
                 onFocus={this.onChange}
@@ -407,8 +514,9 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite a razão social'
+                readOnly
                 name='marca'
-                value={this.state.marca}
+                value={this.state.mark}
                 onChange={this.onChange}
                 onBlur={this.onBlurValidator}
                 onFocus={this.onChange}
@@ -432,8 +540,9 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 // placeholder='Digite a razão social'
+                readOnly
                 name='modelo'
-                value={this.state.modelo}
+                value={this.state.model}
                 onChange={this.onChange}
                 onBlur={this.onBlurValidator}
                 onFocus={this.onChange}
@@ -473,7 +582,7 @@ class NewEntrance extends Component {
                   this.state.fieldFalha.cnpj ?
                     'div-comp-inputError' :
                     ''}
-                placeholder='Digite o Cnpj'
+                readOnly
                 name='cnpj'
                 value={this.state.cnpj}
                 onChange={this.onChange}
@@ -496,7 +605,7 @@ class NewEntrance extends Component {
                   this.state.fieldFalha.razaoSocial ?
                     'div-comp-inputError' :
                     ''}
-                // placeholder='Digite a razão social'
+                readOnly
                 name='razaoSocial'
                 value={this.state.razaoSocial}
                 onChange={this.onChange}
@@ -704,25 +813,25 @@ class NewEntrance extends Component {
             </div>
             <div className='div-entrance-rg'>
             <h2 className={
-                this.state.fieldFalha.RG ?
+                this.state.fieldFalha.rg ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>RG:</h2>
             <Input
                 className={
-                  this.state.fieldFalha.RG ?
+                  this.state.fieldFalha.rg ?
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o RG'
-                name='RG'
-                value={this.state.RG}
+                name='rg'
+                value={this.state.rg}
                 onChange={this.onChange}
                 onBlur={this.onBlurValidator}
                 onFocus={this.onChange}
               />
-              {this.state.fieldFalha.RG ?
+              {this.state.fieldFalha.rg ?
                 <p className='div-comp-feedbackError'>
-                  {this.state.message.RG}
+                  {this.state.message.rg}
                 </p> : null}
             </div>
             <div className='div-entrance-cpf'>
@@ -1156,21 +1265,11 @@ class NewEntrance extends Component {
         </div> : null}
 
         <div className='div-button-entrance'>
-          <Button className='button-entrance'>Salvar</Button>
+          <Button className='button-entrance' onClick={this.saveTargetEntrance}>Salvar</Button>
         </div>
       </div>
     )
   }
 }
 
-function mapDispacthToProps(dispach) {
-  return bindActionCreators({ changeValueCompany, onSubmit }, dispach)
-}
-
-function mapStateToProps(state) {
-  return {
-    value: state.newCompany,
-  }
-}
-
-export default connect(mapStateToProps, mapDispacthToProps)(NewEntrance)
+export default NewEntrance

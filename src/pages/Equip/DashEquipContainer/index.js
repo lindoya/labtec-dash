@@ -278,28 +278,97 @@ class DashEquip extends Component {
 
   ModalDetalhes = () => (
     <Modal
-      title="Detalhes"
+      title="Detalhes do equipamento"
       visible={this.state.modalDetalhes}
       onOk={this.okModalDetalhes}
       onCancel={this.cancelModalDetalhes}
     >
-      <p>{this.state.equipSelected.serialNumber}</p>
-      <p>{this.state.equipSelected.zipCode}</p>
-      <p>{this.state.equipSelected.razaoSocial}</p>
-      <p>{this.state.equipSelected.cnpj}</p>
-      <p>{this.state.equipSelected.city}</p>
-      <p>{this.state.equipSelected.neighborhood}</p>
-      <p>{this.state.equipSelected.state}</p>
-      <p>{this.state.equipSelected.street}</p>
-      <p>{this.state.equipSelected.referencePoint}</p>
-      <p>{this.state.equipSelected.email}</p>
-      <p>{this.state.equipSelected.nameContact}</p>
-      <p>{this.state.equipSelected.telphone}</p>
-      <p>{this.state.equipSelected.type}</p>
-      <p>{this.state.equipSelected.mark}</p>
-      <p>{this.state.equipSelected.model}</p>
-      <p>{this.state.equipSelected.readerColor}</p>
-  </Modal>
+      <div className='div-form-modal-dashEquip'>
+        <h3 className='h3-modal-dashEquip'>Dados do equipamento</h3>
+        <div className='div-linhaModal-dashEquip'>
+          <div className='div-textSerialNumber-modal-dashEquip'>
+            Número de série
+          <p className='p-dashEquip'>{this.state.equipSelected.serialNumber}</p>
+          </div>
+          <div className='div-textType-modal-dashEquip'>
+            Tipo
+          <p className='p-dashEquip'>{this.state.equipSelected.type}</p>
+          </div>
+          <div className='div-textMark-modal-dashEquip'>
+            Marca
+          <p className='p-dashEquip'>{this.state.equipSelected.mark}</p>
+          </div>
+        </div>
+        <div className='div-linhaModal2-dashEquip'>
+          <div className='div-textModel-modal-dashEquip'>
+            Modelo
+          <p className='p-dashEquip'>{this.state.equipSelected.model}</p>
+          </div>
+          <div className='div-textLeitor-modal-dashEquip'>
+            Leitor
+          <p className='p-dashEquip'>{this.state.equipSelected.readerColor}</p>
+          </div>
+        </div>
+        <h3 className='h3-modal-dashEquip'>Dados da empresa</h3>
+        <div className='div-linhaModal2-dashEquip'>
+          <div className='div-textCnpj-modal-dashEquip'>
+            Cnpj
+        <p className='p-dashEquip'>{this.state.equipSelected.cnpj}</p>
+          </div>
+          <div className='div-textRazaoSocial-modal-dashEquip'>
+            Razão social
+        <p className='p-dashEquip'>{this.state.equipSelected.razaoSocial}</p>
+          </div>
+        </div>
+        <div className='div-linhaModal-dashEquip'>
+          <div className='div-textCep-modal-dashEquip'>
+            Cep
+        <p className='p-dashEquip'>{this.state.equipSelected.zipCode}</p>
+          </div>
+          <div className='div-textRua-modal-dashEquip'>
+            Rua
+        <p className='p-dashEquip'>{this.state.equipSelected.street}</p>
+          </div>
+          <div className='div-textNumero-modal-dashEquip'>
+            Número
+        <p className='p-dashEquip'>{this.state.equipSelected.number}</p>
+          </div>
+          <div className='div-textBairro-modal-dashEquip'>
+            Bairro
+        <p className='p-dashEquip'>{this.state.equipSelected.neighborhood}</p>
+          </div>
+        </div>
+        <div className='div-linhaModal-dashEquip'>
+          <div className='div-textCity-modal-dashEquip'>
+            Cidade
+        <p className='p-dashEquip'>{this.state.equipSelected.city}</p>
+          </div>
+          <div className='div-textState-modal-dashEquip'>
+            Estado
+        <p className='p-dashEquip'>{this.state.equipSelected.state}</p>
+          </div>
+          <div className='div-textRef-modal-dashEquip'>
+            Ponto de referência
+        <p className='p-dashEquip'>{this.state.equipSelected.referencePoint}</p>
+          </div>
+        </div>
+        <h3 className='h3-modal-dashEquip'>Dados do cliente</h3>
+        <div className='div-linhaModal-dashEquip'>
+          <div className='div-textNome-modal-dashEquip'>
+            Nome
+        <p className='p-dashEquip'>{this.state.equipSelected.nameContact}</p>
+          </div>
+          <div className='div-textEmail-modal-dashEquip'>
+            Email
+        <p className='p-dashEquip'>{this.state.equipSelected.email}</p>
+          </div>
+          <div className='div-textTel-modal-dashEquip'>
+            Telefone
+        <p className='p-dashEquip'>{this.state.equipSelected.telphone}</p>
+          </div>
+        </div>
+      </div>
+    </Modal>
   )
 
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Select, Input, Button, Icon } from 'antd'
 import { getAllParts } from '../../../services/peca'
-import { masks } from '../NewPeca/validator'
+// import { masks } from '../NewPeca/validator'
 
 import './index.css'
 
@@ -279,7 +279,7 @@ class DashPeca extends Component {
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashPeca' /> 
-     {
+     {/* {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow'>
@@ -307,7 +307,7 @@ class DashPeca extends Component {
             <div className='gerCmp-div-table-separeteLinerow' />
           </div>
         )
-      }
+      } */}
       <div className='div-table-footer-dashPeca'>
         {this.state.page !== 1? <button className='table-buttonFooter-dashPeca'>Anterior</button>:''}
         <button className='table-buttonFooter-dashPeca'>{this.state.page}</button>

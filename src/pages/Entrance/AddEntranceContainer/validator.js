@@ -23,7 +23,7 @@ export const masks = (nome, valor) => {
   }else if (nome === 'numeroSerie'){
     let value = valor
     value = value.replace(/\D/ig, '')
-    value = value.slice(0, 22)
+    value = value.slice(0, 17)
 
     return {
       nome,
@@ -132,7 +132,7 @@ export const validators = (nome, valor, state) => {
     }
   }else if (nome === 'razaoSocial') {
     if (valor === '') {
-      message.razaoSocial = 'É Obrigatório.'
+      message.razaoSocial = 'É obrigatório.'
       fieldFalha.razaoSocial = true
     } else fieldFalha.razaoSocial = false
 
@@ -143,7 +143,7 @@ export const validators = (nome, valor, state) => {
   } 
   else if (nome === 'numeroSerie'){
     if (valor === '') {
-      message.numeroSerie = 'É Obrigatório.'
+      message.numeroSerie = 'É obrigatório.'
       fieldFalha.numeroSerie = true
     } else fieldFalha.numeroSerie = false
 
@@ -153,7 +153,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'corLeitor') {
     if (valor === '') {
-      message.corLeitor = 'É Obrigatório.'
+      message.corLeitor = 'É obrigatório.'
       fieldFalha.corLeitor = true
     } else fieldFalha.corLeitor = false
 
@@ -163,7 +163,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'tipo') {
     if (valor === '') {
-      message.tipo = 'É Obrigatório.'
+      message.tipo = 'É obrigatório.'
       fieldFalha.tipo = true
     } else fieldFalha.tipo = false
 
@@ -173,7 +173,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'marca') {
     if (valor === '') {
-      message.marca = 'É Obrigatório.'
+      message.marca = 'É obrigatório.'
       fieldFalha.marca = true
     } else fieldFalha.marca = false
 
@@ -183,7 +183,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'modelo') {
     if (valor === '') {
-      message.modelo = 'É Obrigatório.'
+      message.modelo = 'É obrigatório.'
       fieldFalha.modelo = true
     } else fieldFalha.modelo = false
 
@@ -193,7 +193,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'defeito') {
     if (valor === '') {
-      message.defeito = 'É Obrigatório.'
+      message.defeito = 'É obrigatório.'
       fieldFalha.defeito = true
     } else fieldFalha.defeito = false
 
@@ -210,7 +210,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'danos') {
     if (valor === '') {
-      message.danos = 'É Obrigatório.'
+      message.danos = 'É obrigatório.'
       fieldFalha.danos = true
     } else fieldFalha.danos = false
 
@@ -220,7 +220,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'nameCliente') {
     if (valor === '') {
-      message.nameCliente = 'É Obrigatório.'
+      message.nameCliente = 'É obrigatório.'
       fieldFalha.nameCliente = true
     } else fieldFalha.nameCliente = false
 
@@ -228,9 +228,9 @@ export const validators = (nome, valor, state) => {
       fieldFalha,
       message
     }
-  } else if (nome === 'RG') {
+  } else if (nome === 'rg') {
     if (valor === '') {
-      message.RG = 'É Obrigatório.'
+      message.RG = 'É obrigatório.'
       fieldFalha.RG = true
     } else {
       let value = valor
@@ -247,7 +247,7 @@ export const validators = (nome, valor, state) => {
       }
     } else if (nome === 'cpf') {
       if (valor === '') {
-        message.cpf = 'É Obrigatório.'
+        message.cpf = 'É obrigatório.'
         fieldFalha.cpf = true
       } else fieldFalha.cpf = false
 
@@ -257,7 +257,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'devEmbalado') {
     if (valor === '') {
-      message.devEmbalado = 'É Obrigatório.'
+      message.devEmbalado = 'É obrigatório.'
       fieldFalha.devEmbalado = true
     } else fieldFalha.devEmbalado = false
 
@@ -267,7 +267,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'nameExterno') {
     if (valor === '') {
-      message.nameExterno = 'É Obrigatório.'
+      message.nameExterno = 'É obrigatório.'
       fieldFalha.nameExterno = true
     } else fieldFalha.nameExterno = false
 
@@ -277,7 +277,7 @@ export const validators = (nome, valor, state) => {
     }
      } else if (nome === 'nameRemetente') {
     if (valor === '') {
-      message.nameRemetente = 'É Obrigatório.'
+      message.nameRemetente = 'É obrigatório.'
       fieldFalha.nameRemetente = true
     } else fieldFalha.nameRemetente = false
 
@@ -287,7 +287,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'cep') {
     if (valor === '') {
-      message.cep = 'É Obrigatório.'
+      message.cep = 'É obrigatório.'
       fieldFalha.cep = true
     } else fieldFalha.cep = false
 
@@ -297,7 +297,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'state') {
     if (valor === '') {
-      message.state = 'É Obrigatório.'
+      message.state = 'É obrigatório.'
       fieldFalha.state = true
     } else fieldFalha.state = false
 
@@ -307,7 +307,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'city') {
     if (valor === '') {
-      message.city = 'É Obrigatório.'
+      message.city = 'É obrigatório.'
       fieldFalha.city = true
     } else fieldFalha.city = false
 
@@ -317,7 +317,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'neighborhood') {
     if (valor === '') {
-      message.neighborhood = 'É Obrigatório.'
+      message.neighborhood = 'É obrigatório.'
       fieldFalha.neighborhood = true
     } else fieldFalha.neighborhood = false
 
@@ -327,7 +327,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'street') {
     if (valor === '') {
-      message.street = 'É Obrigatório.'
+      message.street = 'É obrigatório.'
       fieldFalha.street = true
     } else fieldFalha.street = false
 
@@ -337,7 +337,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'number') {
     if (valor === '') {
-      message.number = 'É Obrigatório.'
+      message.number = 'É obrigatório.'
       fieldFalha.number = true
     } else fieldFalha.number = false
 
@@ -347,7 +347,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'nameMotoboy') {
     if (valor === '') {
-      message.nameMotoboy = 'É Obrigatório.'
+      message.nameMotoboy = 'É obrigatório.'
       fieldFalha.nameMotoboy = true
     } else fieldFalha.nameMotoboy = false
 
@@ -357,7 +357,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'nameResponsavel') {
     if (valor === '') {
-      message.nameResponsavel = 'É Obrigatório.'
+      message.nameResponsavel = 'É obrigatório.'
       fieldFalha.nameResponsavel = true
     } else fieldFalha.nameResponsavel = false
 

@@ -100,7 +100,7 @@ export const validators = (nome, valor, state) => {
     }
   }else if (nome === 'razaoSocial') {
     if (valor === '') {
-      message.razaoSocial = 'É Obrigatório.'
+      message.razaoSocial = 'É obrigatório.'
       fieldFalha.razaoSocial = true
     } else fieldFalha.razaoSocial = false
 
@@ -111,7 +111,7 @@ export const validators = (nome, valor, state) => {
   } 
   else if (nome === 'nameContact'){
     if (valor === '') {
-      message.nameContact = 'É Obrigatório.'
+      message.nameContact = 'É obrigatório.'
       fieldFalha.nameContact = true
     } else fieldFalha.nameContact = false
 
@@ -121,7 +121,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'email') {
     if (valor === '') {
-      message.email = 'É Obrigatório.'
+      message.email = 'É obrigatório.'
       fieldFalha.email = true
     } else fieldFalha.email = false
 
@@ -131,7 +131,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'telphone') {
     if (valor === '') {
-      message.telphone = 'É Obrigatório.'
+      message.telphone = 'É obrigatório.'
       fieldFalha.telphone = true
     } else fieldFalha.telphone = false
 
@@ -141,7 +141,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'state') {
     if (valor === '') {
-      message.state = 'É Obrigatório.'
+      message.state = 'É obrigatório.'
       fieldFalha.state = true
     } else fieldFalha.state = false
 
@@ -151,7 +151,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'city') {
     if (valor === '') {
-      message.city = 'É Obrigatório.'
+      message.city = 'É obrigatório.'
       fieldFalha.city = true
     } else fieldFalha.city = false
 
@@ -161,7 +161,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'neighborhood') {
     if (valor === '') {
-      message.neighborhood = 'É Obrigatório.'
+      message.neighborhood = 'É obrigatório.'
       fieldFalha.neighborhood = true
     } else fieldFalha.neighborhood = false
 
@@ -171,7 +171,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'street') {
     if (valor === '') {
-      message.street = 'É Obrigatório.'
+      message.street = 'É obrigatório.'
       fieldFalha.street = true
     } else fieldFalha.street = false
 
@@ -181,7 +181,7 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'number') {
     if (valor === '') {
-      message.number = 'É Obrigatório.'
+      message.number = 'É obrigatório.'
       fieldFalha.number = true
     } else fieldFalha.number = false
 
