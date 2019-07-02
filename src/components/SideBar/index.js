@@ -41,6 +41,8 @@ class Sider extends Component {
           return <Redirect to='/logged/analise/add' />
         case 'tecnico_dash':
           return <Redirect to='/logged/tecnico/dash' />
+        case 'typeAccount_dash':
+          return <Redirect to='/logged/typeAccount/dash' />
         case 'company_add':
           return <Redirect to='/logged/company/add' />
         case 'company_dash':
@@ -103,6 +105,7 @@ class Sider extends Component {
           >
             <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
             <Menu.Item key="analise_add"><Icon type="line-chart" />Análise</Menu.Item>
+            <Menu.Item key="typeAccount_dash"><Icon type="profile" />Tipo conta</Menu.Item>
             <Menu.Item key="tecnico_dash"><Icon type="user" />Técnico</Menu.Item>
 
             <SubMenu

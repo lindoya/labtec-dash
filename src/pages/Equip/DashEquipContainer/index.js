@@ -51,15 +51,6 @@ class DashEquip extends Component {
     count: 0,
     show: 0,
     rows: [],
-
-    obj: [{
-      serialNumber: '11111111111111111',
-      cnpj: '87.787.165/0001-33',
-      razaoSocial: 'Panificadora Jose',
-      type: 'Controle de acesso',
-      mark: 'nao sei',
-      model: 'sei la',
-    }],
   }
 
   getAll = async () => {
@@ -349,7 +340,7 @@ class DashEquip extends Component {
           </div>
           <div className='div-textRef-modal-dashEquip'>
             Ponto de referência
-        <p className='p-dashEquip'>{this.state.equipSelected.referencePoint}</p>
+        <p className='p-dashEquip'>{this.state.equipSelected.referencePoint === null ? '-' : this.state.equipSelected.referencePoint}</p>
           </div>
         </div>
         <h3 className='h3-modal-dashEquip'>Dados do cliente</h3>
@@ -509,11 +500,11 @@ class DashEquip extends Component {
         )
       }
       <div className='gerCmp-div-table-footer'>
-        <button className='gerCmp-table-buttonFooter'>1</button>
-        <button className='gerCmp-table-buttonFooter'>2</button>
-        <button className='gerCmp-table-buttonFooter'>3</button>
-        <button className='gerCmp-table-buttonFooter'>4</button>
-        <button className='gerCmp-table-buttonFooter'>5</button>
+        <Button type="primary">1</Button>
+        <Button type="primary">2</Button>
+        <Button type="primary">3</Button>
+        <Button type="primary">4</Button>
+        <Button type="primary">5</Button>
       </div>
     </div>
   )

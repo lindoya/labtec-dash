@@ -26,6 +26,7 @@ class NewTypeEquip extends Component {
     newMark: '',
     newModel:'',
     description: '',
+    disable: true
   }
 
   getModelsByMark = async () => {
@@ -39,6 +40,7 @@ class NewTypeEquip extends Component {
   selectMark = async (value) => {
 
     this.setState({
+      disable: false,
       mark: {
         id: value.id,
         mark: value.mark,
@@ -61,6 +63,12 @@ class NewTypeEquip extends Component {
   onChangeDescricao = (e) => {
     this.setState({
       description: e.target.value,
+    })
+  }
+
+  onChangeDisable = () => {
+    this.setState({
+      disable: false
     })
   }
 
@@ -127,6 +135,7 @@ class NewTypeEquip extends Component {
     }
 
     this.setState({
+      disable: true,
       type: valueSelected,
       typeFormat: typeFormated,
       modelsList:[],
@@ -293,14 +302,23 @@ class NewTypeEquip extends Component {
                   </div>
                   <div className='div-type'>
                     <h2 className='div-equipType-label'>Modelo:</h2>
-                    <Input
+                    {this.state.disable === false ? <Input
                       className='input-marca-equipType'
                       name='modelo'
                       placeholder='Digite o modelo'
                       value={this.state.newModel}
                       onChange={this.onChangeModelo}
                       allowClear
-                    />
+                    /> : <Input
+                    disabled
+                    className='input-marca-equipType'
+                    name='modelo'
+                    placeholder='Digite o modelo'
+                    value={this.state.newModel}
+                    onChange={this.onChangeModelo}
+                    allowClear
+                  />}
+                  
                   </div>
                   <div className='div-type'>
                     <h2 className='div-equipType-label'>Descrição:</h2>
