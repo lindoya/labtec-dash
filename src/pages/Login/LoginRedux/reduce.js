@@ -42,6 +42,16 @@ export function auth(state = INICIAL_STATE_AUTH, action) {
       }
 
       return auth
+    // case actions.LOGOUT:
+    //   auth = {
+    //     token: null,
+    //     userId: null,
+    //     username: 'userName',
+    //     email: 'email',
+    //     validTonken: false,
+    //   }
+
+    //   return auth
     default:
       return state
   }
