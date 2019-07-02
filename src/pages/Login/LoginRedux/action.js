@@ -1,5 +1,5 @@
 import action from '../../../store/actions'
-import { authentic } from '../../../services/auth'
+import authService from '../../../services/auth'
 
 export function changeValue(e) {
   return {
@@ -10,7 +10,7 @@ export function changeValue(e) {
 
 export function onSubmit(value) {
   return dispatch => {
-    authentic(value).then(
+    authService.authentic(value).then(
       resp => dispatch({
         type: action.LOGIN.AUTH,
         payload: resp,

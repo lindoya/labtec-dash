@@ -62,35 +62,18 @@ class DashEquip extends Component {
     }],
   }
 
-  returnLeitor = (leitor) => {
-    if (leitor === 'Escolha o leitor' || leitor === 'Todos') return ''
-    return leitor
-  }
-
   getAll = async () => {
     const query = {
       filters: {
         equip: {
           global: {
-            fields: ['serialNumber', 'readerColor'],
+            fields: ['serialNumber'],
             value: this.state.global,
           },
           specific: {
             serialNumber: this.state.serialNumber,
-            cnpj: this.state.cnpj,
-            readerColor: this.returnLeitor(this.state.leitor),
           }
-        },
-        company: {
-          // global: {
-          //   fields: ['cnpj'],
-          //   value: this.state.global,
-          // },
-          specific: {
-            razaoSocial: this.state.razaoSocial,
-            cnpj: this.state.cnpj,
-          },
-        },
+        }
       },
       page: 1,
       total: 25,

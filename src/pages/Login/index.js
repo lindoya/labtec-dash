@@ -12,12 +12,10 @@ class LoginPage extends Component {
   hasToken = R.has('token')
 
   render () {
-    console.log(this.props)
 
     if (this.hasAuth(this.props)){
       if (this.hasToken(this.props.auth)){
-        if(uuidValidate(this.props.auth.token) && this.props.auth.active){
-          localStorage.setItem('token', this.props.auth.token)
+        if(uuidValidate(this.props.auth.token)){
           return <Redirect to='/logged/dash' />
         }
       }  
