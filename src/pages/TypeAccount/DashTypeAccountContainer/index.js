@@ -44,7 +44,7 @@ class DashTypeAccount extends Component {
   }
 
   saveTargetTypeAccount = async () => {
-
+ 
     const values = {
       typeName: this.state.input,
       addCompany: this.state.permission.addCompany,
