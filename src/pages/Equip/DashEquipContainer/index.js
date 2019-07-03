@@ -66,14 +66,36 @@ class DashEquip extends Component {
     const query = {
       filters: {
         equip: {
-          global: {
-            fields: ['serialNumber'],
-            value: this.state.global,
-          },
+          // global: {
+          //   fields: ['serialNumber'],
+          //   value: this.state.global,
+          // },
           specific: {
             serialNumber: this.state.serialNumber,
-          }
-        }
+            // readerColor: 'Verde',
+          },
+        },
+        company: {
+          specific: {
+            cnpj: this.state.cnpj,
+            razaoSocial: this.state.razaoSocial,
+          },
+        },
+        equipModel: {
+          specific: {
+            model: this.state.model,
+          },
+        },
+        equipMark: {
+          specific: {
+            mark: this.state.mark,
+          },
+        },
+        // equipType: {
+        //   specific: {
+        //     type: 'relogio',
+        //   },
+        // },
       },
       page: 1,
       total: 25,

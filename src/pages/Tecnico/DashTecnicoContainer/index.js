@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 import './index.css'
 import { Card, Icon } from 'antd';
 
+// import { getAllEntrance } from '../../../services/entrance'
+import { getAllProcess } from '../../../services/process'
 
 class DashTecnico extends Component {
 
   state={
     order: {
-      field: 'peca',
+      field: 'createdAt',
       acendent: true,
     },
+    global: '',
     Os: '',
     contrato: '',
     garantia: '',
@@ -20,6 +23,11 @@ class DashTecnico extends Component {
     model: '',
     OsRetorno: '',
     dataFabrica: '',
+    page: 1,
+    total: 25,
+    count: 0,
+    show: 0,
+    rows: [],
   }
 
 
@@ -30,6 +38,42 @@ class DashTecnico extends Component {
         acendent: !this.state.order.acendent,
       }
     })
+  }
+
+  componentDidMount = () => {
+    this.getAll()
+  }
+
+  getAll = async () => {
+    const query = {
+      filters: {
+        process: {
+          global: {
+            // fields: ['cnpj', 'razaoSocial', 'nameContact', 'telphone'],
+            // value: this.state.global,
+          },
+          specific: {
+            // status: "analise",
+            // cnpj: this.state.cnpj,
+            // razaoSocial: this.state.razaoSocial,
+            // nameContact: this.state.nameContact,
+            // telphone: this.state.telphone,
+          }
+        }
+      },
+      page: 1,
+      total: 25,
+      order: this.state.order,
+    }
+
+    await getAllProcess(query).then(
+      resposta => this.setState({
+        page: resposta.data.page,
+        count: resposta.data.count,
+        show: resposta.data.show,
+        rows: resposta.data.rows,
+      })
+    )
   }
 
   TableAgAnalise = () => (
@@ -105,45 +149,35 @@ class DashTecnico extends Component {
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashTec' /> 
-       {/* {
-         this.state.obj.map((teste) =>
+       {
+         this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             <div className='div-tableRow-dashTec'>
               <div className='div-table-cel-serialNumber-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
-                  {teste.serialNumber}
+                  {line.externalDamage}
                 </label>
               </div>
               <div className='div-table-cel-cnpj-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
-                  {teste.cnpj}
-                </label>
-              </div>
-              <div className='div-table-cel-razaoSocial-dashTec'>
-                <label className='div-table-label-cel-dashTec'>
-                  {teste.razaoSocial}
-                </label>
-              </div>
-              <div className='div-table-cel-tipo-dashTec'>
-                <label className='div-table-label-cel-dashTec'>
-                  {teste.type}
-                </label>
-              </div>
-              <div className='div-table-cel-marca-dashTec'>
-                <label className='div-table-label-cel-dashTec'>
-                  {teste.mark}
+                  {line.serialNumber}
                 </label>
               </div>
               <div className='div-table-cel-modelo-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
-                  {teste.model}
+                  {line.model}
+                </label>
+              </div>
+              <div className='div-table-cel-modelo-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.status}
                 </label>
               </div>
             </div>
             <div className='div-table-separeteLinerow-dashTec' />
           </div>
         )
-      } */}
+      }
       <div className='gerCmp-div-table-footer'>
         <button className='gerCmp-table-buttonFooter'>1</button>
         <button className='gerCmp-table-buttonFooter'>2</button>
@@ -183,45 +217,30 @@ class DashTecnico extends Component {
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashTec' /> 
-       {/* {
-         this.state.obj.map((teste) =>
+       {
+         this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             <div className='div-tableRow-dashTec'>
               <div className='div-table-cel-serialNumber-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
-                  {teste.serialNumber}
+                  {line.externalDamage}
                 </label>
               </div>
               <div className='div-table-cel-cnpj-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
-                  {teste.cnpj}
-                </label>
-              </div>
-              <div className='div-table-cel-razaoSocial-dashTec'>
-                <label className='div-table-label-cel-dashTec'>
-                  {teste.razaoSocial}
-                </label>
-              </div>
-              <div className='div-table-cel-tipo-dashTec'>
-                <label className='div-table-label-cel-dashTec'>
-                  {teste.type}
-                </label>
-              </div>
-              <div className='div-table-cel-marca-dashTec'>
-                <label className='div-table-label-cel-dashTec'>
-                  {teste.mark}
+                  {line.serialNumber}
                 </label>
               </div>
               <div className='div-table-cel-modelo-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
-                  {teste.model}
+                  {line.status}
                 </label>
               </div>
             </div>
             <div className='div-table-separeteLinerow-dashTec' />
           </div>
         )
-      } */}
+      }
       <div className='gerCmp-div-table-footer'>
         <button className='gerCmp-table-buttonFooter'>1</button>
         <button className='gerCmp-table-buttonFooter'>2</button>
@@ -234,6 +253,8 @@ class DashTecnico extends Component {
 
 
   render() {
+    console.log(this.state.rows)
+
     return (
       <div className='card-bg-dashTec'>
 
@@ -275,7 +296,7 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
           
           <div className='text-info-dashTec'>Aguardando análise</div>
-          <this.TableAgAnalise />
+          <this.TableAgAnalise  name='preAnalise'/>
         
         </div>
 
