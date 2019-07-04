@@ -11,6 +11,12 @@ class NewAnalise extends Component {
   state = {
     modal: false,
     status: 'prontoParaOrcamento',
+    problems:{
+      violado: false,
+      mauUso: false,
+      humidade: false,
+      sinaisQueda: false,
+    },
     checkList: {
 
     },
@@ -127,8 +133,13 @@ class NewAnalise extends Component {
     })
   }
 
-  onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+  onChangeProblems = (e) => {
+    this.setState({
+      problems:{
+        ...this.state.problems,
+        [e.target.name]: e.target.value ? false : true
+      }
+    })
   }
 
   changeSelect = (value) => {
@@ -297,10 +308,10 @@ class NewAnalise extends Component {
 
                 <div className='div-checkbox-analise'>
 
-                  <Checkbox onChange={this.onChange} value='Violado'>Violado</Checkbox>
-                  <Checkbox onChange={this.onChange} value='MauUso'>Mau uso</Checkbox>
-                  <Checkbox onChange={this.onChange} value='Humidade'>Humidade</Checkbox>
-                  <Checkbox onChange={this.onChange} value='SinaisDeQueda'>Sinais de queda</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.violado} name='violado'>Violado</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.mauUso} name='mauUso'>Mau uso</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.humidade} name='humidade'>Humidade</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.sinaisQueda} name='sinaisQueda'>Sinais de queda</Checkbox>
 
                 </div>
 

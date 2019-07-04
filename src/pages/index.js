@@ -12,6 +12,7 @@ import PecaRoute from './Peca'
 import AnaliseRoute from './Analise'
 import TecnicoRoute from './Tecnico';
 import TypeAccountRoute from './TypeAccount';
+import NewUserRoute from './NovoUsuario';
 
 
 class PagesRoute extends Component {
@@ -24,6 +25,7 @@ class PagesRoute extends Component {
             <Route exact path='/logged/dash' component={Dash}/>
             <Route path='/logged/entrance' component={EntranceRoute}/>
             <Route path='/logged/analise' component={AnaliseRoute}/>
+            <Route path='/logged/user' component={NewUserRoute}/>
             <Route path='/logged/typeAccount' component={TypeAccountRoute}/>
             <Route path='/logged/tecnico' component={TecnicoRoute}/>
             <Route path='/logged/company' component={CompanyRoute}/>

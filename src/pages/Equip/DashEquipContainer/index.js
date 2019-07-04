@@ -11,6 +11,7 @@ const { Option } = Select;
 class DashEquip extends Component {
 
   state = {
+    editar: false,
     modalDetalhes: false,
     searchAvancado: false,
     order: {
@@ -144,6 +145,21 @@ class DashEquip extends Component {
       [evento.name]: evento.value,
     }, () => {
       this.getAll()
+    })
+  }
+  
+  editarAble = () => {
+    this.setState({
+      editar: !this.state.editar
+    })
+  }
+
+  onChangeEditar = (e) => {
+    this.setState({
+      equipSelected:{
+        ...this.state.equipSelected,
+        [e.target.name]: e.target.value
+      }
     })
   }
 
@@ -314,25 +330,50 @@ class DashEquip extends Component {
         <div className='div-linhaModal-dashEquip'>
           <div className='div-textSerialNumber-modal-dashEquip'>
             Número de série
-          <p className='p-dashEquip'>{this.state.equipSelected.serialNumber}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.serialNumber}</p> : <Input
+              name='serialNumber'
+              className='gerComp-inputModal'
+              value={this.state.equipSelected.serialNumber}
+              onChange={this.onChangeEditar}
+            />}
           </div>
           <div className='div-textType-modal-dashEquip'>
             Tipo
-          <p className='p-dashEquip'>{this.state.equipSelected.type}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.type}</p> : <Input
+              name='type'
+              className='gerComp-inputModal'
+              value={this.state.equipSelected.type}
+              onChange={this.onChangeEditar}
+            />}
           </div>
           <div className='div-textMark-modal-dashEquip'>
             Marca
-          <p className='p-dashEquip'>{this.state.equipSelected.mark}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.mark}</p> : <Input
+              name='mark'
+              className='gerComp-inputModal'
+              value={this.state.equipSelected.mark}
+              onChange={this.onChangeEditar}
+            />}
           </div>
         </div>
         <div className='div-linhaModal2-dashEquip'>
           <div className='div-textModel-modal-dashEquip'>
             Modelo
-          <p className='p-dashEquip'>{this.state.equipSelected.model}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.model}</p> : <Input
+              name='model'
+              className='gerComp-inputModal'
+              value={this.state.equipSelected.model}
+              onChange={this.onChangeEditar}
+            />}
           </div>
           <div className='div-textLeitor-modal-dashEquip'>
             Leitor
-          <p className='p-dashEquip'>{this.state.equipSelected.readerColor}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.readerColor}</p> : <Input
+              name='readerColor'
+              className='gerComp-inputModal'
+              value={this.state.equipSelected.readerColor}
+              onChange={this.onChangeEditar}
+            />}
           </div>
         </div>
         <h3 className='h3-modal-dashEquip'>Dados da empresa</h3>
@@ -393,6 +434,20 @@ class DashEquip extends Component {
         <p className='p-dashEquip'>{this.state.equipSelected.telphone}</p>
           </div>
         </div>
+        {this.state.editar === false ? <Button
+          type="primary"
+          onClick={this.editarAble}
+        >
+          Editar
+            <Icon type="edit" />
+        </Button> : <Button
+          type="primary"
+          onClick={this.editarAble}
+        >
+          Salvar
+          <Icon type="check" />
+        </Button>
+      }
       </div>
     </Modal>
   )

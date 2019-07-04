@@ -29,7 +29,7 @@ class DashPeca extends Component {
     // numberPages:(rows.length/total)
   }
 
-  
+
   getAll = async () => {
     const query = {
       filters: {
@@ -70,7 +70,7 @@ class DashPeca extends Component {
       searchAvancado: !this.state.searchAvancado
     })
   }
-  
+
   buttonLimpar = () => {
     this.setState({
       global: '',
@@ -106,7 +106,7 @@ class DashPeca extends Component {
   onChange = (e) => {
     const evento = e.target
 
-    if (evento.name === 'cost' || evento.name === 'sale'){
+    if (evento.name === 'cost' || evento.name === 'sale') {
       this.setState({
         [`${evento.name}Price`]: evento.value.replace(/\D/ig, ''),
       }, () => {
@@ -120,7 +120,7 @@ class DashPeca extends Component {
       })
     }
   }
-  
+
   changeOrder = (field) => {
     this.setState({
       order: {
@@ -149,14 +149,14 @@ class DashPeca extends Component {
       value = value.replace(/(\d{2}?)/, '$1')
     } else if (value.length > 2 && value.length <= 5) {
       value = value.replace(/(\d{1,3})(\d{2})/, '$1,$2')
-    }else if (value.length > 5 && value.length <= 8) {
+    } else if (value.length > 5 && value.length <= 8) {
       value = value.replace(/(\d{1,3})(\d{3})(\d{2})/, '$1.$2,$3')
-    }else if (value.length > 8) {
+    } else if (value.length > 8) {
       value = value.replace(/(\d{1})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3,$4')
     }
 
     return value
-    
+
   }
 
 
@@ -172,7 +172,7 @@ class DashPeca extends Component {
           className='input-cnpjCompany'
           placeholder="Digite a peça"
           value={this.state.item}
-          onChange={this.onChange} 
+          onChange={this.onChange}
         />
       </div>
       <div className='div-avancado-desc-dashPeca'>
@@ -219,7 +219,7 @@ class DashPeca extends Component {
           <label className='label-table-information-dashPeca'>
             Quantidade por página:
           </label>
-          <Select 
+          <Select
             defaultValue="25"
             onChange={this.changeTotal}
             size='small'
@@ -232,7 +232,7 @@ class DashPeca extends Component {
         </div>
         <div className='div-table-information-count-dashPeca'>
           <label className='label-table-information-dashPeca'>
-          Mostrando sla quantos
+            Mostrando sla quantos
             {/* {`Mostrando ${this.state.show}/${this.state.count} empresas.`} */}
           </label>
         </div>
@@ -242,7 +242,7 @@ class DashPeca extends Component {
         <div className='div-table-cel-peca-dashPeca'
           onClick={() => this.changeOrder('item')}
         >
-         {this.state.order.field === 'item' ?
+          {this.state.order.field === 'item' ?
             <div className='div-icon-dashPeca'>
               {this.state.order.acendent ?
                 <Icon type="caret-down" /> :
@@ -250,7 +250,7 @@ class DashPeca extends Component {
             </div>
             : <div className='div-icon-dashPeca'></div>}
           <h2 className='div-table-label-dashPeca'>Peça</h2>
-        </div> 
+        </div>
         <div className='div-table-cel-desc-dashPeca'
           onClick={() => this.changeOrder('description')}>
           {this.state.order.field === 'description' ?
@@ -285,8 +285,8 @@ class DashPeca extends Component {
           <h2 className='div-table-label-dashPeca'>Venda</h2>
         </div>
       </div>
-     <div className='div-table-separeteLineMain-dashPeca' /> 
-     {
+      <div className='div-table-separeteLineMain-dashPeca' />
+      {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow'>
@@ -297,7 +297,7 @@ class DashPeca extends Component {
               </div>
               <div className='div-table-cel-desc-dashPeca'>
                 <label className='div-table-label-dashPeca-cel'>
-                  {line.description}
+                  {line.description === '' ? '-' : line.description}
                 </label>
               </div>
               <div className='div-table-cel-precoVenda-dashPeca'>
@@ -316,17 +316,17 @@ class DashPeca extends Component {
         )
       }
       <div className='div-table-footer-dashPeca'>
-    {this.state.page >= 3? <button className='table-buttonFooter-dashPeca'>Anterior</button>:''}
-    {this.state.page >= 3? <div className='table-spaceFooter-dashPeca'>. . .</div>:''}
-    {this.state.page !== 1? <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</button>:''}
-    
+        {this.state.page >= 3 ? <Button type="primary">Anterior</Button> : ''}
+        {this.state.page >= 3 ? <div className='table-spaceFooter-dashPeca'>. . .</div> : ''}
+        {this.state.page !== 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 1)}>{this.state.page - 1}</Button> : ''}
 
-        <button className='table-buttonFooter-dashPeca' value={this.state.page} >{this.state.page}</button>
-        <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</button>
-    {this.state.page === 1?  <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</button>:''}
+
+        <Button type="primary" value={this.state.page} >{this.state.page}</Button>
+        <Button type="primary" onClick={() => this.changePages(this.state.page + 1)}>{this.state.page + 1}</Button>
+        {this.state.page === 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 2)}>{this.state.page + 2}</Button> : ''}
         <div className='table-spaceFooter-dashPeca'>. . .</div>
-        <button className='table-buttonFooter-dashPeca'>Seguinte</button>
-        
+        <Button type="primary">Seguinte</Button>
+
       </div>
     </div>
   )
@@ -375,9 +375,9 @@ class DashPeca extends Component {
             >
               Avançado
           </Button>}
-          </div>
-          {this.state.searchAvancado ? <this.SearchAdvanced /> : null}
-          <this.TableParts />
+        </div>
+        {this.state.searchAvancado ? <this.SearchAdvanced /> : null}
+        <this.TableParts />
 
       </div>
     )

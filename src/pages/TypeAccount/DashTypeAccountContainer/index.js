@@ -70,6 +70,7 @@ class DashTypeAccount extends Component {
     } if (resposta.status === 200) {
 
       this.setState({
+        messageSuccess: true,
         input: '',
         permission: {
           addCompany: false,
@@ -77,7 +78,6 @@ class DashTypeAccount extends Component {
           addAnalyze: false,
           addEquip: false,
           addEntry: false,
-          messageSuccess: true,
         },
       })
       await this.success()
@@ -100,10 +100,12 @@ class DashTypeAccount extends Component {
 
         <div className='div-form-dashTypeAccount'>
 
-          <div className='div-linha-dashTypeAccount'>
+          <div className='div-linhaInput-dashTypeAccount'>
+            <h2 className='div-comp-label'>Tipo de conta:</h2>
             <Input
               placeholder="Digite o tipo de conta"
               onChange={this.onChangeInput}
+              value={this.state.input}
             />
           </div>
 

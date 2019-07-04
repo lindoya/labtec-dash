@@ -418,12 +418,6 @@ class NewEntrance extends Component {
   }
 
   render() {
-    // if (this.props.value.sucess) {
-    //   Modal.success({
-    //     title: 'Sucesso',
-    //     content: `Entrada feita com sucesso`,
-    //   })
-    // }
     return (
       <div className='div-entrance-card'>
         <div className='div-comp-Linha div-comp-header'>
