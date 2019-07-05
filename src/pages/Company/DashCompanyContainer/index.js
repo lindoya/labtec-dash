@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, DatePicker, Icon, Modal } from 'antd'
-import { getAllCompany } from '../../../services/company'
+import { Select, Input, Button, DatePicker, Icon, Modal, message } from 'antd'
+import { getAllCompany, updateCompany } from '../../../services/company'
 
 import 'antd/dist/antd.css'
 import './index.css'
@@ -10,8 +10,10 @@ const Search = Input.Search;
 const { Option } = Select;
 
 class NewCompany extends Component {
-
+  
   state = {
+    messageError: false,
+    messageSuccess: false,
     avancado: false,
     modalDetalhesCompany: false,
     editar: false,
@@ -47,6 +49,15 @@ class NewCompany extends Component {
     show: 0,
     rows: [],
   }
+
+  success = () => {
+    message.success('Dados alterados com sucesso');
+  };
+  
+  error = () => {
+    message.error('Seus dados não foram alterados');
+  };
+  
 
   onChange = (e) => {
     const evento = e.target
@@ -148,8 +159,66 @@ class NewCompany extends Component {
     )
   }
 
+  saveTargetUpdateCompany = async () => {
+    const values = {
+      razaoSocial: this.state.compSelected.razaoSocial,
+      cnpj: this.state.compSelected.cnpj,
+      street: this.state.compSelected.street,
+      number: this.state.compSelected.number,
+      city: this.state.compSelected.city,
+      state: this.state.compSelected.state,
+      neighborhood: this.state.compSelected.neighborhood,
+      referencePoint: this.state.compSelected.referencePoint,
+      zipCode: this.state.compSelected.zipCode,
+      telphone: this.state.compSelected.telphone,
+      email: this.state.compSelected.email,
+      nameContact: this.state.compSelected.nameContact,
+    }
+
+    const resposta = await updateCompany(values)
+
+    console.log(resposta)    
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+        // fieldFalha: resposta.data.fields[0].field,
+        // message: resposta.data.fields[0].message,
+      })
+      await this.error()
+      this.setState({
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        compSelected:{
+        razaoSocial: '',
+        cnpj: '',
+        street: '',
+        number: '',
+        city: '',
+        state: '',
+        neighborhood: '',
+        referencePoint: '',
+        zipCode: '',
+        telphone: '',
+        email: '',
+        nameContact: '',
+        },
+        messageSuccess: true,
+        editar: !this.state.editar
+      })
+      await this.success()
+      this.setState({
+        messageSuccess: false
+      })
+    }
+  }
+
   openModalDetalhesCompany = (company) => {
-    this.setState({
+     this.setState({
       modalDetalhesCompany: true,
       compSelected: company
     })
@@ -158,6 +227,23 @@ class NewCompany extends Component {
   okModalDetalhesCompany = () => {
     this.setState({
       modalDetalhesCompany: false
+    })
+  }
+
+  formatCnpj = () => {
+    const cnpj = this.state.compSelected.cnpj
+    const cnpjFormated = cnpj.replace(/\D/ig, '')
+
+
+    if (cnpjFormated.length === 14) {
+      cnpjFormated.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
+    }
+
+    this.setState({
+      compSelected: {
+        ...this.state.compSelected,
+        cnpj: cnpjFormated
+      }
     })
   }
 
@@ -315,7 +401,12 @@ class NewCompany extends Component {
           </div>
           <div className='gercomp-div-textRef-modal'>
             Ponto de referência
-        <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p>
+        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p> : <Input
+          onChange={this.onChangeEditar}
+          name='referencePoint'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.referencePoint}
+        />}
           </div>
         </div>
         <h3 className='gercomp-h3-modal'>Dados do registro</h3>
@@ -367,7 +458,7 @@ class NewCompany extends Component {
             <Icon type="edit" />
         </Button> : <Button
           type="primary"
-          onClick={this.buttonEditar}
+          onClick={this.saveTargetUpdateCompany}
         >
           Salvar
           <Icon type="check" />

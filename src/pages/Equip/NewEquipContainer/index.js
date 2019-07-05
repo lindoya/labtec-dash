@@ -331,7 +331,7 @@ class NewEquip extends Component {
 
             <div className='div-newEquip-leitor'>
               <h2 className='div-comp-label'>Leitor:</h2>
-              <Select defaultValue="NaoSeAplica" style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
+              <Select value={this.state.leitor} style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
                 <Option value="Branco">Branco</Option>
                 <Option value="Vermelho">Vermelho</Option>
                 <Option value="Azul">Azul</Option>

@@ -342,7 +342,7 @@ class NewPeca extends Component {
             <div className='div-typeAndMark-peca'>
               <div className='div-type-peca'>
                 <h2 className='div-comp-label'>Tipo:</h2>
-                <Select defaultValue={this.state.type} style={{ width: '100%' }} onChange={this.changeTypeSelected}>
+                <Select value={this.state.type} style={{ width: '100%' }} onChange={this.changeTypeSelected}>
                   <Option value="relogio" >Relógio</Option>
                   <Option value="catraca">Catraca</Option>
                   <Option value="controleAcesso">Controle de Acesso</Option>
