@@ -53,7 +53,7 @@ class DashTecnico extends Component {
             // value: this.state.global,
           },
           specific: {
-            // status: "analise",
+            status: "preAnalise",
             // cnpj: this.state.cnpj,
             // razaoSocial: this.state.razaoSocial,
             // nameContact: this.state.nameContact,
