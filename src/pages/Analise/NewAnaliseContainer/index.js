@@ -339,6 +339,7 @@ class NewAnalise extends Component {
                     onCancel={this.handleCancel}
                   >
                     <div className='div-pecaModal-analise'>
+                      <h2 className='div-comp-label'>Peça:</h2>
                       <h2 className='div-label-analise'>{this.state.peca.peca}</h2>
                     </div>
 

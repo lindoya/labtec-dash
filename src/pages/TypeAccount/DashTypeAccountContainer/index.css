@@ -1,0 +1,50 @@
+.card-bg-dashTypeAccount{
+  margin-top: 10px;
+  height: calc(200% - 10px) !important;
+  width: 98% !important;
+  box-shadow: 1px 5px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.div-form-dashTypeAccount{
+  width: 76%;
+  display: flex;
+  flex-direction: column
+}
+.div-linha-dashTypeAccount{
+  width: 100%;
+  display: flex
+}
+.card-checkbox-dashTypeAccount{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.div-linhaCheckbox-dashTypeAccount{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px
+}
+.h3-dashTypeAccount{
+  color: rgb(116, 116, 116);
+  font-weight: bold
+}
+.div-insideCard-dashTypeAccount{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column
+}
+.checkbox-dashTypeAccount{
+  padding: 10px
+}
+.div-linhaButton-dashTypeAccount{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px
+}

@@ -14,7 +14,23 @@ class NewCompany extends Component {
   state = {
     avancado: false,
     modalDetalhesCompany: false,
-    companySelected: '',
+    editar: false,
+    compSelected: {
+      razaoSocial: '',
+      cnpj: '',
+      street: '',
+      number: '',
+      city: '',
+      state: '',
+      neighborhood: '',
+      referencePoint: '',
+      zipCode: '',
+      telphone: '',
+      email: '',
+      nameContact: '',
+      updatedAt: '',
+      createdAt: '',
+    },
     order: {
       field: 'createdAt',
       acendent: true,
@@ -86,6 +102,38 @@ class NewCompany extends Component {
     })
   }
 
+  buttonEditar = () => {
+    this.setState({
+      editar: !this.state.editar
+    })
+  }
+
+  // onChangeEditar = (e) => {
+  //   const evento = e.target
+  //   const copy = { ...this.state.compSelected }
+  //   this.setState({
+  //     compSelected: {
+  //       razaoSocial: copy.razaoSocial,
+  //       cnpj: evento.value,
+  //       street: copy.street,
+  //       number: copy.number,
+  //       city: copy.city,
+  //       state: copy.state,
+  //       neighborhood: copy.neighborhood,
+  //       referencePoint: copy.referencePoint,
+  //       zipCode: copy.zipCode,
+  //       telphone: copy.telphone,
+  //       email: copy.email,
+  //       nameContact: copy.nameContact,
+  //       cnpj: copy.cnpj,
+  //       razaoSocial: copy.razaoSocial,
+  //       updatedAt: copy.updatedAt,
+  //       telphone: copy.telphone,
+  //       createdAt: copy.createdAt,
+  //     }
+  //   })
+  // }
+
   getAll = async () => {
     const query = {
       filters: {
@@ -120,7 +168,7 @@ class NewCompany extends Component {
   openModalDetalhesCompany = (company) => {
     this.setState({
       modalDetalhesCompany: true,
-      companySelected: company
+      compSelected: company
     })
   }
 
@@ -201,44 +249,147 @@ class NewCompany extends Component {
       onOk={this.okModalDetalhesCompany}
       onCancel={this.cancelModalDetalhesCompany}
     >
+
       <div className='gercomp-div-form-modal'>
         <h3 className='gercomp-h3-modal'>Dados da empresa</h3>
         <div className='gercomp-div-linhaModal2'>
           <div className='gercomp-div-textCnpj-modal'>
             Cnpj
-        <p className='gercomp-p'>{this.state.companySelected.cnpj}</p>
+        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> : <Input
+              name='cnpj'
+              className='gerComp-inputModal'
+              value={this.state.compSelected.cnpj}
+            // onChange={this.onChangeEditar}
+            />}
           </div>
           <div className='gercomp-div-textRazaoSocial-modal'>
             Razão social
-        <p className='gercomp-p'>{this.state.companySelected.razaoSocial}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.razaoSocial}</p> : <Input
+              name='razaoSocial'
+              className='gerComp-inputModal'
+              value={this.state.compSelected.razaoSocial}
+            // onChange={this.onChangeEditar}
+            />}
+          </div>
+        </div>
+        <div className='gercomp-div-linhaModal'>
+          <div className='gercomp-div-textCep-modal'>
+            Cep
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode}</p> : <Input
+          name='zipCode'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.zipCode}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+          <div className='gercomp-div-textRua-modal'>
+            Rua
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.street}</p> : <Input
+          name='street'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.street}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+          <div className='gercomp-div-textNumero-modal'>
+            Número
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.number}</p> : <Input
+          name='number'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.number}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+          <div className='gercomp-div-textBairro-modal'>
+            Bairro
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.neighborhood}</p> : <Input
+          name='neighborhood'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.neighborhood}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+        </div>
+        <div className='gercomp-div-linhaModal'>
+          <div className='gercomp-div-textCity-modal'>
+            Cidade
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.city}</p> : <Input
+          name='city'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.city}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+          <div className='gercomp-div-textState-modal'>
+            Estado
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.state}</p> : <Input
+          name='state'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.state}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+          <div className='gercomp-div-textRef-modal'>
+            Ponto de referência
+        <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p>
           </div>
         </div>
         <h3 className='gercomp-h3-modal'>Dados do registro</h3>
         <div className='gercomp-div-linhaModal'>
           <div className='gercomp-div-textCriado-modal'>
             Criado em
-        <p className='gercomp-p'>{this.state.companySelected.createdAt}</p>
+          <p className='gercomp-p'>{this.state.compSelected.createdAt}</p>
           </div>
           <div className='gercomp-div-textAtualizado-modal'>
             Atualizado em
-        <p className='gercomp-p'>{this.state.companySelected.updatedAt}</p>
+            <p className='gercomp-p'>{this.state.compSelected.updatedAt}</p>
           </div>
         </div>
         <h3 className='gercomp-h3-modal'>Dados para contato</h3>
         <div className='gercomp-div-linhaModal'>
           <div className='gercomp-div-textNome-modal'>
-            Nome do responsável
-        <p className='gercomp-p'>{this.state.companySelected.nameContact}</p>
+            Nome
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.nameContact}</p> : <Input
+          name='nameContact'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.nameContact}
+          // onChange={this.onChangeEditar}
+        />}
           </div>
           <div className='gercomp-div-textTel-modal'>
             Telefone
-        <p className='gercomp-p'>{this.state.companySelected.telphone}</p>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone}</p> : <Input
+          name='telphone'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.telphone}
+          // onChange={this.onChangeEditar}
+        />}
+          </div>
+          <div className='gercomp-div-textEmail-modal'>
+            Email
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.email}</p> : <Input
+          name='email'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.email}
+          // onChange={this.onChangeEditar}
+        />}
           </div>
         </div>
-        <Button type="primary">
+        {this.state.editar === false ? <Button
+          type="primary"
+          onClick={this.buttonEditar}
+        >
           Editar
             <Icon type="edit" />
+        </Button> : <Button
+          type="primary"
+          onClick={this.buttonEditar}
+        >
+          Salvar
+          <Icon type="check" />
         </Button>
+      }
+        
       </div>
     </Modal>
   )
@@ -359,11 +510,11 @@ class NewCompany extends Component {
         )
       }
       <div className='gerCmp-div-table-footer'>
-        <button className='gerCmp-table-buttonFooter'>1</button>
-        <button className='gerCmp-table-buttonFooter'>2</button>
-        <button className='gerCmp-table-buttonFooter'>3</button>
-        <button className='gerCmp-table-buttonFooter'>4</button>
-        <button className='gerCmp-table-buttonFooter'>5</button>
+        <Button type="primary">1</Button>
+        <Button type="primary">2</Button>
+        <Button type="primary">3</Button>
+        <Button type="primary">4</Button>
+        <Button type="primary">5</Button>
       </div>
     </div>
   )

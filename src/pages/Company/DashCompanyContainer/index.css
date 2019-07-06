@@ -322,7 +322,9 @@
   justify-content: space-between
 }
 .gercomp-p{
-  color: black
+  color: black;
+  margin: 9px 0 7px 0;
+  padding: 0 0 1px 5px;
 }
 .gercomp-div-linhaModal2{
   width: 100%;
@@ -350,12 +352,60 @@
   font-weight: bold
 }
 .gercomp-div-textNome-modal{
-  width: 50%;
+  width: 25%;
   font-size: 15px;
   font-weight: bold
 }
 .gercomp-div-textTel-modal{
-  width: 50%;
+  width: 25%;
   font-size: 15px;
   font-weight: bold;
+}
+.gercomp-div-textEmail-modal{
+  width: 50%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textCep-modal{
+  width: 15%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textRua-modal{
+  width: 35%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textNumero-modal{
+  width: 15%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textBairro-modal{
+  width: 35%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textCity-modal{
+  width: 25%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textState-modal{
+  width: 15%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gercomp-div-textRef-modal{
+  width: 60%;
+  font-size: 15px;
+  font-weight: bold
+}
+.gerComp-inputModal{
+  width: 100px
+}
+.gerComp-inputModal{
+  width: 90%;
+  margin: 5px 0 2px 0;
+  padding: 0 0 1px 5px;
 }
