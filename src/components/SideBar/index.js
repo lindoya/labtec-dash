@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Menu, Icon, Tooltip } from 'antd';
 import './index.css'
 import { Redirect } from 'react-router-dom'
+import { Logout } from './actions'
+import { logout } from '../../services/auth'
 
 const SubMenu = Menu.SubMenu;
 
@@ -12,6 +14,28 @@ class Sider extends Component {
     redirect: false,
     open: ['LabTec'],
   };
+
+  // onSubmit = async (e) => {
+  //   if(e.which === 13 || e.keyCode === 13) {
+  //   await this.props.onSubmit(this.props.value)
+  //   }
+  // }
+
+  tooltipHandleClick = async () => {
+    const token = localStorage.getItem('token')
+    token.replace(/"/ig, '')
+    
+    console.log(token)
+    // await Logout(token)    //aqui não apaga no banco de dados
+    await logout(token) // aqui apaga
+
+    await localStorage.clear()
+
+    this.setState({
+      current: 'logout',
+      redirect: true,
+    })
+  }
 
   handleClick = e => {
     
@@ -31,7 +55,7 @@ class Sider extends Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     if (this.state.redirect) {
       this.changeRedirectState()
       switch (this.state.current) {
@@ -57,6 +81,9 @@ class Sider extends Component {
           return <Redirect to='/logged/peca/add' />
         case 'peca_dash':
           return <Redirect to='/logged/peca/dash' />
+        case 'logout':
+        //   // return <Redirect to='/logged/company/add' />
+          return <Redirect to='/login' />
         default:
           return <Redirect to='/logged/dash' />
       }
@@ -64,8 +91,11 @@ class Sider extends Component {
     return (
       <div>
         <div className='menuIcon'>
+
           <Tooltip placement="bottom" title={'Logout'}>
-            <Icon className='menuIcon-icon' type="logout" />
+            <Icon key='logout' className='menuIcon-icon' type="logout" 
+            onClick={this.tooltipHandleClick}
+            />
           </Tooltip>
 
           <Tooltip placement="bottom" title={'Minha Conta'}>
@@ -85,6 +115,7 @@ class Sider extends Component {
           </Tooltip>
 
         </div>
+
         <Menu
           className='menu'
           theme='dark'

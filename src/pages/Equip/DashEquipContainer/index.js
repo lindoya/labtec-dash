@@ -42,6 +42,7 @@ class DashEquip extends Component {
     serialNumber: '',
     cnpj: '',
     razaoSocial: '',
+    typeSearch: '',
     type: 'Escolha o tipo',
     mark: '',
     model: '',
@@ -57,14 +58,36 @@ class DashEquip extends Component {
     const query = {
       filters: {
         equip: {
-          global: {
-            fields: ['serialNumber'],
-            value: this.state.global,
-          },
+          // global: {
+          //   fields: ['serialNumber'],
+          //   value: this.state.global,
+          // },
           specific: {
             serialNumber: this.state.serialNumber,
-          }
-        }
+            // readerColor: 'Verde',
+          },
+        },
+        company: {
+          specific: {
+            cnpj: this.state.cnpj,
+            razaoSocial: this.state.razaoSocial,
+          },
+        },
+        equipModel: {
+          specific: {
+            model: this.state.model,
+          },
+        },
+        equipMark: {
+          specific: {
+            mark: this.state.mark,
+          },
+        },
+        equipType: {
+          specific: {
+            // type: this.state.typeSearch,
+          },
+        },
       },
       page: 1,
       total: 25,
@@ -136,6 +159,18 @@ class DashEquip extends Component {
   }
 
   onChangeTipo = (valueSelected) => {
+
+    if (valueSelected === "Escolha o tipo" || valueSelected === "Todos" ) {
+      this.setState({
+        typeSearch: '',
+      })
+    } else {
+      this.setState({
+        typeSearch: valueSelected.toLowerCase(),
+      })
+    }
+
+
     this.setState({
       type: valueSelected
     }, () => {
@@ -459,7 +494,7 @@ class DashEquip extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashEquip' />
-      {
+      {this.state.rows?
         this.state.rows.map((line) =>
           <div className='div-table-list-dashEquip'>
             <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(line)}>
@@ -498,6 +533,7 @@ class DashEquip extends Component {
             <div className='div-table-separeteLinerow-dashEquip' />
           </div>
         )
+        : ''
       }
       <div className='gerCmp-div-table-footer'>
         <Button type="primary">1</Button>
