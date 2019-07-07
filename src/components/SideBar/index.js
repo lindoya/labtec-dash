@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Menu, Icon, Tooltip } from 'antd';
 import './index.css'
 import { Redirect } from 'react-router-dom'
-import { Logout } from './actions'
-import { logout } from '../../services/auth'
-
+import { Logout } from '../../pages/Login/LoginRedux/action'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 const SubMenu = Menu.SubMenu;
 
 class Sider extends Component {
@@ -21,20 +21,19 @@ class Sider extends Component {
   //   }
   // }
 
-  tooltipHandleClick = async () => {
-    const token = localStorage.getItem('token')
-    token.replace(/"/ig, '')
+  logout = async () => {
+    // const token = localStorage.getItem('token')
+    // token.replace(/"/ig, '')
     
-    console.log(token)
+    // console.log(token)
     // await Logout(token)    //aqui não apaga no banco de dados
-    await logout(token) // aqui apaga
-
-    await localStorage.clear()
-
+    await this.props.Logout(this.props.auth.token)
+    
     this.setState({
-      current: 'logout',
-      redirect: true,
-    })
+        current: 'logout',
+        redirect: true,
+      })
+
   }
 
   handleClick = e => {
@@ -82,7 +81,6 @@ class Sider extends Component {
         case 'peca_dash':
           return <Redirect to='/logged/peca/dash' />
         case 'logout':
-        //   // return <Redirect to='/logged/company/add' />
           return <Redirect to='/login' />
         default:
           return <Redirect to='/logged/dash' />
@@ -94,7 +92,7 @@ class Sider extends Component {
 
           <Tooltip placement="bottom" title={'Logout'}>
             <Icon key='logout' className='menuIcon-icon' type="logout" 
-            onClick={this.tooltipHandleClick}
+            onClick={() => this.logout()}
             />
           </Tooltip>
 
@@ -203,4 +201,14 @@ class Sider extends Component {
 }
 
 
-export default Sider
+function mapDispacthToProps(dispach) {
+  return bindActionCreators ({ Logout }, dispach)
+}
+
+function mapStateToProps (state) {
+  return {
+    auth: state.auth,
+  }
+}
+
+export default connect (mapStateToProps, mapDispacthToProps)(Sider)

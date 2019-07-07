@@ -1,5 +1,5 @@
 import action from '../../../store/actions'
-import { authentic } from '../../../services/auth'
+import { authentic, logout as logoutService  } from '../../../services/auth'
 
 export function changeValue(e) {
   return {
@@ -14,6 +14,19 @@ export function onSubmit(value) {
       resp => dispatch({
         type: action.LOGIN.AUTH,
         payload: resp,
+      })
+    )
+  }
+}
+
+export function Logout(value) {
+  
+  return dispatch => {
+    console.log("OISA")
+    logoutService(value).then(
+      dispatch({
+        type: action.LOGIN.LOGOUT,
+        payload: null,
       })
     )
   }
