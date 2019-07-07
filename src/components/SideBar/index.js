@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { Menu, Icon, Tooltip } from 'antd';
 import './index.css'
 import { Redirect } from 'react-router-dom'
-
+import { Logout } from '../../pages/Login/LoginRedux/action'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 const SubMenu = Menu.SubMenu;
 
 class Sider extends Component {
@@ -12,6 +14,27 @@ class Sider extends Component {
     redirect: false,
     open: ['LabTec'],
   };
+
+  // onSubmit = async (e) => {
+  //   if(e.which === 13 || e.keyCode === 13) {
+  //   await this.props.onSubmit(this.props.value)
+  //   }
+  // }
+
+  logout = async () => {
+    // const token = localStorage.getItem('token')
+    // token.replace(/"/ig, '')
+    
+    // console.log(token)
+    // await Logout(token)    //aqui não apaga no banco de dados
+    await this.props.Logout(this.props.auth.token)
+    
+    this.setState({
+        current: 'logout',
+        redirect: true,
+      })
+
+  }
 
   handleClick = e => {
     
@@ -31,7 +54,7 @@ class Sider extends Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     if (this.state.redirect) {
       this.changeRedirectState()
       switch (this.state.current) {
@@ -41,6 +64,8 @@ class Sider extends Component {
           return <Redirect to='/logged/analise/add' />
         case 'tecnico_dash':
           return <Redirect to='/logged/tecnico/dash' />
+        case 'typeAccount_dash':
+          return <Redirect to='/logged/typeAccount/dash' />
         case 'company_add':
           return <Redirect to='/logged/company/add' />
         case 'company_dash':
@@ -55,6 +80,8 @@ class Sider extends Component {
           return <Redirect to='/logged/peca/add' />
         case 'peca_dash':
           return <Redirect to='/logged/peca/dash' />
+        case 'logout':
+          return <Redirect to='/login' />
         default:
           return <Redirect to='/logged/dash' />
       }
@@ -62,8 +89,11 @@ class Sider extends Component {
     return (
       <div>
         <div className='menuIcon'>
+
           <Tooltip placement="bottom" title={'Logout'}>
-            <Icon className='menuIcon-icon' type="logout" />
+            <Icon key='logout' className='menuIcon-icon' type="logout" 
+            onClick={() => this.logout()}
+            />
           </Tooltip>
 
           <Tooltip placement="bottom" title={'Minha Conta'}>
@@ -83,6 +113,7 @@ class Sider extends Component {
           </Tooltip>
 
         </div>
+
         <Menu
           className='menu'
           theme='dark'
@@ -103,6 +134,7 @@ class Sider extends Component {
           >
             <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
             <Menu.Item key="analise_add"><Icon type="line-chart" />Análise</Menu.Item>
+            <Menu.Item key="typeAccount_dash"><Icon type="profile" />Tipo conta</Menu.Item>
             <Menu.Item key="tecnico_dash"><Icon type="user" />Técnico</Menu.Item>
 
             <SubMenu
@@ -169,4 +201,14 @@ class Sider extends Component {
 }
 
 
-export default Sider
+function mapDispacthToProps(dispach) {
+  return bindActionCreators ({ Logout }, dispach)
+}
+
+function mapStateToProps (state) {
+  return {
+    auth: state.auth,
+  }
+}
+
+export default connect (mapStateToProps, mapDispacthToProps)(Sider)

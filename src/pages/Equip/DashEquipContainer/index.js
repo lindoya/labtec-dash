@@ -42,6 +42,7 @@ class DashEquip extends Component {
     serialNumber: '',
     cnpj: '',
     razaoSocial: '',
+    typeSearch: '',
     type: 'Escolha o tipo',
     mark: '',
     model: '',
@@ -51,29 +52,42 @@ class DashEquip extends Component {
     count: 0,
     show: 0,
     rows: [],
-
-    obj: [{
-      serialNumber: '11111111111111111',
-      cnpj: '87.787.165/0001-33',
-      razaoSocial: 'Panificadora Jose',
-      type: 'Controle de acesso',
-      mark: 'nao sei',
-      model: 'sei la',
-    }],
   }
 
   getAll = async () => {
     const query = {
       filters: {
         equip: {
-          global: {
-            fields: ['serialNumber'],
-            value: this.state.global,
-          },
+          // global: {
+          //   fields: ['serialNumber'],
+          //   value: this.state.global,
+          // },
           specific: {
             serialNumber: this.state.serialNumber,
-          }
-        }
+            // readerColor: 'Verde',
+          },
+        },
+        company: {
+          specific: {
+            cnpj: this.state.cnpj,
+            razaoSocial: this.state.razaoSocial,
+          },
+        },
+        equipModel: {
+          specific: {
+            model: this.state.model,
+          },
+        },
+        equipMark: {
+          specific: {
+            mark: this.state.mark,
+          },
+        },
+        equipType: {
+          specific: {
+            // type: this.state.typeSearch,
+          },
+        },
       },
       page: 1,
       total: 25,
@@ -145,6 +159,18 @@ class DashEquip extends Component {
   }
 
   onChangeTipo = (valueSelected) => {
+
+    if (valueSelected === "Escolha o tipo" || valueSelected === "Todos" ) {
+      this.setState({
+        typeSearch: '',
+      })
+    } else {
+      this.setState({
+        typeSearch: valueSelected.toLowerCase(),
+      })
+    }
+
+
     this.setState({
       type: valueSelected
     }, () => {
@@ -349,7 +375,7 @@ class DashEquip extends Component {
           </div>
           <div className='div-textRef-modal-dashEquip'>
             Ponto de referência
-        <p className='p-dashEquip'>{this.state.equipSelected.referencePoint}</p>
+        <p className='p-dashEquip'>{this.state.equipSelected.referencePoint === null ? '-' : this.state.equipSelected.referencePoint}</p>
           </div>
         </div>
         <h3 className='h3-modal-dashEquip'>Dados do cliente</h3>
@@ -468,7 +494,7 @@ class DashEquip extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashEquip' />
-      {
+      {this.state.rows?
         this.state.rows.map((line) =>
           <div className='div-table-list-dashEquip'>
             <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(line)}>
@@ -507,13 +533,14 @@ class DashEquip extends Component {
             <div className='div-table-separeteLinerow-dashEquip' />
           </div>
         )
+        : ''
       }
       <div className='gerCmp-div-table-footer'>
-        <button className='gerCmp-table-buttonFooter'>1</button>
-        <button className='gerCmp-table-buttonFooter'>2</button>
-        <button className='gerCmp-table-buttonFooter'>3</button>
-        <button className='gerCmp-table-buttonFooter'>4</button>
-        <button className='gerCmp-table-buttonFooter'>5</button>
+        <Button type="primary">1</Button>
+        <Button type="primary">2</Button>
+        <Button type="primary">3</Button>
+        <Button type="primary">4</Button>
+        <Button type="primary">5</Button>
       </div>
     </div>
   )

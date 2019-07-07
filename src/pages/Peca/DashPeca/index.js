@@ -133,6 +133,13 @@ class DashPeca extends Component {
   }
 
 
+  changePages = (pages) => {
+    this.setState({
+      page: pages
+    })
+  }
+
+
   masks = (valor) => {
     let value = valor
     value = value.replace(/\D/ig, '')
@@ -205,7 +212,7 @@ class DashPeca extends Component {
   )
 
 
-  TableCompanies = () => (
+  TableParts = () => (
     <div className='div-mainHeader-dashPeca'>
       <div className='div-table-information-dashPeca'>
         <div className='div-table-information-total-dashPeca'>
@@ -279,7 +286,7 @@ class DashPeca extends Component {
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashPeca' /> 
-     {/* {
+     {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow'>
@@ -307,14 +314,19 @@ class DashPeca extends Component {
             <div className='gerCmp-div-table-separeteLinerow' />
           </div>
         )
-      } */}
+      }
       <div className='div-table-footer-dashPeca'>
-        {this.state.page !== 1? <button className='table-buttonFooter-dashPeca'>Anterior</button>:''}
-        <button className='table-buttonFooter-dashPeca'>{this.state.page}</button>
-        <button className='table-buttonFooter-dashPeca'>{this.state.page+1}</button>
-        <button className='table-buttonFooter-dashPeca'>{this.state.page+2}</button>
+    {this.state.page >= 3? <button className='table-buttonFooter-dashPeca'>Anterior</button>:''}
+    {this.state.page >= 3? <div className='table-spaceFooter-dashPeca'>. . .</div>:''}
+    {this.state.page !== 1? <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</button>:''}
+    
+
+        <button className='table-buttonFooter-dashPeca' value={this.state.page} >{this.state.page}</button>
+        <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</button>
+    {this.state.page === 1?  <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</button>:''}
         <div className='table-spaceFooter-dashPeca'>. . .</div>
         <button className='table-buttonFooter-dashPeca'>Seguinte</button>
+        
       </div>
     </div>
   )
@@ -365,7 +377,7 @@ class DashPeca extends Component {
           </Button>}
           </div>
           {this.state.searchAvancado ? <this.SearchAdvanced /> : null}
-          <this.TableCompanies />
+          <this.TableParts />
 
       </div>
     )

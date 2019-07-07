@@ -42,6 +42,10 @@ export function auth(state = INICIAL_STATE_AUTH, action) {
       }
 
       return auth
+    
+    case actions.LOGIN.LOGOUT:
+      return INICIAL_STATE_AUTH
+
     default:
       return state
   }

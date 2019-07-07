@@ -2,7 +2,11 @@ export default {
   LOGIN: {
     CHANGE_VALUE: 'LOGIN_CHANGE_VALUE',
     AUTH: 'LOGIN_AUTH',
+    LOGOUT: 'LOGOUT_AUTH',
   },
+  
+  
+  
   COMPANY: {
     CREATE: {
       CHANGE_VALUE: 'COMPANY_CREATE_CHANGE_VALUE',
