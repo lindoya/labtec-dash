@@ -208,7 +208,8 @@ class NewCompany extends Component {
         nameContact: '',
         },
         messageSuccess: true,
-        editar: !this.state.editar
+        editar: !this.state.editar,
+        modalDetalhesCompany: false
       })
       await this.success()
       this.setState({
