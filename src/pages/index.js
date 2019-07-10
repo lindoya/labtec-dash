@@ -13,6 +13,7 @@ import AnaliseRoute from './Analise'
 import TecnicoRoute from './Tecnico';
 import TypeAccountRoute from './TypeAccount';
 import NewUserRoute from './NovoUsuario';
+import AcessoriosRoute from './Acessorios';
 
 
 class PagesRoute extends Component {
@@ -31,6 +32,7 @@ class PagesRoute extends Component {
             <Route path='/logged/company' component={CompanyRoute}/>
             <Route path='/logged/equip' component={EquipRoute}/>
             <Route path='/logged/peca' component={PecaRoute}/>
+            <Route path='/logged/acessories' component={AcessoriosRoute}/>
           </Switch>
         ) 
     }else{

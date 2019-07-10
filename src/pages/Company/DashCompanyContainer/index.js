@@ -183,8 +183,6 @@ class NewCompany extends Component {
 
       this.setState({
         messageError: true,
-        // fieldFalha: resposta.data.fields[0].field,
-        // message: resposta.data.fields[0].message,
       })
       await this.error()
       this.setState({

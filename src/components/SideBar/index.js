@@ -81,6 +81,8 @@ class Sider extends Component {
           return <Redirect to='/logged/peca/add' />
         case 'peca_dash':
           return <Redirect to='/logged/peca/dash' />
+        case 'acessories_add':
+          return <Redirect to='/logged/acessories/add' />
         case 'logout':
           return <Redirect to='/login' />
         default:
@@ -148,6 +150,7 @@ class Sider extends Component {
           >
             <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
             <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
+            <Menu.Item key="acessories_add"><Icon type="setting" />Acessórios</Menu.Item>
           </SubMenu>
           </SubMenu>
 

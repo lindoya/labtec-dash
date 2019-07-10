@@ -9,6 +9,18 @@ const { Option } = Select;
 class NewAnalise extends Component {
 
   state = {
+    analiseSelected:{
+      Os: '',
+      contrato: '',
+      garantia: '',
+      serialNumber: '',
+      razaoSocial: '',
+      type: '',
+      mark: '',
+      model: '',
+      OsRetorno: '',
+      dataFabrica: '',
+    },
     modal: false,
     status: 'prontoParaOrcamento',
     problems:{
@@ -38,6 +50,12 @@ class NewAnalise extends Component {
   onChangeMotivo = (e) => {
     this.setState({
       peca: { ...this.state.peca, motivoTroca: e.target.value }
+    })
+  }
+
+  getProps = (props) => {
+    this.setState({
+      analiseSelected: this.props.teste
     })
   }
 
@@ -99,6 +117,10 @@ class NewAnalise extends Component {
     })
   };
 
+  componentDidMount = () => {
+    this.getProps()
+  }
+
   handleCancel = () => {
     this.setState({
       modal: false,
@@ -158,7 +180,6 @@ class NewAnalise extends Component {
 
 
   render() {
-    console.log(this.state)
 
     return (
       <div className='div-card-analise'>
@@ -203,12 +224,13 @@ class NewAnalise extends Component {
           <div className='div-serialNumber-analise'>
             <h2 className='div-comp-label'>Número de série:</h2>
             <Input
+              value={this.props.teste}
               readOnly
               className='input-cnpj'
               name='numeroSerie'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+              // value={this.props.value.cnpj}
+              // onChange={this.props.changeValueCompany}
+              />
           </div>
 
           <div className='div-razaoSocial-analise'>

@@ -22,7 +22,6 @@ export function onSubmit(value) {
 export function Logout(value) {
   
   return dispatch => {
-    console.log("OISA")
     logoutService(value).then(
       dispatch({
         type: action.LOGIN.LOGOUT,
