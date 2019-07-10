@@ -26,7 +26,6 @@ class DashPeca extends Component {
     count: 0,
     show: 0,
     rows: [],
-    // numberPages:(rows.length/total)
   }
 
   
@@ -46,7 +45,7 @@ class DashPeca extends Component {
           }
         }
       },
-      page: 1,
+      page: this.state.page,
       total: this.state.total,
       order: this.state.order,
     }
@@ -85,6 +84,7 @@ class DashPeca extends Component {
 
   changeTotal = (value) => {
     this.setState({
+      page: 1,
       total: value
     }, () => {
       this.getAll()
@@ -132,12 +132,14 @@ class DashPeca extends Component {
     })
   }
 
-
   changePages = (pages) => {
     this.setState({
       page: pages
+    }, () => {
+      this.getAll()
     })
   }
+
 
 
   masks = (valor) => {
@@ -211,6 +213,20 @@ class DashPeca extends Component {
     </div>
   )
 
+  Pages = () => (
+
+    <div className='gerCmp-div-table-footer'>
+      {Math.ceil(this.state.count/this.state.total) >= 5 && Math.ceil(this.state.count/this.state.total)-this.state.page < 1? <Button type="primary" onClick={() => this.changePages(this.state.page-4)}>{this.state.page-4}</Button> : ''}
+      {Math.ceil(this.state.count/this.state.total) >= 4 && Math.ceil(this.state.count/this.state.total)-this.state.page < 2 && this.state.page >3? <Button type="primary" onClick={() => this.changePages(this.state.page-3)}>{this.state.page-3}</Button> : ''}
+      {this.state.page >= 3? <Button type="primary" onClick={() => this.changePages(this.state.page-2)}>{this.state.page-2}</Button> : ''}
+      {this.state.page >= 2? <Button type="primary" onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</Button> :''}
+      <div className='div-buttonSelected-dashPeca' type="primary">{this.state.page}</div>
+      {this.state.page < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</Button> :''}
+      {this.state.page+1 < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</Button> :''}
+      {this.state.page+2 < (this.state.count/this.state.total) && this.state.page < 3? <Button type="primary" onClick={() => this.changePages(this.state.page+3)}>{this.state.page+3}</Button> : ''}
+      {this.state.page+3 < (this.state.count/this.state.total) && this.state.page < 2? <Button type="primary" onClick={() => this.changePages(this.state.page+4)}>{this.state.page+4}</Button> : ''}
+    </div>
+  )
 
   TableParts = () => (
     <div className='div-mainHeader-dashPeca'>
@@ -316,17 +332,7 @@ class DashPeca extends Component {
         )
       }
       <div className='div-table-footer-dashPeca'>
-    {this.state.page >= 3? <button className='table-buttonFooter-dashPeca'>Anterior</button>:''}
-    {this.state.page >= 3? <div className='table-spaceFooter-dashPeca'>. . .</div>:''}
-    {this.state.page !== 1? <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</button>:''}
-    
-
-        <button className='table-buttonFooter-dashPeca' value={this.state.page} >{this.state.page}</button>
-        <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</button>
-    {this.state.page === 1?  <button className='table-buttonFooter-dashPeca' onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</button>:''}
-        <div className='table-spaceFooter-dashPeca'>. . .</div>
-        <button className='table-buttonFooter-dashPeca'>Seguinte</button>
-        
+       <this.Pages/>
       </div>
     </div>
   )

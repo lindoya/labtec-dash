@@ -409,3 +409,9 @@
   margin: 5px 0 2px 0;
   padding: 0 0 1px 5px;
 }
+.div-buttonSelected-dashComp {
+  color: rgba(255, 255, 255, 0.6) !important;
+  width: 37.8px;
+  display: flex;
+  justify-content: center
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, Icon, Modal } from 'antd'
+import { Select, Input, Button, Icon, Modal, } from 'antd'
 import { getAllEquip } from '../../../services/equip'
 
 import './index.css'
@@ -89,8 +89,8 @@ class DashEquip extends Component {
           },
         },
       },
-      page: 1,
-      total: 25,
+      page: this.state.page,
+      total: this.state.total,
       order: this.state.order,
     }
 
@@ -131,7 +131,8 @@ class DashEquip extends Component {
 
   changeTotal = (value) => {
     this.setState({
-      total: value
+      total: value,
+      page: 1,
     }, () => {
       this.getAll()
     })
@@ -146,6 +147,16 @@ class DashEquip extends Component {
       this.getAll()
     })
   }
+
+
+  changePages = (pages) => {
+    this.setState({
+      page: pages
+    }, () => {
+      this.getAll()
+    })
+  }
+
 
   changeOrder = (field) => {
     this.setState({
@@ -205,6 +216,20 @@ class DashEquip extends Component {
     })
   }
 
+  Pages = () => (
+
+    <div className='gerCmp-div-table-footer'>
+      {Math.ceil(this.state.count/this.state.total) >= 5 && Math.ceil(this.state.count/this.state.total)-this.state.page < 1? <Button type="primary" onClick={() => this.changePages(this.state.page-4)}>{this.state.page-4}</Button> : ''}
+      {Math.ceil(this.state.count/this.state.total) >= 4 && Math.ceil(this.state.count/this.state.total)-this.state.page < 2 && this.state.page >3? <Button type="primary" onClick={() => this.changePages(this.state.page-3)}>{this.state.page-3}</Button> : ''}
+      {this.state.page >= 3? <Button type="primary" onClick={() => this.changePages(this.state.page-2)}>{this.state.page-2}</Button> : ''}
+      {this.state.page >= 2? <Button type="primary" onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</Button> :''}
+      <div className='div-buttonSelected-dashEquip' type="primary">{this.state.page}</div>
+      {this.state.page < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</Button> :''}
+      {this.state.page+1 < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</Button> :''}
+      {this.state.page+2 < (this.state.count/this.state.total) && this.state.page < 3? <Button type="primary" onClick={() => this.changePages(this.state.page+3)}>{this.state.page+3}</Button> : ''}
+      {this.state.page+3 < (this.state.count/this.state.total) && this.state.page < 2? <Button type="primary" onClick={() => this.changePages(this.state.page+4)}>{this.state.page+4}</Button> : ''}
+    </div>
+  )
 
   SearchAdvanced = () => (
     <div className='div-searchAdvanced-dashEquip'>
@@ -398,7 +423,7 @@ class DashEquip extends Component {
   )
 
 
-  TableCompanies = () => (
+  TableEquips = () => (
     <div className='div-mainHeader-dashEquip'>
       <div className='div-table-information-dashEquip'>
         <div className='div-table-information-total-dashEquip'>
@@ -536,18 +561,13 @@ class DashEquip extends Component {
         : ''
       }
       <div className='gerCmp-div-table-footer'>
-        <Button type="primary">1</Button>
-        <Button type="primary">2</Button>
-        <Button type="primary">3</Button>
-        <Button type="primary">4</Button>
-        <Button type="primary">5</Button>
+       <this.Pages/>
       </div>
     </div>
   )
 
 
   render() {
-    console.log(this.state)
     return (
       <div className='div-comp-card'>
         <this.ModalDetalhes />
@@ -592,7 +612,7 @@ class DashEquip extends Component {
           </Button>}
         </div>
         {this.state.searchAvancado ? <this.SearchAdvanced /> : null}
-        <this.TableCompanies />
+        <this.TableEquips />
 
       </div>
     )
