@@ -30,7 +30,7 @@ class NewTypeEquip extends Component {
   }
 
   getModelsByMark = async () => {
-    const resposta = await getAllModelByMarkService({ mark: this.state.mark.mark})
+    const resposta = await getAllModelByMarkService({ mark: this.state.mark.mark, type: this.state.type})
 
     this.setState({
       modelsList: resposta.data,
