@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './index.css'
-import { Card, Icon, Button } from 'antd';
+import { Card, Icon, Button, Spin } from 'antd';
 import { Redirect } from 'react-router-dom'
 
 // import { getAllEntrance } from '../../../services/entrance'
@@ -11,6 +11,7 @@ constructor(props){
   super(props)
 
   this.state={
+    loading: false,
     order: {
       field: 'createdAt',
       acendent: true,
@@ -66,6 +67,9 @@ constructor(props){
   }
 
   getAll = async () => {
+    this.setState({
+      loading: true,
+    })
     const query = {
       page: 1,
       total: 25,
@@ -74,6 +78,7 @@ constructor(props){
 
     await getAllProcess(query).then(
       resposta => this.setState({
+        loading: false,
         page: resposta.data.page,
         count: resposta.data.count,
         show: resposta.data.show,
@@ -155,6 +160,7 @@ constructor(props){
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashTec' /> 
+     {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
        {this.state.rows === undefined ? 'Não há entradas cadastrada' : this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
           {this.renderRedirect()}
@@ -223,6 +229,7 @@ constructor(props){
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashTec' /> 
+     {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
        {this.state.rows === undefined ? 'Não há entradas cadastrada' :
          this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>

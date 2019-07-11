@@ -159,7 +159,7 @@ class NewAnalise extends Component {
     this.setState({
       problems:{
         ...this.state.problems,
-        [e.target.name]: e.target.value ? false : true
+        [e.target.name]: e.target.checked 
       }
     })
   }
@@ -180,6 +180,7 @@ class NewAnalise extends Component {
 
 
   render() {
+    console.log(this.state)
 
     return (
       <div className='div-card-analise'>
@@ -224,7 +225,6 @@ class NewAnalise extends Component {
           <div className='div-serialNumber-analise'>
             <h2 className='div-comp-label'>Número de série:</h2>
             <Input
-              value={this.props.teste}
               readOnly
               className='input-cnpj'
               name='numeroSerie'
@@ -330,10 +330,10 @@ class NewAnalise extends Component {
 
                 <div className='div-checkbox-analise'>
 
-                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.violado} name='violado'>Violado</Checkbox>
-                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.mauUso} name='mauUso'>Mau uso</Checkbox>
-                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.humidade} name='humidade'>Humidade</Checkbox>
-                  <Checkbox onChange={this.onChangeProblems} value={this.state.problems.sinaisQueda} name='sinaisQueda'>Sinais de queda</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.violado} name='violado'>Violado</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.mauUso} name='mauUso'>Mau uso</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.humidade} name='humidade'>Humidade</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.sinaisQueda} name='sinaisQueda'>Sinais de queda</Checkbox>
 
                 </div>
 

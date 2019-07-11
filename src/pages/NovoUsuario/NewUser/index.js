@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './index.css'
 import { Input, Select, Card, Checkbox, Button } from 'antd';
-import { getAllTypeAccount } from '../../../services/typeAccount'
+import { getAllTypeAccount, getPermission } from '../../../services/typeAccount'
 
 
 const { Option } = Select;
@@ -11,7 +11,7 @@ class NewUser extends Component {
   state = {
     messageError: false,
     messageSuccess: true,
-    checkboxDisable: true,
+    checkboxAble: false,
     change: false,
     inputNewUser: '',
     select: '',
@@ -28,7 +28,7 @@ class NewUser extends Component {
   handleChange = (typeSelected) => {
     this.setState({
       select: typeSelected
-    })
+    }, this.getPermissionByTypeAccount)
   }
 
   onChangeInputNewUser = (e) => {
@@ -42,15 +42,15 @@ class NewUser extends Component {
     this.setState({
       permission: {
         ...this.state.permission,
-        [e.target.name]: e.target.value ? false : true
+        [e.target.name]: e.target.checked
       }
     })
   }
 
   ableCheckbox = () => {
     this.setState({
-      change: !this.state.change,
-      checkboxDisable: !this.state.checkboxDisable
+      // change: !this.state.change,
+      checkboxAble: !this.state.checkboxAble
     })
   }
 
@@ -60,6 +60,18 @@ class NewUser extends Component {
         rows: resposta.data.rows,
       })
     )
+  }
+
+  getPermissionByTypeAccount = async () => {
+    const resposta = await getPermission({ typeName: this.state.typeName })
+
+    this.setState({
+      addCompany: resposta.data.addCompany,
+      addPart: resposta.data.addPart,
+      addAnalyze: resposta.data.addAnalyze,
+      addEquip: resposta.data.addEquip,
+      addEntry: resposta.data.addEntry,
+    })
   }
 
 
@@ -94,6 +106,7 @@ class NewUser extends Component {
       this.setState({
         messageSuccess: true,
         input: '',
+        checkboxAble: false,
         permission: {
           addCompany: false,
           addPart: false,
@@ -152,22 +165,22 @@ class NewUser extends Component {
 
           <div className='div-linhaCheckbox-newUser'>
             <div className='div-h3-newUser'>
-              <h3 className='h3-newUser'>Permissões</h3>
+              <h3 className='h3-newUser'>{this.state.checkboxAble ? 'Permissões customizadas' : 'Permissões padrão'}</h3>
             </div>
             <div className='div-habilitarCustom-newUser'>
-              <Checkbox onChange={this.ableCheckbox}>Habilitar customização</Checkbox>
+              <Checkbox onChange={this.ableCheckbox} checked={this.state.checkboxAble}>Habilitar customização</Checkbox>
             </div>
             <Card className='card-checkbox-newUser'>
-              {this.state.checkboxDisable ? <div className='div-insideCard-newUser'><Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addEntry} name='addEntry' disabled>Adicionar entrada</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addPart} name='addPart' disabled>Adicionar peça</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addCompany} name='addCompany' disabled>Adicionar empresa</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addAnalyze} name='addAnalyze' disabled>Adicionar analise</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addEquip} name='addEquip' disabled>Adicionar equipamento</Checkbox> </div> : <div className='div-insideCard-newUser'>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
-                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox> </div>}
+              {this.state.checkboxAble === false ? <div className='div-insideCard-newUser'><Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addEntry} name='addEntry' disabled>Adicionar entrada</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart' disabled>Adicionar peça</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany' disabled>Adicionar empresa</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze' disabled>Adicionar analise</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addEquip} name='addEquip' disabled>Adicionar equipamento</Checkbox> </div> : <div className='div-insideCard-newUser'>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
+                <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox> </div>}
             </Card>
           </div>
 

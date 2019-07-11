@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, Icon, Modal } from 'antd'
+import { Select, Input, Button, Icon, Modal, Spin } from 'antd'
 import { getAllEquip } from '../../../services/equip'
 
 import './index.css'
@@ -11,6 +11,7 @@ const { Option } = Select;
 class DashEquip extends Component {
 
   state = {
+    loading: false,
     editar: false,
     modalDetalhes: false,
     searchAvancado: false,
@@ -56,6 +57,11 @@ class DashEquip extends Component {
   }
 
   getAll = async () => {
+
+    this.setState({
+      loading: true,
+    })
+
     const query = {
       filters: {
         equip: {
@@ -97,6 +103,7 @@ class DashEquip extends Component {
 
     await getAllEquip(query).then(
       resposta => this.setState({
+        loading: false,
         page: resposta.data.page,
         count: resposta.data.count,
         show: resposta.data.show,
@@ -549,6 +556,7 @@ class DashEquip extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashEquip' />
+      {this.state.loading ? <div className='spin-dashEquip'><Spin spinning={this.state.loading}/></div> : null}
       {this.state.rows?
         this.state.rows.map((line) =>
           <div className='div-table-list-dashEquip'>

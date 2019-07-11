@@ -116,7 +116,7 @@ class NewAcessorio extends Component {
 
           <div className='div-card-newAcessorio'>
             <h2 className='div-comp-label'>Acessórios cadastrados:</h2>
-            <Card className='card-newAcessorio'>
+            <Card className='card-newAcessorio' key='card-accessories'>
               {this.state.rows.map((line) => <p className='p-newAcessorio'>{line.accessories}</p>)}             
             </Card>
           </div>

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react'
 import './index.css'
-import { Input, Icon, Button } from 'antd';
+import { Input, Icon, Button, message } from 'antd';
 import 'antd/dist/antd.css';
 
 import { connect } from 'react-redux'
@@ -9,6 +9,12 @@ import { bindActionCreators } from 'redux'
 import { changeValue, onSubmit } from '../LoginRedux/action'
 
 class Login extends Component {
+
+  state={
+    loading: false,
+    messageSuccess: false,
+    messageError: false,
+  }
 
   enterKey = async (e) => {
     if(e.which === 13 || e.keyCode === 13) {
@@ -19,6 +25,14 @@ class Login extends Component {
   onSubmit = async (e) => {
     await this.props.onSubmit(this.props.value)
   }
+
+  success = () => {
+    message.success('Equipamento cadastrada com sucesso');
+  };
+
+  error = () => {
+    message.error('Erro ao cadastrar equipamento');
+  };
 
   render() {
     return (

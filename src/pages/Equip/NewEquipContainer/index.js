@@ -210,7 +210,7 @@ class NewEquip extends Component {
   render() {
     console.log(this.state)
     return (
-      <div className='div-comp-card'>
+      <div className='card-bg-newEquip'>
 
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Cadastro de equipamentos</h1>

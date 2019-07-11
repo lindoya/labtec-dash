@@ -17,6 +17,7 @@ const { Option } = Select;
 class NewEntrance extends Component {
 
   state = {
+    loading: false,
     messageSuccess: false,    
     messageError: false,
     numeroSerie: '',
@@ -431,9 +432,11 @@ class NewEntrance extends Component {
     console.log(this.state)
     return (
       <div className='div-entrance-card'>
+        
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Nova entrada</h1>
         </div>
+
 
         <div className='div-entrance-linha1'>
           <div className='div-entrance-ns'>
@@ -1272,6 +1275,7 @@ class NewEntrance extends Component {
         <div className='div-button-entrance'>
           <Button className='button-entrance' onClick={this.saveTargetEntrance}>Salvar</Button>
         </div>
+
       </div>
     )
   }

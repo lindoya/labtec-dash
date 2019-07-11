@@ -50,7 +50,7 @@ export const getAllTypeAccount = async (query) => {
   return response
 } 
 
-export const getPermission = async (values) => {
+export const getPermission = async (query) => {
   const storeObject = store.getState()
 
   const headers = {
@@ -60,7 +60,7 @@ export const getPermission = async (values) => {
 
   let response = {}
 
-  await axios.get(`${BACKEND_URL}/api/typeAccount/`, { headers: headers, params: { values } }).then(
+  await axios.get(`${BACKEND_URL}/api/typeAccount/getResourcesByTypeAccount`, { headers: headers, params: { query } }).then(
     resp => {
       response = resp
     }

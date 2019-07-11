@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, Icon } from 'antd'
+import { Select, Input, Button, Icon, Spin } from 'antd'
 import { getAllParts } from '../../../services/peca'
 // import { masks } from '../NewPeca/validator'
 
@@ -11,6 +11,7 @@ const { Option } = Select;
 class DashPeca extends Component {
 
   state = {
+    loading: false,
     searchAvancado: false,
     order: {
       field: 'item',
@@ -31,6 +32,11 @@ class DashPeca extends Component {
 
 
   getAll = async () => {
+
+    this.setState({
+      loading: true,
+    })
+
     const query = {
       filters: {
         part: {
@@ -53,6 +59,7 @@ class DashPeca extends Component {
 
     await getAllParts(query).then(
       resposta => this.setState({
+        loading: false,
         page: resposta.data.page,
         count: resposta.data.count,
         show: resposta.data.show,
@@ -286,6 +293,7 @@ class DashPeca extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashPeca' />
+      {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
       {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
@@ -378,7 +386,7 @@ class DashPeca extends Component {
         </div>
         {this.state.searchAvancado ? <this.SearchAdvanced /> : null}
         <this.TableParts />
-
+        
       </div>
     )
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, DatePicker, Icon, Modal, message } from 'antd'
+import { Select, Input, Button, DatePicker, Icon, Modal, message, Spin} from 'antd'
 import { getAllCompany, updateCompany } from '../../../services/company'
 
 import 'antd/dist/antd.css'
@@ -12,6 +12,7 @@ const { Option } = Select;
 class NewCompany extends Component {
   
   state = {
+    loading: false,
     messageError: false,
     messageSuccess: false,
     avancado: false,
@@ -129,6 +130,10 @@ class NewCompany extends Component {
   }
 
   getAll = async () => {
+    this.setState({
+      loading: true,
+    })
+
     const query = {
       filters: {
         company: {
@@ -151,6 +156,7 @@ class NewCompany extends Component {
 
     await getAllCompany(query).then(
       resposta => this.setState({
+        loading: false,
         page: resposta.data.page,
         count: resposta.data.count,
         show: resposta.data.show,
@@ -215,6 +221,7 @@ class NewCompany extends Component {
       })
     }
   }
+
 
   openModalDetalhesCompany = (company) => {
      this.setState({
@@ -470,7 +477,7 @@ class NewCompany extends Component {
 
 
   TableCompanies = () => (
-    <div className='gerCmp-div-mainHeader'>
+    <div className='gerCmp-div-mainHeader' >
       <div className='gerCmp-div-table-information'>
         <div className='gerCmp-div-table-information-total'>
           <label className='gerCmp-label-table-information'>
@@ -548,9 +555,10 @@ class NewCompany extends Component {
         </div>
       </div>
       <div className='gerCmp-div-table-separeteLineMain' />
+      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading}/></div> : null}
       {
         this.state.rows.map((line) =>
-          <div className='gerCmp-div-table-list'>
+          <div className='gerCmp-div-table-list' >
             <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhesCompany(line)}>
 
               <div className='gerCmp-div-table-cel-cnpj'>
@@ -596,7 +604,7 @@ class NewCompany extends Component {
   render() {
     console.log(this.state)
     return (
-      <div className='gerCmp-div-card'>
+      <div className='gerCmp-div-card' >
 
         <this.ModalDetalhes />
 

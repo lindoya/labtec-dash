@@ -113,11 +113,11 @@ class DashTypeAccount extends Component {
           <h3 className='h3-dashTypeAccount'>Permissões</h3>
             <Card className='card-checkbox-dashTypeAccount'>
               <div className='div-insideCard-dashTypeAccount'>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} name='addEntry'>Adicionar entrada</Checkbox> 
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} name='addPart'>Adicionar peça</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} name='addCompany'>Adicionar empresa</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} name='addAnalyze'>Adicionar analise</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} name='addEquip'>Adicionar equipamento</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox> 
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox>
               </div>
             </Card>
           </div>

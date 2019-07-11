@@ -1,6 +1,6 @@
 .card-bg-newUser{
   margin-top: 10px;
-  height: calc(200% - 10px) !important;
+  height: calc(100% - 20px) !important;
   width: 98% !important;
   box-shadow: 1px 5px 12px;
   display: flex;

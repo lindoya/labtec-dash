@@ -139,19 +139,7 @@ class Sider extends Component {
             <Menu.Item key="analise_add"><Icon type="line-chart" />Análise</Menu.Item>
             <Menu.Item key="tecnico_dash"><Icon type="user" />Técnico</Menu.Item>
 
-            <SubMenu
-            key="Pecas"
-            title={
-              <span>
-                <Icon type="setting" />
-                <span>Peças</span>
-              </span>
-            }
-          >
-            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
-            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
-            <Menu.Item key="acessories_add"><Icon type="setting" />Acessórios</Menu.Item>
-          </SubMenu>
+            
           </SubMenu>
 
           <SubMenu
@@ -180,6 +168,20 @@ class Sider extends Component {
             <Menu.Item key="equip_dash"><Icon type="edit" /> Gerenciar</Menu.Item>
 
             <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
+          </SubMenu>
+
+          <SubMenu
+            key="Pecas"
+            title={
+              <span>
+                <Icon type="setting" />
+                <span>Peças</span>
+              </span>
+            }
+          >
+            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
+            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
+            <Menu.Item key="acessories_add"><Icon type="setting" />Acessórios</Menu.Item>
           </SubMenu>
 
           <SubMenu
