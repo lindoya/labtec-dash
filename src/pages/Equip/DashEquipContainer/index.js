@@ -61,20 +61,38 @@ class DashEquip extends Component {
     this.setState({
       loading: true,
     })
+    let leitor = null
+    let typeSearch = null
+
+    if (this.state.leitor === 'Todos' || this.state.leitor === 'Escolha o leitor' ) {
+      leitor = ''
+    } else {
+      leitor = this.state.leitor
+    }
+
+    if (this.state.typeSearch === 'Escolha o tipo') {
+      typeSearch = ''
+    } else {
+      typeSearch = this.state.typeSearch
+    }
 
     const query = {
       filters: {
         equip: {
-          // global: {
-          //   fields: ['serialNumber'],
-          //   value: this.state.global,
-          // },
+          global: {
+            fields: ['serialNumber'],
+            value: this.state.global,
+          },
           specific: {
             serialNumber: this.state.serialNumber,
-            // readerColor: 'Verde',
+            readerColor: leitor,
           },
         },
         company: {
+          // global: {
+          //   fields: ['cnpj'],
+          //   value: this.state.global,
+          // },
           specific: {
             cnpj: this.state.cnpj,
             razaoSocial: this.state.razaoSocial,
@@ -92,7 +110,7 @@ class DashEquip extends Component {
         },
         equipType: {
           specific: {
-            // type: this.state.typeSearch,
+            type: typeSearch,
           },
         },
       },
