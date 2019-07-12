@@ -23,10 +23,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, reducers)
 
 
-export const store = applyMiddleware(
-  thunk, multi, promise)(
-    createStore)(
-      persistedReducer, composeWithDevTools())
+export const store = applyMiddleware(thunk, multi, promise)(createStore)(persistedReducer, composeWithDevTools())
 
 // const middlewarer = [
 //   thunk,

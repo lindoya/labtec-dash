@@ -5,9 +5,9 @@ export default {
     LOGOUT: 'LOGOUT_AUTH',
   },
   
-  // REDIRECT: {
-  //   TESTE: 'REDIRECT_TESTE'
-  // },
+  REDIRECT: {
+    TESTE: 'REDIRECT_TESTE'
+  },
 
   COMPANY: {
     CREATE: {

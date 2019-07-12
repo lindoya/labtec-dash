@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import './index.css'
 import { Card, Icon, Button, Spin } from 'antd';
 import { Redirect } from 'react-router-dom'
-// import { connect } from 'react-redux'
-// import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 
 // import { getAllEntrance } from '../../../services/entrance'
 import { getAllProcess } from '../../../services/process'
-// import { redirectTest } from '../TecnicoRedux/action'
+import { redirectTest } from '../TecnicoRedux/action'
 
 class DashTecnico extends Component {
 constructor(props){
@@ -52,7 +52,18 @@ constructor(props){
     })
   }
 
-  redirectToAnalise = (lineSelected) => {
+  redirectToAnalise = async (lineSelected) => {
+    const value = {
+      serialNumber: lineSelected.serialNumber,
+      razaoSocial: lineSelected.razaoSocial,
+      type: lineSelected.type,
+      mark: lineSelected.mark,
+      model: lineSelected.model,
+      leitor: lineSelected.readerColor,
+      defect: lineSelected.defect,
+    }
+    await this.props.redirectTest(value)
+
     this.setState({
       analiseSelected: lineSelected,
       redirect: true
@@ -60,7 +71,6 @@ constructor(props){
   }
 
   renderRedirect = () => {
-
     if (this.state.redirect) {
       return <Redirect to='/logged/analise/add' />
     }
@@ -91,18 +101,6 @@ constructor(props){
     )
   }
 
-  
-  // redirect = async (e) => {
-  //   const value = {
-  //     serialNumber: '',
-  //     razaoSocial: '',
-  //     type: '',
-  //     mark: '',
-  //     model: '',
-  //     leitor: '',
-  //   }
-  //   await this.props.redirectTest(value)
-  // }
 
   TableAgAnalise = () => (
     <div className='div-mainHeader-dashTec'>
@@ -358,22 +356,21 @@ constructor(props){
         
         </div>
 
-      {/* <Button onClick={this.redirect}>redirect</Button> */}
       </div>
     )
   }
 }
 
-export default DashTecnico
+// export default DashTecnico
 
-// function mapDispacthToProps(dispach) {
-//   return bindActionCreators ({ redirectTest, }, dispach)
-// }
+function mapDispacthToProps(dispach) {
+  return bindActionCreators ({ redirectTest, }, dispach)
+}
 
-// function mapStateToProps (state) {
-//   return {
-//     value: state.teste,
-//   }
-// }
+function mapStateToProps (state) {
+  return {
+    value: state.teste,
+  }
+}
 
-// export default connect (mapStateToProps, mapDispacthToProps)(DashTecnico)
+export default connect (mapStateToProps, mapDispacthToProps)(DashTecnico)

@@ -1,23 +1,26 @@
-// import actions from '../../../store/actions'
+import actions from '../../../store/actions'
 
 
-// const INICIAL_STATE_REDIRECT ={
-//   serialNumber: '',
-//   razaoSocial: '',
-//   type: '',
-//   mark: '',
-//   model: '',
-//   leitor: '',
-// }
+const INICIAL_STATE_REDIRECT ={
+  serialNumber: '',
+  razaoSocial: '',
+  type: '',
+  mark: '',
+  model: '',
+  leitor: '',
+  defect: '',
+}
 
 
 
-// export function teste(state = INICIAL_STATE_REDIRECT, action) {
+export function analyze(state = INICIAL_STATE_REDIRECT, action) {
   
-//   switch(action.type){
-//     case actions.REDIRECT.TESTE:
-//       return {...state}
-//     default:
-//       return state
-//   }
-// }
+  switch(action.type){
+    case actions.REDIRECT.TESTE:
+      return {...state,
+        ...action.payload,
+      }
+    default:
+      return state
+  }
+}

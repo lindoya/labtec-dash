@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import './index.css'
 
 import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
@@ -181,7 +181,7 @@ class NewAnalise extends Component {
 
 
   render() {
-    // console.log(this.props)
+    console.log(this.props.analyze)
 
     return (
       <div className='div-card-analise'>
@@ -229,8 +229,7 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='numeroSerie'
-              // value={this.props.value.cnpj}
-              // onChange={this.props.changeValueCompany}
+              value={this.props.analyze.serialNumber}
               />
           </div>
 
@@ -240,8 +239,7 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='razaoSocial'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
+              value={this.props.analyze.razaoSocial}
             />
           </div>
 
@@ -255,8 +253,7 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='type'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
+              value={this.props.analyze.type}
             />
           </div>
 
@@ -266,8 +263,7 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='mark'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
+              value={this.props.analyze.mark}
             />
           </div>
 
@@ -277,8 +273,7 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='model'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
+              value={this.props.analyze.model}
             />
           </div>
 
@@ -288,8 +283,7 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='leitor'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
+              value={this.props.analyze.leitor}
             />
           </div>
 
@@ -307,14 +301,12 @@ class NewAnalise extends Component {
 
         </Card>
 
-        <div className='div-defeito-analise'>Defeitos</div>
+        <div className='div-defeito-analise' >Defeitos</div>
 
         <Card className='card-analise'>
 
           <div className='div-linha-analise'>
-
-
-
+          {this.props.analyze.defect}
           </div>
 
         </Card>
@@ -434,12 +426,10 @@ class NewAnalise extends Component {
   }
 }
 
-// function mapStateToProps (state) {
-//   return {
-//     state,
-//   }
-// }
+function mapStateToProps (state) {
+  return {
+    analyze: state.analyze
+  }
+}
 
-// export default connect (mapStateToProps)(NewAnalise)
-
-export default NewAnalise
+export default connect (mapStateToProps)(NewAnalise)
