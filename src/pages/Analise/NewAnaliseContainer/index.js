@@ -9,8 +9,26 @@ const { Option } = Select;
 class NewAnalise extends Component {
 
   state = {
+    analiseSelected:{
+      Os: '',
+      contrato: '',
+      garantia: '',
+      serialNumber: '',
+      razaoSocial: '',
+      type: '',
+      mark: '',
+      model: '',
+      OsRetorno: '',
+      dataFabrica: '',
+    },
     modal: false,
     status: 'prontoParaOrcamento',
+    problems:{
+      violado: false,
+      mauUso: false,
+      humidade: false,
+      sinaisQueda: false,
+    },
     checkList: {
 
     },
@@ -32,6 +50,12 @@ class NewAnalise extends Component {
   onChangeMotivo = (e) => {
     this.setState({
       peca: { ...this.state.peca, motivoTroca: e.target.value }
+    })
+  }
+
+  getProps = (props) => {
+    this.setState({
+      analiseSelected: this.props.teste
     })
   }
 
@@ -93,6 +117,10 @@ class NewAnalise extends Component {
     })
   };
 
+  componentDidMount = () => {
+    this.getProps()
+  }
+
   handleCancel = () => {
     this.setState({
       modal: false,
@@ -127,8 +155,13 @@ class NewAnalise extends Component {
     })
   }
 
-  onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+  onChangeProblems = (e) => {
+    this.setState({
+      problems:{
+        ...this.state.problems,
+        [e.target.name]: e.target.checked 
+      }
+    })
   }
 
   changeSelect = (value) => {
@@ -195,9 +228,9 @@ class NewAnalise extends Component {
               readOnly
               className='input-cnpj'
               name='numeroSerie'
-            // value={this.props.value.cnpj}
-            // onChange={this.props.changeValueCompany}
-            />
+              // value={this.props.value.cnpj}
+              // onChange={this.props.changeValueCompany}
+              />
           </div>
 
           <div className='div-razaoSocial-analise'>
@@ -297,10 +330,10 @@ class NewAnalise extends Component {
 
                 <div className='div-checkbox-analise'>
 
-                  <Checkbox onChange={this.onChange} value='Violado'>Violado</Checkbox>
-                  <Checkbox onChange={this.onChange} value='MauUso'>Mau uso</Checkbox>
-                  <Checkbox onChange={this.onChange} value='Humidade'>Humidade</Checkbox>
-                  <Checkbox onChange={this.onChange} value='SinaisDeQueda'>Sinais de queda</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.violado} name='violado'>Violado</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.mauUso} name='mauUso'>Mau uso</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.humidade} name='humidade'>Humidade</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.sinaisQueda} name='sinaisQueda'>Sinais de queda</Checkbox>
 
                 </div>
 

@@ -17,6 +17,7 @@ const { Option } = Select;
 class NewEntrance extends Component {
 
   state = {
+    loading: false,
     messageSuccess: false,    
     messageError: false,
     numeroSerie: '',
@@ -207,6 +208,14 @@ class NewEntrance extends Component {
     }
   }
 
+  success = () => {
+    message.success('A entrada foi cadastrada');
+  };
+  
+  error = () => {
+    message.error('A entrada não foi cadastrada');
+  };
+
   getAddress = async (e) => { 
     const cep = e.target.value
     try {
@@ -316,7 +325,7 @@ class NewEntrance extends Component {
 
   changeRadioSim = () => {
     this.setState({
-      radio: 'sim'
+      radio: true
     })
   }
 
@@ -331,11 +340,16 @@ class NewEntrance extends Component {
     radio: 'nao',
     danos: ''
   })
-}
+
+    this.setState({
+      radio: false,
+      danos: ''
+    })
+  }
 
   changeEmbaladoSim = () => {
     this.setState({
-      embalado: 'sim',
+      embalado: true,
       devEmbalado: ''
     })
   }
@@ -346,9 +360,7 @@ class NewEntrance extends Component {
     fieldFalha.devEmbalado = false
     message.devEmbalado = ''
     this.setState({
-      fieldFalha,
-      message,
-      embalado: 'nao',
+      embalado: false,
     })
   }
 
@@ -410,17 +422,19 @@ class NewEntrance extends Component {
   saveTargetEntrance = async () => {
 
     const values = {
+      serialNumber: this.state.numeroSerie,
       equipId: this.state.equipId,
       defect: this.state.defeito,
       externalDamage: this.state.radio,
-      details: this.state.danos,
+      // details: this.state.danos,
       observation: this.state.descricao,
       delivery: this.state.selected,
       clientName: this.state.nameCliente,
       RG: this.state.rg,
       Cpf: this.state.cpf,
       senderName: this.state.nameRemetente,
-      properlyPacked: this.state.devEmbalado,
+      properlyPacked: this.state.embalado,
+      details: this.state.devEmbalado,
       zipCode: this.state.cep,
       state: this.state.state,
       city: this.state.city,
@@ -482,17 +496,14 @@ class NewEntrance extends Component {
   }
 
   render() {
-    // if (this.props.value.sucess) {
-    //   Modal.success({
-    //     title: 'Sucesso',
-    //     content: `Entrada feita com sucesso`,
-    //   })
-    // }
+    console.log(this.state)
     return (
       <div className='div-entrance-card'>
+        
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Nova entrada</h1>
         </div>
+
 
         <div className='div-entrance-linha1'>
           <div className='div-entrance-ns'>
@@ -688,12 +699,12 @@ class NewEntrance extends Component {
             <div className='div-entrance-danos'>
               <h2 className='div-comp-label'>Danos externos:</h2>
               <Radio.Group name="radiogroup">
-                <Radio value={'sim'} nameRadio='sim' onChange={this.changeRadioSim}>Sim</Radio>
-                <Radio value={'nao'} nameRadio='nao' onChange={this.changeRadioNao}>Não</Radio>
+                <Radio value={true} nameRadio={true} onChange={this.changeRadioSim}>Sim</Radio>
+                <Radio value={false} nameRadio={false} onChange={this.changeRadioNao}>Não</Radio>
               </Radio.Group>
             </div>
             <div className='div-entrance-inputDanos'>
-              {this.state.radio === 'sim' ? <Input 
+              {this.state.radio === true ? <Input 
               className={
                 this.state.fieldFalha.danos ?
                   'div-comp-inputError' :
@@ -706,7 +717,7 @@ class NewEntrance extends Component {
               onFocus={this.onChange}
               />
               : null}
-            {this.state.radio === 'sim'?
+            {this.state.radio === true?
               <p className='div-comp-feedbackError'>
                 {this.state.message.danos}
               </p> : null}
@@ -951,12 +962,12 @@ class NewEntrance extends Component {
             <div className='div-entrance-embaladoExterno'>
               <h2 className='div-comp-label'>Devidamente embalado:</h2>
               <Radio.Group name="radiogroup">
-                <Radio value={'sim'} nameRadio='sim' onChange={this.changeEmbaladoSim}>Sim</Radio>
-                <Radio value={'nao'} nameRadio='nao' onChange={this.changeEmbaladoNao}>Não</Radio>
+                <Radio value={true} nameRadio={true} onChange={this.changeEmbaladoSim}>Sim</Radio>
+                <Radio value={false} nameRadio={false} onChange={this.changeEmbaladoNao}>Não</Radio>
               </Radio.Group>
             </div>
             <div className='div-entrance-inputEmbalagem'>
-              {this.state.embalado === 'nao' ?<Input
+              {this.state.embalado === false ?<Input
                 className={
                   this.state.fieldFalha.devEmbalado ?
                     'div-comp-inputError' :
@@ -1331,6 +1342,7 @@ class NewEntrance extends Component {
         <div className='div-button-entrance'>
           <Button className='button-entrance' onClick={this.saveTargetEntrance}>Salvar</Button>
         </div>
+
       </div>
     )
   }

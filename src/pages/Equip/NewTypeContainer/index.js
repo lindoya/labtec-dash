@@ -179,7 +179,7 @@ class NewTypeEquip extends Component {
     //   })
     // }
     return (
-      <div className='div-equipType-card'>
+      <div className='card-bg-newEquipType'>
 
         <div className='div-equipType-Linha div-equipType-header'>
           <h1 className='div-equipType-title'>Cadastro tipo de equipamento</h1>
@@ -209,7 +209,7 @@ class NewTypeEquip extends Component {
 
           <div className='div-equipType-Linha-card'>
             <div className='div-equipType-cardMarca'>
-              <Card size="small" title="Marcas" style={{ width: '100%' }}>
+              <Card size="small" title="Marcas" style={{ width: '100%' }} key='teste'>
               {this.state.marksList.length === 0 ? <p>Nenhuma marca cadastrada</p> : 
               this.state.marksList.map(mark => <div className={this.state.mark.mark === mark.mark ? 'markList-equipType-selecionado': 'markList-equipType'}
               onClick={() => this.selectMark(mark)}>

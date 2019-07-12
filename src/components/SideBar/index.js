@@ -54,7 +54,6 @@ class Sider extends Component {
   }
 
   render() {
-    // console.log(this.state)
     if (this.state.redirect) {
       this.changeRedirectState()
       switch (this.state.current) {
@@ -66,6 +65,8 @@ class Sider extends Component {
           return <Redirect to='/logged/tecnico/dash' />
         case 'typeAccount_dash':
           return <Redirect to='/logged/typeAccount/dash' />
+        case 'user_add':
+          return <Redirect to='/logged/user/add' />
         case 'company_add':
           return <Redirect to='/logged/company/add' />
         case 'company_dash':
@@ -80,6 +81,8 @@ class Sider extends Component {
           return <Redirect to='/logged/peca/add' />
         case 'peca_dash':
           return <Redirect to='/logged/peca/dash' />
+        case 'acessories_add':
+          return <Redirect to='/logged/acessories/add' />
         case 'logout':
           return <Redirect to='/login' />
         default:
@@ -134,21 +137,9 @@ class Sider extends Component {
           >
             <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
             <Menu.Item key="analise_add"><Icon type="line-chart" />Análise</Menu.Item>
-            <Menu.Item key="typeAccount_dash"><Icon type="profile" />Tipo conta</Menu.Item>
             <Menu.Item key="tecnico_dash"><Icon type="user" />Técnico</Menu.Item>
 
-            <SubMenu
-            key="Pecas"
-            title={
-              <span>
-                <Icon type="setting" />
-                <span>Peças</span>
-              </span>
-            }
-          >
-            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
-            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
-          </SubMenu>
+            
           </SubMenu>
 
           <SubMenu
@@ -177,6 +168,34 @@ class Sider extends Component {
             <Menu.Item key="equip_dash"><Icon type="edit" /> Gerenciar</Menu.Item>
 
             <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
+          </SubMenu>
+
+          <SubMenu
+            key="Pecas"
+            title={
+              <span>
+                <Icon type="setting" />
+                <span>Peças</span>
+              </span>
+            }
+          >
+            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
+            <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
+            <Menu.Item key="acessories_add"><Icon type="setting" />Acessórios</Menu.Item>
+          </SubMenu>
+
+          <SubMenu
+            key="Contas"
+            title={
+              <span>
+                <Icon type="usergroup-add" />
+                <span>Contas</span>
+              </span>
+            }
+          >
+            <Menu.Item key="user_add"><Icon type="user-add" />Novo usuário</Menu.Item>
+            <Menu.Item key="typeAccount_dash"><Icon type="profile" />Tipo conta</Menu.Item>
+
           </SubMenu>
 
           {/* <SubMenu

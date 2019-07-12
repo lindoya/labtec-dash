@@ -1,34 +1,42 @@
 import React, { Component } from 'react'
 import './index.css'
-import { Card, Icon } from 'antd';
+import { Card, Icon, Button, Spin } from 'antd';
+import { Redirect } from 'react-router-dom'
 
 // import { getAllEntrance } from '../../../services/entrance'
 import { getAllProcess } from '../../../services/process'
 
 class DashTecnico extends Component {
+constructor(props){
+  super(props)
 
-  state={
+  this.state={
+    loading: false,
     order: {
       field: 'createdAt',
       acendent: true,
     },
-    global: '',
-    Os: '',
-    contrato: '',
-    garantia: '',
-    serialNumber: '',
-    razaoSocial: '',
-    type: '',
-    mark: '',
-    model: '',
-    OsRetorno: '',
-    dataFabrica: '',
+    analiseSelected: {
+      Os: '',
+      contrato: '',
+      garantia: '',
+      serialNumber: '',
+      razaoSocial: '',
+      type: '',
+      mark: '',
+      model: '',
+      OsRetorno: '',
+      dataFabrica: '',
+    },
+    redirect: false,
     page: 1,
     total: 25,
     count: 0,
     show: 0,
     rows: [],
   }
+
+}
 
 
   changeOrder = (field) => {
@@ -40,27 +48,29 @@ class DashTecnico extends Component {
     })
   }
 
+  redirectToAnalise = (lineSelected) => {
+    this.setState({
+      analiseSelected: lineSelected,
+      redirect: true
+    })
+  }
+
+  renderRedirect = () => {
+
+    if (this.state.redirect) {
+      return <Redirect to='/logged/analise/add' />
+    }
+  }
+
   componentDidMount = () => {
     this.getAll()
   }
 
   getAll = async () => {
+    this.setState({
+      loading: true,
+    })
     const query = {
-      filters: {
-        process: {
-          global: {
-            // fields: ['cnpj', 'razaoSocial', 'nameContact', 'telphone'],
-            // value: this.state.global,
-          },
-          specific: {
-            status: "preAnalise",
-            // cnpj: this.state.cnpj,
-            // razaoSocial: this.state.razaoSocial,
-            // nameContact: this.state.nameContact,
-            // telphone: this.state.telphone,
-          }
-        }
-      },
       page: 1,
       total: 25,
       order: this.state.order,
@@ -68,6 +78,7 @@ class DashTecnico extends Component {
 
     await getAllProcess(query).then(
       resposta => this.setState({
+        loading: false,
         page: resposta.data.page,
         count: resposta.data.count,
         show: resposta.data.show,
@@ -149,10 +160,11 @@ class DashTecnico extends Component {
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashTec' /> 
-       {
-         this.state.rows.map((line) =>
+     {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
+       {this.state.rows === undefined ? 'Não há entradas cadastrada' : this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
-            <div className='div-tableRow-dashTec'>
+          {this.renderRedirect()}
+            <div className='div-tableRow-dashTec' onClick={() => this.redirectToAnalise(line)}>
               <div className='div-table-cel-serialNumber-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
                   {line.externalDamage}
@@ -179,11 +191,11 @@ class DashTecnico extends Component {
         )
       }
       <div className='gerCmp-div-table-footer'>
-        <button className='gerCmp-table-buttonFooter'>1</button>
-        <button className='gerCmp-table-buttonFooter'>2</button>
-        <button className='gerCmp-table-buttonFooter'>3</button>
-        <button className='gerCmp-table-buttonFooter'>4</button>
-        <button className='gerCmp-table-buttonFooter'>5</button>
+        <Button type='primary'>1</Button>
+        <Button type='primary'>2</Button>
+        <Button type='primary'>3</Button>
+        <Button type='primary'>4</Button>
+        <Button type='primary'>5</Button>
       </div>
     </div>
   )
@@ -217,7 +229,8 @@ class DashTecnico extends Component {
         </div>
       </div>
      <div className='div-table-separeteLineMain-dashTec' /> 
-       {
+     {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
+       {this.state.rows === undefined ? 'Não há entradas cadastrada' :
          this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             <div className='div-tableRow-dashTec'>
@@ -242,18 +255,18 @@ class DashTecnico extends Component {
         )
       }
       <div className='gerCmp-div-table-footer'>
-        <button className='gerCmp-table-buttonFooter'>1</button>
-        <button className='gerCmp-table-buttonFooter'>2</button>
-        <button className='gerCmp-table-buttonFooter'>3</button>
-        <button className='gerCmp-table-buttonFooter'>4</button>
-        <button className='gerCmp-table-buttonFooter'>5</button>
+        <Button type='primary'>1</Button>
+        <Button type='primary'>2</Button>
+        <Button type='primary'>3</Button>
+        <Button type='primary'>4</Button>
+        <Button type='primary'>5</Button>
       </div>
     </div>
   )
 
 
   render() {
-    console.log(this.state.rows)
+    console.log(this.state)
 
     return (
       <div className='card-bg-dashTec'>
@@ -268,7 +281,7 @@ class DashTecnico extends Component {
 
         <Card className='card-info-dashTec'>
           <div className='div-card-agAnalise-dashTec'>Aguardando análise</div>
-          <div className='div-card-numero-dashTec'>13</div>
+          <div className='div-card-numero-dashTec'>{this.state.count === undefined ? 0 : this.state.count}</div>
         </Card>
 
         <Card className='card-info-dashTec'>
