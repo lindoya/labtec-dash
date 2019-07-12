@@ -1,3 +1,13 @@
+.card-bg-newEquipType{
+  margin-top: 10px;
+  height: calc(100% - 20px) !important;
+  width: 98% !important;
+  box-shadow: 1px 5px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .div-equipType-label{
   color: #001529 !important;
   font-weight: bold !important;

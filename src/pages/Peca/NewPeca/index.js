@@ -342,7 +342,7 @@ class NewPeca extends Component {
             <div className='div-typeAndMark-peca'>
               <div className='div-type-peca'>
                 <h2 className='div-comp-label'>Tipo:</h2>
-                <Select defaultValue={this.state.type} style={{ width: '100%' }} onChange={this.changeTypeSelected}>
+                <Select value={this.state.type} style={{ width: '100%' }} onChange={this.changeTypeSelected}>
                   <Option value="relogio" >Relógio</Option>
                   <Option value="catraca">Catraca</Option>
                   <Option value="controleAcesso">Controle de Acesso</Option>
@@ -353,7 +353,7 @@ class NewPeca extends Component {
 
               <div className='div-marca-peca'>
                 <h2 className='div-comp-label'>Marca:</h2>
-                <Select style={{ width: '100%' }} defaultValue={this.state.mark} value={this.state.mark} onChange={(mark) => this.handleChangeMark(mark)}>
+                <Select style={{ width: '100%' }}  value={this.state.mark} onChange={(mark) => this.handleChangeMark(mark)}>
                   {this.state.marksList.map(mark => <Option key={mark.mark} value={mark.mark}>{mark.mark}</Option>)}
                 </Select>
               </div>

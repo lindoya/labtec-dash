@@ -81,7 +81,7 @@ class NewEquip extends Component {
         mark:'Não selecionado',
         model:'Não selecionado',
         messageSuccess: true,
-      })
+      }, this.getAllMarkByType)
       await this.success()
       this.setState({
         messageSuccess: false
@@ -210,7 +210,7 @@ class NewEquip extends Component {
   render() {
     console.log(this.state)
     return (
-      <div className='div-comp-card'>
+      <div className='card-bg-newEquip'>
 
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Cadastro de equipamentos</h1>
@@ -284,7 +284,7 @@ class NewEquip extends Component {
             <div className='div-newEquip-type'>
               <h2 className='div-comp-label'>Tipo:</h2>
               <Select
-                defaultValue="relogio" 
+                value={this.state.type}
                 style={{ width: '100%' }} 
                 onChange={this.changeTypeSelected}
               >
@@ -298,7 +298,7 @@ class NewEquip extends Component {
 
             <div className='div-newEquip-mark'>
               <h2 className='div-comp-label'>Marca:</h2>
-              <Select defaultValue={this.state.mark} style={{ width: '100%' }} value={this.state.mark} onChange={(mark) => this.handleChangeMark(mark)}>
+              <Select value={this.state.mark} style={{ width: '100%' }} onChange={(mark) => this.handleChangeMark(mark)}>
               {this.state.marksList.map(mark => <Option key={mark.mark} value={mark.mark}>{mark.mark}</Option>)}
               </Select>
             </div>
@@ -331,7 +331,7 @@ class NewEquip extends Component {
 
             <div className='div-newEquip-leitor'>
               <h2 className='div-comp-label'>Leitor:</h2>
-              <Select defaultValue="NaoSeAplica" style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
+              <Select value={this.state.leitor} style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
                 <Option value="Branco">Branco</Option>
                 <Option value="Vermelho">Vermelho</Option>
                 <Option value="Azul">Azul</Option>

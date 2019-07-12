@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, DatePicker, Icon, Modal } from 'antd'
-import { getAllCompany } from '../../../services/company'
+import { Select, Input, Button, DatePicker, Icon, Modal, message, Spin} from 'antd'
+import { getAllCompany, updateCompany } from '../../../services/company'
 
 import 'antd/dist/antd.css'
 import './index.css'
@@ -10,8 +10,11 @@ const Search = Input.Search;
 const { Option } = Select;
 
 class NewCompany extends Component {
-
+  
   state = {
+    loading: false,
+    messageError: false,
+    messageSuccess: false,
     avancado: false,
     modalDetalhesCompany: false,
     editar: false,
@@ -48,6 +51,15 @@ class NewCompany extends Component {
     rows: [],
   }
 
+  success = () => {
+    message.success('Dados alterados com sucesso');
+  };
+  
+  error = () => {
+    message.error('Seus dados não foram alterados');
+  };
+  
+
   onChange = (e) => {
     const evento = e.target
 
@@ -73,6 +85,15 @@ class NewCompany extends Component {
   buttonAvancado = () => {
     this.setState({
       avancado: !this.state.avancado
+    })
+  }
+
+  onChangeEditar = (e) => {
+    this.setState({
+      compSelected:{
+        ...this.state.compSelected,
+        [e.target.name]: e.target.value
+      }
     })
   }
 
@@ -108,33 +129,11 @@ class NewCompany extends Component {
     })
   }
 
-  // onChangeEditar = (e) => {
-  //   const evento = e.target
-  //   const copy = { ...this.state.compSelected }
-  //   this.setState({
-  //     compSelected: {
-  //       razaoSocial: copy.razaoSocial,
-  //       cnpj: evento.value,
-  //       street: copy.street,
-  //       number: copy.number,
-  //       city: copy.city,
-  //       state: copy.state,
-  //       neighborhood: copy.neighborhood,
-  //       referencePoint: copy.referencePoint,
-  //       zipCode: copy.zipCode,
-  //       telphone: copy.telphone,
-  //       email: copy.email,
-  //       nameContact: copy.nameContact,
-  //       cnpj: copy.cnpj,
-  //       razaoSocial: copy.razaoSocial,
-  //       updatedAt: copy.updatedAt,
-  //       telphone: copy.telphone,
-  //       createdAt: copy.createdAt,
-  //     }
-  //   })
-  // }
-
   getAll = async () => {
+    this.setState({
+      loading: true,
+    })
+
     const query = {
       filters: {
         company: {
@@ -157,6 +156,7 @@ class NewCompany extends Component {
 
     await getAllCompany(query).then(
       resposta => this.setState({
+        loading: false,
         page: resposta.data.page,
         count: resposta.data.count,
         show: resposta.data.show,
@@ -165,8 +165,66 @@ class NewCompany extends Component {
     )
   }
 
+  saveTargetUpdateCompany = async () => {
+    const values = {
+      razaoSocial: this.state.compSelected.razaoSocial,
+      cnpj: this.state.compSelected.cnpj,
+      street: this.state.compSelected.street,
+      number: this.state.compSelected.number,
+      city: this.state.compSelected.city,
+      state: this.state.compSelected.state,
+      neighborhood: this.state.compSelected.neighborhood,
+      referencePoint: this.state.compSelected.referencePoint,
+      zipCode: this.state.compSelected.zipCode,
+      telphone: this.state.compSelected.telphone,
+      email: this.state.compSelected.email,
+      nameContact: this.state.compSelected.nameContact,
+    }
+
+    const resposta = await updateCompany(values)
+
+    console.log(resposta)    
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+      })
+      await this.error()
+      this.setState({
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        compSelected:{
+        razaoSocial: '',
+        cnpj: '',
+        street: '',
+        number: '',
+        city: '',
+        state: '',
+        neighborhood: '',
+        referencePoint: '',
+        zipCode: '',
+        telphone: '',
+        email: '',
+        nameContact: '',
+        },
+        messageSuccess: true,
+        editar: !this.state.editar,
+        modalDetalhesCompany: false
+      })
+      await this.success()
+      this.setState({
+        messageSuccess: false
+      })
+    }
+  }
+
+
   openModalDetalhesCompany = (company) => {
-    this.setState({
+     this.setState({
       modalDetalhesCompany: true,
       compSelected: company
     })
@@ -175,6 +233,23 @@ class NewCompany extends Component {
   okModalDetalhesCompany = () => {
     this.setState({
       modalDetalhesCompany: false
+    })
+  }
+
+  formatCnpj = () => {
+    const cnpj = this.state.compSelected.cnpj
+    const cnpjFormated = cnpj.replace(/\D/ig, '')
+
+
+    if (cnpjFormated.length === 14) {
+      cnpjFormated.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
+    }
+
+    this.setState({
+      compSelected: {
+        ...this.state.compSelected,
+        cnpj: cnpjFormated
+      }
     })
   }
 
@@ -256,19 +331,20 @@ class NewCompany extends Component {
           <div className='gercomp-div-textCnpj-modal'>
             Cnpj
         {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> : <Input
+              onChange={this.onChangeEditar}
               name='cnpj'
               className='gerComp-inputModal'
               value={this.state.compSelected.cnpj}
-            // onChange={this.onChangeEditar}
             />}
           </div>
           <div className='gercomp-div-textRazaoSocial-modal'>
             Razão social
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.razaoSocial}</p> : <Input
-              name='razaoSocial'
+          onChange={this.onChangeEditar}
+          name='razaoSocial'
               className='gerComp-inputModal'
               value={this.state.compSelected.razaoSocial}
-            // onChange={this.onChangeEditar}
+
             />}
           </div>
         </div>
@@ -276,37 +352,37 @@ class NewCompany extends Component {
           <div className='gercomp-div-textCep-modal'>
             Cep
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode}</p> : <Input
+          onChange={this.onChangeEditar}
           name='zipCode'
           className='gerComp-inputModal'
           value={this.state.compSelected.zipCode}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textRua-modal'>
             Rua
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.street}</p> : <Input
+          onChange={this.onChangeEditar}
           name='street'
           className='gerComp-inputModal'
           value={this.state.compSelected.street}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textNumero-modal'>
             Número
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.number}</p> : <Input
+          onChange={this.onChangeEditar}
           name='number'
           className='gerComp-inputModal'
           value={this.state.compSelected.number}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textBairro-modal'>
             Bairro
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.neighborhood}</p> : <Input
+          onChange={this.onChangeEditar}
           name='neighborhood'
           className='gerComp-inputModal'
           value={this.state.compSelected.neighborhood}
-          // onChange={this.onChangeEditar}
         />}
           </div>
         </div>
@@ -314,24 +390,29 @@ class NewCompany extends Component {
           <div className='gercomp-div-textCity-modal'>
             Cidade
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.city}</p> : <Input
+          onChange={this.onChangeEditar}
           name='city'
           className='gerComp-inputModal'
           value={this.state.compSelected.city}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textState-modal'>
             Estado
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.state}</p> : <Input
+          onChange={this.onChangeEditar}
           name='state'
           className='gerComp-inputModal'
           value={this.state.compSelected.state}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textRef-modal'>
             Ponto de referência
-        <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p>
+        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p> : <Input
+          onChange={this.onChangeEditar}
+          name='referencePoint'
+          className='gerComp-inputModal'
+          value={this.state.compSelected.referencePoint}
+        />}
           </div>
         </div>
         <h3 className='gercomp-h3-modal'>Dados do registro</h3>
@@ -350,28 +431,28 @@ class NewCompany extends Component {
           <div className='gercomp-div-textNome-modal'>
             Nome
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.nameContact}</p> : <Input
+          onChange={this.onChangeEditar}
           name='nameContact'
           className='gerComp-inputModal'
           value={this.state.compSelected.nameContact}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textTel-modal'>
             Telefone
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone}</p> : <Input
+          onChange={this.onChangeEditar}
           name='telphone'
           className='gerComp-inputModal'
           value={this.state.compSelected.telphone}
-          // onChange={this.onChangeEditar}
         />}
           </div>
           <div className='gercomp-div-textEmail-modal'>
             Email
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.email}</p> : <Input
+          onChange={this.onChangeEditar}
           name='email'
           className='gerComp-inputModal'
           value={this.state.compSelected.email}
-          // onChange={this.onChangeEditar}
         />}
           </div>
         </div>
@@ -383,7 +464,7 @@ class NewCompany extends Component {
             <Icon type="edit" />
         </Button> : <Button
           type="primary"
-          onClick={this.buttonEditar}
+          onClick={this.saveTargetUpdateCompany}
         >
           Salvar
           <Icon type="check" />
@@ -396,7 +477,7 @@ class NewCompany extends Component {
 
 
   TableCompanies = () => (
-    <div className='gerCmp-div-mainHeader'>
+    <div className='gerCmp-div-mainHeader' >
       <div className='gerCmp-div-table-information'>
         <div className='gerCmp-div-table-information-total'>
           <label className='gerCmp-label-table-information'>
@@ -474,9 +555,10 @@ class NewCompany extends Component {
         </div>
       </div>
       <div className='gerCmp-div-table-separeteLineMain' />
+      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading}/></div> : null}
       {
         this.state.rows.map((line) =>
-          <div className='gerCmp-div-table-list'>
+          <div className='gerCmp-div-table-list' >
             <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhesCompany(line)}>
 
               <div className='gerCmp-div-table-cel-cnpj'>
@@ -520,8 +602,9 @@ class NewCompany extends Component {
   )
 
   render() {
+    console.log(this.state)
     return (
-      <div className='gerCmp-div-card'>
+      <div className='gerCmp-div-card' >
 
         <this.ModalDetalhes />
 

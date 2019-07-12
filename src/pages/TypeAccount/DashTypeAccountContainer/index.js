@@ -20,7 +20,7 @@ class DashTypeAccount extends Component {
   }
 
   success = () => {
-    message.success('Tipo de conta slavo com sucesso');
+    message.success('Tipo de conta salvo com sucesso');
   };
 
   error = () => {
@@ -38,7 +38,7 @@ class DashTypeAccount extends Component {
     this.setState({
       permission:{
         ...this.state.permission,
-        [e.target.name]: e.target.value ? false : true
+        [e.target.name]: e.target.checked
       }
     })
   }
@@ -70,6 +70,7 @@ class DashTypeAccount extends Component {
     } if (resposta.status === 200) {
 
       this.setState({
+        messageSuccess: true,
         input: '',
         permission: {
           addCompany: false,
@@ -77,7 +78,6 @@ class DashTypeAccount extends Component {
           addAnalyze: false,
           addEquip: false,
           addEntry: false,
-          messageSuccess: true,
         },
       })
       await this.success()
@@ -100,10 +100,12 @@ class DashTypeAccount extends Component {
 
         <div className='div-form-dashTypeAccount'>
 
-          <div className='div-linha-dashTypeAccount'>
+          <div className='div-linhaInput-dashTypeAccount'>
+            <h2 className='div-comp-label'>Tipo de conta:</h2>
             <Input
               placeholder="Digite o tipo de conta"
               onChange={this.onChangeInput}
+              value={this.state.input}
             />
           </div>
 
@@ -111,11 +113,11 @@ class DashTypeAccount extends Component {
           <h3 className='h3-dashTypeAccount'>Permissões</h3>
             <Card className='card-checkbox-dashTypeAccount'>
               <div className='div-insideCard-dashTypeAccount'>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} value={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} value={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} value={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} value={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
-                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} value={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox> 
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox>
               </div>
             </Card>
           </div>
