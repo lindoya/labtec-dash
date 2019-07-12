@@ -94,6 +94,7 @@ class NewCompany extends Component {
     }, () => {
       this.getAll()
     }
+    )}
                   
   onChangeEditar = (e) => {
     this.setState({
