@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+// import { connect } from 'react-redux'
 import './index.css'
 
 import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
@@ -180,7 +181,7 @@ class NewAnalise extends Component {
 
 
   render() {
-    console.log(this.state)
+    // console.log(this.props)
 
     return (
       <div className='div-card-analise'>
@@ -432,5 +433,13 @@ class NewAnalise extends Component {
     )
   }
 }
+
+// function mapStateToProps (state) {
+//   return {
+//     state,
+//   }
+// }
+
+// export default connect (mapStateToProps)(NewAnalise)
 
 export default NewAnalise

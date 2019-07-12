@@ -5,8 +5,10 @@ export default {
     LOGOUT: 'LOGOUT_AUTH',
   },
   
-  
-  
+  // REDIRECT: {
+  //   TESTE: 'REDIRECT_TESTE'
+  // },
+
   COMPANY: {
     CREATE: {
       CHANGE_VALUE: 'COMPANY_CREATE_CHANGE_VALUE',
