@@ -81,6 +81,8 @@ class NewEquip extends Component {
         mark:'Não selecionado',
         model:'Não selecionado',
         messageSuccess: true,
+        companyId: '',
+        equipModelId: '',
       }, this.getAllMarkByType)
       await this.success()
       this.setState({
