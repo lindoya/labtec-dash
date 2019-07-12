@@ -27,6 +27,7 @@ class PrivateRoute extends Component {
       )
     } else {
       return <Redirect to='/login' />
+      // return <Redirect to={{ pathname:'/login', state: { from: this.props.location} }}/>
     }
   }
 }

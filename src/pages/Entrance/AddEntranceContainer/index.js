@@ -142,6 +142,14 @@ class NewEntrance extends Component {
     })
   }
 
+  success = () => {
+    message.success('A entrada foi cadastrada');
+  };
+  
+  error = () => {
+    message.error('A entrada não foi cadastrada');
+  };
+
   onBlurValidator = (e) => {
     const { 
       nome,
@@ -161,8 +169,18 @@ class NewEntrance extends Component {
     const serialNumberWithMask= e.target.value
     const serialNumber = serialNumberWithMask.replace(/\D/g, '')
     try {
+      const { fieldFalha } = this.state
+
+      fieldFalha.corLeitor = false
+      fieldFalha.tipo = false
+      fieldFalha.marca = false
+      fieldFalha.modelo = false
+      fieldFalha.cnpj = false
+      fieldFalha.razaoSocial = false
+
       const equipament = await getOneBySerialNumber(serialNumber)
       this.setState({
+        fieldFalha,
         equipId: equipament.data.id,
         corLeitor: equipament.data.readerColor,
         razaoSocial: equipament.data.company.razaoSocial,
@@ -171,6 +189,8 @@ class NewEntrance extends Component {
         mark: equipament.data.equipModel.equipMark.mark,
         type: equipament.data.equipModel.equipMark.equipType.type,
       }, console.log(equipament))
+
+
     } catch (error) {
       const { fieldFalha, message } = this.state
       
@@ -310,6 +330,17 @@ class NewEntrance extends Component {
   }
 
   changeRadioNao = () => {
+    const { fieldFalha, message } = this.state
+  
+  fieldFalha.danos = false
+  message.danos = ''
+  this.setState({
+    fieldFalha,
+    message,
+    radio: 'nao',
+    danos: ''
+  })
+
     this.setState({
       radio: false,
       danos: ''
@@ -324,13 +355,49 @@ class NewEntrance extends Component {
   }
 
   changeEmbaladoNao = () => {
+    const { fieldFalha, message } = this.state
+
+    fieldFalha.devEmbalado = false
+    message.devEmbalado = ''
     this.setState({
       embalado: false,
     })
   }
 
   handleChange = (value) => {
+    const { fieldFalha, message } = this.state
+
+    fieldFalha.nameCliente = false
+    fieldFalha.rg = false
+    fieldFalha.cpf = false
+    fieldFalha.devEmbalado = false
+    fieldFalha.nameRemetente = false
+    fieldFalha.cep = false
+    fieldFalha.state = false
+    fieldFalha.city = false
+    fieldFalha.neighborhood = false
+    fieldFalha.street = false
+    fieldFalha.nameMotoboy = false
+    fieldFalha.nameResponsavel = false
+    fieldFalha.number = false
+    
+    message.nameCliente = ''
+    message.rg = ''
+    message.cpf = ''
+    message.devEmbalado = ''
+    message.nameRemetente = ''
+    message.cep = ''
+    message.state = ''
+    message.city = ''
+    message.neighborhood = ''
+    message.street = ''
+    message.nameMotoboy = ''
+    message.nameResponsavel = ''
+    message.number = ''
+ 
     this.setState({
+      fieldFalha,
+      message,
       selected: value
     })
   }

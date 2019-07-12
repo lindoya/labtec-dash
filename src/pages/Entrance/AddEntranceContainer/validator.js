@@ -230,16 +230,16 @@ export const validators = (nome, valor, state) => {
     }
   } else if (nome === 'rg') {
     if (valor === '') {
-      message.RG = 'É obrigatório.'
-      fieldFalha.RG = true
+      message.rg = 'É obrigatório.'
+      fieldFalha.rg = true
     } else {
       let value = valor
       value = value.replace(/\W/ig, '')
       value = value.slice(0, 9)
       if (!(/\d{9}|(\d{8}(X))/.test(value))) {
-        message.RG = 'RG inválido.'
-        fieldFalha.RG = true
-      } else fieldFalha.RG = false
+        message.rg = 'RG inválido.'
+        fieldFalha.rg = true
+      } else fieldFalha.rg = false
     }
       return {
         fieldFalha,

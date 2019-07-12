@@ -191,7 +191,7 @@ class NewPeca extends Component {
 
   getModelsByMark = async () => {
     if (this.state.mark !== 'Nao selecionado') {
-      const resposta = await getAllModelByMarkService({ mark: this.state.mark })
+      const resposta = await getAllModelByMarkService({mark:this.state.mark, type:this.state.type})
 
       this.setState({
         modelsList: resposta.data,

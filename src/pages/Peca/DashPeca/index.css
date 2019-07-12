@@ -168,6 +168,12 @@
   margin: 9px;
 }
 
+.div-buttonSelected-dashPeca {
+  color: rgba(255, 255, 255, 0.6) !important;
+  width: 37.8px;
+  display: flex;
+  justify-content: center
+}
 .spin-dashPeca{
   display: flex;
   justify-content: center;
