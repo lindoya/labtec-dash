@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import './index.css'
-import { Input, Select, Card, Checkbox, Button } from 'antd';
+import { Input, Select, Card, Checkbox, Button, message } from 'antd';
 import { getAllTypeAccount, getPermission } from '../../../services/typeAccount'
+import { newUser } from '../../../services/newUser';
 
 
 const { Option } = Select;
@@ -14,7 +15,7 @@ class NewUser extends Component {
     checkboxAble: false,
     change: false,
     inputNewUser: '',
-    select: '',
+    select: 'Selecione um tipo',
     permission: {
       addCompany: false,
       addPart: false,
@@ -49,7 +50,6 @@ class NewUser extends Component {
 
   ableCheckbox = () => {
     this.setState({
-      // change: !this.state.change,
       checkboxAble: !this.state.checkboxAble
     })
   }
@@ -63,24 +63,28 @@ class NewUser extends Component {
   }
 
   getPermissionByTypeAccount = async () => {
-    const resposta = await getPermission({ typeName: this.state.typeName })
+    const resposta = await getPermission({ typeName: this.state.select })
 
     this.setState({
-      addCompany: resposta.data.addCompany,
-      addPart: resposta.data.addPart,
-      addAnalyze: resposta.data.addAnalyze,
-      addEquip: resposta.data.addEquip,
-      addEntry: resposta.data.addEntry,
-    })
+      permission: resposta.data
+    }, console.log(resposta))
   }
 
+  success = () => {
+    message.success('Usuário cadastrado com sucesso');
+  };
 
+  error = () => {
+    message.error('O usuário não foi cadastrado.');
+  };
 
 
   saveTargetNewUser = async () => {
 
     const values = {
-      typeName: this.state.input,
+      username: this.state.inputNewUser,
+      typeName: this.state.select,
+      customized: this.state.checkboxAble,
       addCompany: this.state.permission.addCompany,
       addPart: this.state.permission.addPart,
       addAnalyze: this.state.permission.addAnalyze,
@@ -88,7 +92,7 @@ class NewUser extends Component {
       addEntry: this.state.permission.addEntry,
     }
 
-    const resposta = await (values)
+    const resposta = await newUser (values)
 
     console.log(resposta)
 
@@ -105,7 +109,8 @@ class NewUser extends Component {
 
       this.setState({
         messageSuccess: true,
-        input: '',
+        select: 'Selecione um tipo',
+        inputNewUser: '',
         checkboxAble: false,
         permission: {
           addCompany: false,
@@ -145,6 +150,7 @@ class NewUser extends Component {
               <h2 className='div-comp-label'>Novo usuário:</h2>
 
               <Input
+                value={this.state.inputNewUser}
                 placeholder="Digite o nome do usuário"
                 onChange={this.onChangeInputNewUser}
               />
@@ -155,7 +161,7 @@ class NewUser extends Component {
 
               <h2 className='div-comp-label'>Tipo de conta:</h2>
 
-              <Select defaultValue="Selecione um tipo" className='select-newUser' onChange={this.handleChange}>
+              <Select value={this.state.select} className='select-newUser' onChange={this.handleChange}>
                 {this.state.rows.map((type) => <Option value={type.typeName}>{type.typeName}</Option>)}
               </Select>
 
@@ -171,7 +177,7 @@ class NewUser extends Component {
               <Checkbox onChange={this.ableCheckbox} checked={this.state.checkboxAble}>Habilitar customização</Checkbox>
             </div>
             <Card className='card-checkbox-newUser'>
-              {this.state.checkboxAble === false ? <div className='div-insideCard-newUser'><Checkbox className='checkbox-newUser' onChange={this.onChangePermission} value={this.state.permission.addEntry} name='addEntry' disabled>Adicionar entrada</Checkbox>
+              {this.state.checkboxAble === false ? <div className='div-insideCard-newUser'><Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addEntry} name='addEntry' disabled>Adicionar entrada</Checkbox>
                 <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart' disabled>Adicionar peça</Checkbox>
                 <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany' disabled>Adicionar empresa</Checkbox>
                 <Checkbox className='checkbox-newUser' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze' disabled>Adicionar analise</Checkbox>
@@ -185,7 +191,7 @@ class NewUser extends Component {
           </div>
 
           <div className='div-linhaButton-newUser'>
-            <Button type="primary">Salvar</Button>
+            <Button type="primary" onClick={this.saveTargetNewUser}>Salvar</Button>
           </div>
 
         </div>

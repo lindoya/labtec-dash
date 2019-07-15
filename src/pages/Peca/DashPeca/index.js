@@ -341,17 +341,6 @@ class DashPeca extends Component {
       }
       <div className='div-table-footer-dashPeca'>
        <this.Pages/>
-        {this.state.page >= 3 ? <Button type="primary">Anterior</Button> : ''}
-        {this.state.page >= 3 ? <div className='table-spaceFooter-dashPeca'>. . .</div> : ''}
-        {this.state.page !== 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 1)}>{this.state.page - 1}</Button> : ''}
-
-
-        <Button type="primary" value={this.state.page} >{this.state.page}</Button>
-        <Button type="primary" onClick={() => this.changePages(this.state.page + 1)}>{this.state.page + 1}</Button>
-        {this.state.page === 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 2)}>{this.state.page + 2}</Button> : ''}
-        <div className='table-spaceFooter-dashPeca'>. . .</div>
-        <Button type="primary">Seguinte</Button>
-
       </div>
     </div>
   )
