@@ -29,7 +29,7 @@ export const masks = (nome, valor) => {
       nome,
       valor: value,
     }
-  }else if (nome === 'RG'){
+  }else if (nome === 'rg'){
     let value = valor
     value = value.toUpperCase(0, 9)
     value = value.replace(/[^\dX]/ig, '')
