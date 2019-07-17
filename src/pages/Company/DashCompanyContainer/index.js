@@ -94,6 +94,7 @@ class NewCompany extends Component {
     }, () => {
       this.getAll()
     }
+    )}
                   
   onChangeEditar = (e) => {
     this.setState({
@@ -238,9 +239,12 @@ class NewCompany extends Component {
     })
   }
 
-  okModalDetalhesCompany = () => {
+  okModalDetalhesCompany = async () => {
+    await this.saveTargetUpdateCompany()
+    
     this.setState({
-      modalDetalhesCompany: false
+      modalDetalhesCompany: false,
+      editar: false
     })
   }
 
@@ -263,7 +267,8 @@ class NewCompany extends Component {
 
   cancelModalDetalhesCompany = () => {
     this.setState({
-      modalDetalhesCompany: false
+      modalDetalhesCompany: false,
+      editar: false
     })
   }
 
@@ -330,20 +335,17 @@ class NewCompany extends Component {
       title="Detalhes da empresa"
       visible={this.state.modalDetalhesCompany}
       onOk={this.okModalDetalhesCompany}
+      okText='Salvar'
       onCancel={this.cancelModalDetalhesCompany}
-    >
+      cancelText='Cancelar'
+      >
 
       <div className='gercomp-div-form-modal'>
         <h3 className='gercomp-h3-modal'>Dados da empresa</h3>
         <div className='gercomp-div-linhaModal2'>
           <div className='gercomp-div-textCnpj-modal'>
             Cnpj
-        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> : <Input
-              onChange={this.onChangeEditar}
-              name='cnpj'
-              className='gerComp-inputModal'
-              value={this.state.compSelected.cnpj}
-            />}
+        <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> 
           </div>
           <div className='gercomp-div-textRazaoSocial-modal'>
             Razão social
@@ -464,20 +466,13 @@ class NewCompany extends Component {
         />}
           </div>
         </div>
-        {this.state.editar === false ? <Button
+        <Button
           type="primary"
           onClick={this.buttonEditar}
         >
           Editar
             <Icon type="edit" />
-        </Button> : <Button
-          type="primary"
-          onClick={this.saveTargetUpdateCompany}
-        >
-          Salvar
-          <Icon type="check" />
-        </Button>
-      }
+        </Button> 
         
       </div>
     </Modal>

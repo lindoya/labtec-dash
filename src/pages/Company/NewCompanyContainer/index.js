@@ -498,7 +498,7 @@ class NewCompany extends Component {
 
             <div className='div-comp-compl'>
 
-              <h2 className='div-comp-label'>Complemento:</h2>
+              <h2 className='div-comp-label'>Complemento (opcional):</h2>
               <Input
                 name='complement'
                 placeholder='Ex: Bloco 3, Torre 1'
@@ -509,7 +509,7 @@ class NewCompany extends Component {
             </div>
 
             <div className='div-comp-refer'>
-              <h2 className='div-comp-label'>Ponto de referência:</h2>
+              <h2 className='div-comp-label'>Ponto de referência (opcional):</h2>
               <Input
                 className='input-refer'
                 placeholder='Digite o ponto de referência'

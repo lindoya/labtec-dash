@@ -75,6 +75,11 @@
   width: 76%;
   padding: 10px
 }
+
+.card-carrinho-analise{
+  width: 100%;
+  padding: 10px
+}
 .div-defeito-analise{
   width: 76%;
   display: flex;

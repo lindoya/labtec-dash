@@ -229,13 +229,15 @@ class DashEquip extends Component {
 
   okModalDetalhes = () => {
     this.setState({
-      modalDetalhes: false
+      modalDetalhes: false,
+      editar: false
     })
   }
 
   cancelModalDetalhes = () => {
     this.setState({
-      modalDetalhes: false
+      modalDetalhes: false,
+      editar: false
     })
   }
 
@@ -355,7 +357,9 @@ class DashEquip extends Component {
       title="Detalhes do equipamento"
       visible={this.state.modalDetalhes}
       onOk={this.okModalDetalhes}
+      okText="Salvar"
       onCancel={this.cancelModalDetalhes}
+      cancelText="Cancelar"
     >
       <div className='div-form-modal-dashEquip'>
         <h3 className='h3-modal-dashEquip'>Dados do equipamento</h3>
@@ -466,20 +470,13 @@ class DashEquip extends Component {
         <p className='p-dashEquip'>{this.state.equipSelected.telphone}</p>
           </div>
         </div>
-        {this.state.editar === false ? <Button
+         <Button
           type="primary"
           onClick={this.editarAble}
         >
           Editar
             <Icon type="edit" />
-        </Button> : <Button
-          type="primary"
-          onClick={this.editarAble}
-        >
-          Salvar
-          <Icon type="check" />
         </Button>
-      }
       </div>
     </Modal>
   )
