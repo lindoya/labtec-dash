@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Select, Input, Button, DatePicker, Icon, Modal, message, Spin} from 'antd'
 import { getAllCompany, updateCompany } from '../../../services/company'
 
@@ -9,7 +10,7 @@ import './index.css'
 const Search = Input.Search;
 const { Option } = Select;
 
-class NewCompany extends Component {
+class dashCompany extends Component {
   
   state = {
     loading: false,
@@ -138,6 +139,13 @@ class NewCompany extends Component {
     })
   }
 
+  handleOk = () => {
+    this.setState({
+      modalDetalhesCompany: !this.state.modalDetalhesCompany,
+      editar: false,
+    })
+  }
+
   getAll = async () => {
     this.setState({
       loading: true,
@@ -175,6 +183,9 @@ class NewCompany extends Component {
   }
 
   saveTargetUpdateCompany = async () => {
+    this.setState({
+      loading:true
+    })
     const values = {
       razaoSocial: this.state.compSelected.razaoSocial,
       cnpj: this.state.compSelected.cnpj,
@@ -226,8 +237,10 @@ class NewCompany extends Component {
       })
       await this.success()
       this.setState({
-        messageSuccess: false
+        messageSuccess: false,
+        loading:false,
       })
+      await this.getAll()
     }
   }
 
@@ -239,11 +252,11 @@ class NewCompany extends Component {
     })
   }
 
-  okModalDetalhesCompany = () => {
-    this.setState({
-      modalDetalhesCompany: false
-    })
-  }
+  // okModalDetalhesCompany = () => {
+  //   this.setState({
+  //     modalDetalhesCompany: false
+  //   })
+  // }
 
   formatCnpj = () => {
     const cnpj = this.state.compSelected.cnpj
@@ -264,7 +277,8 @@ class NewCompany extends Component {
 
   cancelModalDetalhesCompany = () => {
     this.setState({
-      modalDetalhesCompany: false
+      modalDetalhesCompany: false,
+      editar:false,
     })
   }
 
@@ -330,9 +344,43 @@ class NewCompany extends Component {
     <Modal
       title="Detalhes da empresa"
       visible={this.state.modalDetalhesCompany}
-      onOk={this.okModalDetalhesCompany}
+      // onOk={this.okModalDetalhesCompany}
       onCancel={this.cancelModalDetalhesCompany}
+      footer={this.props.auth.addCompany ? (
+          <div className='gercomp-div-button-modal'>
+            {this.state.editar === false ?  
+            <div className='gercomp-div-button-editFalse-modal'>
+              <Button
+                type="primary"
+                onClick={this.buttonEditar}
+              >
+                Editar
+                  <Icon type="edit" />
+              </Button>
+              <Button key="submit" type="primary" onClick={this.handleOk}>
+              OK
+            </Button>
+            </div>
+            :
+            <div className='gercomp-div-button-editTrue-modal'>
+              <Button onClick={this.handleOk}>
+                Cancelar
+              </Button>
+              <Button
+                type="primary"
+                onClick={this.saveTargetUpdateCompany}
+                loading={this.state.loading}
+              >
+                Salvar
+                <Icon type="check" />
+              </Button>
+            </div>
+            }          
+        </div>
+       )
+       :null}
     >
+
 
       <div className='gercomp-div-form-modal'>
         <h3 className='gercomp-h3-modal'>Dados da empresa</h3>
@@ -465,20 +513,22 @@ class NewCompany extends Component {
         />}
           </div>
         </div>
-        {this.state.editar === false ? <Button
-          type="primary"
-          onClick={this.buttonEditar}
-        >
-          Editar
-            <Icon type="edit" />
-        </Button> : <Button
-          type="primary"
-          onClick={this.saveTargetUpdateCompany}
-        >
-          Salvar
-          <Icon type="check" />
-        </Button>
-      }
+
+        {/* {true?<div>
+        {this.state.editar === false ?  <Button
+            type="primary"
+            onClick={this.buttonEditar}
+          >
+            Editar
+              <Icon type="edit" />
+          </Button> : <Button
+            type="primary"
+            onClick={this.saveTargetUpdateCompany}
+          >
+            Salvar
+            <Icon type="check" />
+          </Button>}
+        </div> :''} */}
         
       </div>
     </Modal>
@@ -621,7 +671,6 @@ class NewCompany extends Component {
   )
 
   render() {
-    console.log(this.state)
     return (
       <div className='gerCmp-div-card' >
 
@@ -670,4 +719,11 @@ class NewCompany extends Component {
 
   }
 }
-export default NewCompany
+
+function mapStateToProps (state) {
+  return {
+    auth: state.auth,
+  }
+}
+
+export default connect (mapStateToProps)(dashCompany)
