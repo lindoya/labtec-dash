@@ -56,8 +56,6 @@ class DashTypeAccount extends Component {
 
     const resposta = await addTypeAccount (values)
 
-    console.log(resposta)    
-
     if (resposta.status === 422 || resposta.status === 409) {
 
       this.setState({
@@ -89,7 +87,6 @@ class DashTypeAccount extends Component {
 
 
   render() {
-    console.log(this.state)
     return (
       <div className='card-bg-dashTypeAccount'>
 

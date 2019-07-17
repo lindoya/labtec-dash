@@ -281,8 +281,6 @@ constructor(props){
 
 
   render() {
-    console.log(this.state)
-
     return (
       <div className='card-bg-dashTec'>
 

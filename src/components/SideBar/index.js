@@ -15,12 +15,6 @@ class Sider extends Component {
     open: ['LabTec'],
   };
 
-  // onSubmit = async (e) => {
-  //   if(e.which === 13 || e.keyCode === 13) {
-  //   await this.props.onSubmit(this.props.value)
-  //   }
-  // }
-
   logout = async () => {
     // const token = localStorage.getItem('token')
     // token.replace(/"/ig, '')
@@ -54,6 +48,7 @@ class Sider extends Component {
   }
 
   render() {
+    // console.log(this.props.auth)
     if (this.state.redirect) {
       this.changeRedirectState()
       switch (this.state.current) {
@@ -135,9 +130,9 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="entrada_add"><Icon type="form" />Nova entrada</Menu.Item>
-            <Menu.Item key="analise_add"><Icon type="line-chart" />Análise</Menu.Item>
-            <Menu.Item key="tecnico_dash"><Icon type="user" />Técnico</Menu.Item>
+            <Menu.Item key="entrada_add" disabled={!this.props.auth.addEntry}><Icon type="form" />Nova entrada</Menu.Item>
+            <Menu.Item key="analise_add" disabled={!this.props.auth.addAnalyze}><Icon type="line-chart" />Análise</Menu.Item>
+            <Menu.Item key="tecnico_dash" disabled={!this.props.auth.tecnico}><Icon type="user" />Técnico</Menu.Item>
 
             
           </SubMenu>
@@ -151,7 +146,7 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="company_add"><Icon type="form" />Cadastrar</Menu.Item>
+            <Menu.Item key="company_add" disabled={!this.props.auth.addCompany}><Icon type="form" />Cadastrar</Menu.Item>
             <Menu.Item key="company_dash"><Icon type="edit" />Gerenciar</Menu.Item>
           </SubMenu>
 
@@ -164,10 +159,10 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="equip_add"><Icon type="form" /> Cadastrar</Menu.Item>
+            <Menu.Item key="equip_add" disabled={!this.props.auth.addEquip}><Icon type="form" /> Cadastrar</Menu.Item>
             <Menu.Item key="equip_dash"><Icon type="edit" /> Gerenciar</Menu.Item>
 
-            <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
+            <Menu.Item key="equip_addType" disabled={!this.props.auth.addEquipType}><Icon type="edit" /> Gerenciar marcas</Menu.Item>
           </SubMenu>
 
           <SubMenu
@@ -179,9 +174,9 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="peca_add"><Icon type="form" />Nova peça</Menu.Item>
+            <Menu.Item key="peca_add" disabled={!this.props.auth.addPart}><Icon type="form" />Nova peça</Menu.Item>
             <Menu.Item key="peca_dash"><Icon type="edit" />Gerenciar</Menu.Item>
-            <Menu.Item key="acessories_add"><Icon type="setting" />Acessórios</Menu.Item>
+            <Menu.Item key="acessories_add" disabled={!this.props.auth.addAccessories}><Icon type="setting" />Acessórios</Menu.Item>
           </SubMenu>
 
           <SubMenu
@@ -193,8 +188,8 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="user_add"><Icon type="user-add" />Novo usuário</Menu.Item>
-            <Menu.Item key="typeAccount_dash"><Icon type="profile" />Tipo conta</Menu.Item>
+            <Menu.Item key="user_add" disabled={!this.props.auth.addUser}><Icon type="user-add" />Novo usuário</Menu.Item>
+            <Menu.Item key="typeAccount_dash" disabled={!this.props.auth.addTypeAccount}><Icon type="profile" />Tipo conta</Menu.Item>
 
           </SubMenu>
 

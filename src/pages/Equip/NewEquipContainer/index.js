@@ -210,7 +210,6 @@ class NewEquip extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className='card-bg-newEquip'>
 
