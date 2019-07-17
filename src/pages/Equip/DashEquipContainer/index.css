@@ -343,3 +343,17 @@
   width: 100%;
   height: 50px;
 }
+
+.div-dashEquip-inputModal{
+  width: 90%;
+  margin: 5px 0 2px 0;
+  padding: 0 0 1px 5px;
+}
+
+.div-dashEquip-inputModal-inputError{
+  width: 90%;
+  margin: 5px 0 2px 0;
+  padding: 0 0 1px 5px;
+  border: 1px solid #ff0000 !important;
+  background-color: #ff6c6c3b !important;
+}
