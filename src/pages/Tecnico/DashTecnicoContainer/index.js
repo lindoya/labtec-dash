@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 
 // import { getAllEntrance } from '../../../services/entrance'
 import { getAllProcess } from '../../../services/process'
-import { redirectTest } from '../TecnicoRedux/action'
+import { redirectAnalyze } from '../TecnicoRedux/action'
 
 class DashTecnico extends Component {
 constructor(props){
@@ -54,6 +54,7 @@ constructor(props){
 
   redirectToAnalise = async (lineSelected) => {
     const value = {
+      os: lineSelected.id,
       serialNumber: lineSelected.serialNumber,
       razaoSocial: lineSelected.razaoSocial,
       type: lineSelected.type,
@@ -62,7 +63,7 @@ constructor(props){
       leitor: lineSelected.readerColor,
       defect: lineSelected.defect,
     }
-    await this.props.redirectTest(value)
+    await this.props.redirectAnalyze(value)
 
     this.setState({
       analiseSelected: lineSelected,
@@ -180,6 +181,11 @@ constructor(props){
           <div className='div-table-list-dashTec'>
           {this.renderRedirect()}
             <div className='div-tableRow-dashTec' onClick={() => this.redirectToAnalise(line)}>
+            <div className='div-table-cel-serialNumber-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.id}
+                </label>
+              </div>
               <div className='div-table-cel-serialNumber-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
                   {line.externalDamage}
@@ -281,6 +287,7 @@ constructor(props){
 
 
   render() {
+    console.log(this.state.rows)
     return (
       <div className='card-bg-dashTec'>
 
@@ -362,7 +369,7 @@ constructor(props){
 // export default DashTecnico
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators ({ redirectTest, }, dispach)
+  return bindActionCreators ({ redirectAnalyze, }, dispach)
 }
 
 function mapStateToProps (state) {
