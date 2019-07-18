@@ -257,6 +257,7 @@ class dashCompany extends Component {
   //     modalDetalhesCompany: false
   //   })
   // }
+ 
 
   formatCnpj = () => {
     const cnpj = this.state.compSelected.cnpj
@@ -387,12 +388,7 @@ class dashCompany extends Component {
         <div className='gercomp-div-linhaModal2'>
           <div className='gercomp-div-textCnpj-modal'>
             Cnpj
-        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> : <Input
-              onChange={this.onChangeEditar}
-              name='cnpj'
-              className='gerComp-inputModal'
-              value={this.state.compSelected.cnpj}
-            />}
+        <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> 
           </div>
           <div className='gercomp-div-textRazaoSocial-modal'>
             Razão social
@@ -529,6 +525,7 @@ class dashCompany extends Component {
             <Icon type="check" />
           </Button>}
         </div> :''} */}
+
         
       </div>
     </Modal>

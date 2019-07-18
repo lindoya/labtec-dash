@@ -336,7 +336,7 @@ class NewAnalise extends Component {
 
             <div className='div-historico-analise'>Carrinho</div>
 
-            <Card className='card-analise'>
+            <Card className='card-carrinho-analise'>
 
               {this.state.carrinho.length === 0 ? <p className='p-nao'>Não há nenhuma peça selecionada</p> : this.state.carrinho.map(pecasList =>
                 <div className='div-pai-newPeca' onClick={() => this.removePecas(pecasList)}>{pecasList.peca}</div>)}

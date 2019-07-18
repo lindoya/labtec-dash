@@ -94,15 +94,15 @@ class Sider extends Component {
             />
           </Tooltip>
 
-          <Tooltip placement="bottom" title={'Minha Conta'}>
-            <Icon className='menuIcon-icon' type="user" />
+          <Tooltip placement="bottom" title={'Empresas'}>
+            <Icon className='menuIcon-icon' type="bank" />
           </Tooltip>
 
-          <Tooltip placement="bottom" title={'MinhaTela1'}>
-            <Icon className='menuIcon-icon' type="dashboard" />
+          <Tooltip placement="bottom" title={'Equipamentos'}>
+            <Icon className='menuIcon-icon' type="printer" />
           </Tooltip>
 
-          <Tooltip placement="bottom" title={'MinhaTela2'}>
+          <Tooltip placement="bottom" title={'Peças'}>
             <Icon className='menuIcon-icon' type="eye" />
           </Tooltip>
  

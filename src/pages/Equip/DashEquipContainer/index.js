@@ -416,6 +416,7 @@ class DashEquip extends Component {
   okModalDetalhes = () => {
     this.setState({
       modalDetalhes: false,
+      editar: false
     })
   }
 
@@ -492,6 +493,7 @@ class DashEquip extends Component {
   saveTargetUpdateEquip = async () => {
     this.setState({
       loading:true
+
     })
     const values = {
       id: this.state.equipSelected.id,
@@ -896,20 +898,6 @@ class DashEquip extends Component {
         <p className='p-dashEquip'>{this.state.equipSelected.telphone}</p>
           </div>
         </div>
-        {/* {this.state.editar === false ? <Button
-          type="primary"
-          onClick={this.editarAble}
-        >
-          Editar
-            <Icon type="edit" />
-        </Button> : <Button
-          type="primary"
-          onClick={this.saveTargetUpdateEquip}
-        >
-          Salvar
-          <Icon type="check" />
-        </Button>
-      } */}
       </div>
     </Modal>
   )

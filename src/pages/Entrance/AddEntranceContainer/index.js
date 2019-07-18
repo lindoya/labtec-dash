@@ -10,6 +10,7 @@ import { getOneBySerialNumber } from '../../../services/equip'
 import { add } from '../../../services/entrance'
 
 import './index.css'
+import { getAllAccessories } from '../../../services/acessorio';
 
 
 const { Option } = Select;
@@ -56,15 +57,15 @@ class NewEntrance extends Component {
     acessorios: [],
     acessoriosCarrinho: [],
     acessoriosBack: [
-      'FONTE EXTERNA S/ NOBREAK',
-      'FONTE EXTERNA C/ NOBREAK',
-      'CHAVES',
-      'PINO DE CONFIRMACAO H PLUS/FORTE',
-      'PINO DA BOBINA',
-      'BOBINA',
-      'FITA',
-      'BATERIA',
-      'MODRP'
+      // 'FONTE EXTERNA S/ NOBREAK',
+      // 'FONTE EXTERNA C/ NOBREAK',
+      // 'CHAVES',
+      // 'PINO DE CONFIRMACAO H PLUS/FORTE',
+      // 'PINO DA BOBINA',
+      // 'BOBINA',
+      // 'FITA',
+      // 'BATERIA',
+      // 'MODRP'
     ],
     message: {
       numeroSerie: '',
@@ -149,6 +150,16 @@ class NewEntrance extends Component {
   error = () => {
     message.error('A entrada não foi cadastrada');
   };
+
+
+  getAccessories = async () => {
+
+    await getAllAccessories().then(
+      resposta => this.setState({
+        acessoriosBack: resposta.data.rows.map((item) => item.accessories),
+      })
+    )
+  }
 
   onBlurValidator = (e) => {
     const { 
@@ -301,7 +312,9 @@ class NewEntrance extends Component {
     }
   }
 
-  changeModal = () => {
+  changeModal = async () => {
+    await this.getAccessories()
+
     this.setState({
       visible: true,
       acessoriosCarrinho: this.state.acessorios
@@ -467,13 +480,21 @@ class NewEntrance extends Component {
     } if (resposta.status === 200) {
 
       this.setState({
-        equipId: '',
+        numeroSerie: '',
+        embalado: '',
+        acessorios: [],
         defeito: '',
         descricao: '',
         danos: '',
         radio: '',
         selected: 'cliente',
         nameCliente: '',
+        corLeitor: '',
+        type: '',
+        mark: '',
+        model: '',
+        cnpj: '',
+        razaoSocial: '',
         rg: '',
         cpf: '',
         nameRemetente: '',
@@ -487,7 +508,10 @@ class NewEntrance extends Component {
         number: '',
         nameMotoboy: '',
         nameResponsavel: '',
+        equipId: '',
         nameExterno: '',
+        conditionType: 'avulso',
+        garantia: 'none',
         messageSuccess: true,
       })
       await this.success()
@@ -631,7 +655,7 @@ class NewEntrance extends Component {
           </div>
           <div className='div-entrance-condition'>
           <h2 className='div-comp-label'>Tipo de serviço:</h2>
-          <Select defaultValue='avulso' style={{ width: '100%' }} onChange={this.handleChangeType}>
+          <Select value={this.state.conditionType} style={{ width: '100%' }} onChange={this.handleChangeType}>
             <Option value="avulso">Avulso</Option>
             <Option value="contrato">Contrato</Option>
             <Option value="emprestimo">Empréstimo</Option>
@@ -639,7 +663,7 @@ class NewEntrance extends Component {
           </div>
           <div className='div-entrance-garantia'>
           <h2 className='div-comp-label'>Garantia:</h2>
-          <Select defaultValue='none' style={{ width: '100%' }} onChange={this.handleChangeType}>
+          <Select value={this.state.garantia} style={{ width: '100%' }} onChange={this.handleChangeType}>
             <Option value="externo">Serviço externo</Option>
             <Option value="laboratorio">Venda</Option>
             <Option value="venda">Laboratório</Option>
@@ -701,8 +725,8 @@ class NewEntrance extends Component {
             <div className='div-entrance-danos'>
               <h2 className='div-comp-label'>Danos externos:</h2>
               <Radio.Group name="radiogroup">
-                <Radio value={true} nameRadio={true} onChange={this.changeRadioSim}>Sim</Radio>
-                <Radio value={false} nameRadio={false} onChange={this.changeRadioNao}>Não</Radio>
+                <Radio value={true} onChange={this.changeRadioSim}>Sim</Radio>
+                <Radio value={false} onChange={this.changeRadioNao}>Não</Radio>
               </Radio.Group>
             </div>
             <div className='div-entrance-inputDanos'>
@@ -857,7 +881,7 @@ class NewEntrance extends Component {
         <div className='div-entrance-linha1'>
           <div className='div-entrance-como'>
             <h2 className='div-comp-label'>Como chegou:</h2>
-            <Select defaultValue="Cliente" style={{ width: 180 }} onChange={this.handleChange}>
+            <Select value={this.state.selected} style={{ width: 180 }} onChange={this.handleChange}>
               <Option value="cliente">Cliente</Option>
               <Option value="sedex">Sedex</Option>
               <Option value="motoboy">Motoboy</Option>
@@ -1251,8 +1275,8 @@ class NewEntrance extends Component {
                     'div-comp-inputError' :
                     ''}
                 placeholder='Digite o RG'
-                name='RG'
-                value={this.state.RG}
+                name='rg'
+                value={this.state.rg}
                 onChange={this.onChange}
                 onBlur={this.onBlurValidator}
                 onFocus={this.onChange}
@@ -1277,7 +1301,6 @@ class NewEntrance extends Component {
                 name='cpf'
                 value={this.state.cpf}
                 onChange={this.onChange}
-                onBlur={this.onBlurValidator}
                 onFocus={this.onChange}
               />
               {this.state.fieldFalha.cpf ?
