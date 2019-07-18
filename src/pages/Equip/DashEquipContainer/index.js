@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, Icon, Modal, Spin } from 'antd'
-import { getAllEquip } from '../../../services/equip'
+import { connect } from 'react-redux'
+import { Select, Input, Button, Icon, Modal, Spin, message } from 'antd'
+import { getAllEquip, updateEquip } from '../../../services/equip'
+import { validators, masks } from '../NewEquipContainer/validator'
+import { getAllMarkByTypeService, getAllModelByMarkService } from '../../../services/equip'
+
 
 import './index.css'
+import { from } from 'rxjs';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -40,6 +45,29 @@ class DashEquip extends Component {
       readerColor: '',
       details: '',
     },
+    equipSelectedUpdate: {
+      type: '',
+      mark: '',
+      model: '',
+      serialNumber: '',
+      readerColor: '',
+    },
+    message:{
+      serialNumber: '',
+      leitor: '',
+      type: '',
+      mark:'',
+      model:'',
+    },
+    fieldFalha:{
+      serialNumber: false,
+      leitor: false,
+      type: false,
+      mark:false,
+      model:false,
+    },
+    marksList: [],
+    modelsList: [],
     global: '',
     serialNumber: '',
     cnpj: '',
@@ -61,20 +89,38 @@ class DashEquip extends Component {
     this.setState({
       loading: true,
     })
+    let leitor = null
+    let typeSearch = null
+
+    if (this.state.leitor === 'Todos' || this.state.leitor === 'Escolha o leitor' ) {
+      leitor = ''
+    } else {
+      leitor = this.state.leitor
+    }
+
+    if (this.state.typeSearch === 'Escolha o tipo') {
+      typeSearch = ''
+    } else {
+      typeSearch = this.state.typeSearch
+    }
 
     const query = {
       filters: {
         equip: {
-          // global: {
-          //   fields: ['serialNumber'],
-          //   value: this.state.global,
-          // },
+          global: {
+            fields: ['serialNumber'],
+            value: this.state.global,
+          },
           specific: {
             serialNumber: this.state.serialNumber,
-            // readerColor: 'Verde',
+            readerColor: leitor,
           },
         },
         company: {
+          // global: {
+          //   fields: ['cnpj'],
+          //   value: this.state.global,
+          // },
           specific: {
             cnpj: this.state.cnpj,
             razaoSocial: this.state.razaoSocial,
@@ -92,7 +138,7 @@ class DashEquip extends Component {
         },
         equipType: {
           specific: {
-            // type: this.state.typeSearch,
+            type: typeSearch,
           },
         },
       },
@@ -111,6 +157,86 @@ class DashEquip extends Component {
       })
     )
   }
+
+  getAllMarkByType = async () => {
+    const type = this.state.equipSelectedUpdate.type
+
+    if (type !== 'catraca'
+      &&  type !== 'relogio'
+      &&  type !== 'controleAcesso'
+      &&  type !== 'peca'
+      &&  type !== 'sirene'){
+        this.setState({
+          marksList: []
+        })
+        return
+    }
+
+    const resposta = await getAllMarkByTypeService({ type })
+
+    this.setState({
+      marksList: resposta.data
+    })
+  }
+
+  getAllModelByMark = async () => {
+    const mark = this.state.equipSelectedUpdate.mark
+    const type = this.state.equipSelectedUpdate.type
+
+    if (this.state.fieldFalha.mark) {
+        this.setState({
+          modelsList: []
+        })
+        return
+    }
+
+    const resposta = await getAllModelByMarkService({ mark, type })
+    this.setState({
+      modelsList: resposta.data
+    })
+  }
+
+  onBlurValidator = async(e) => {
+    const { 
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+    
+    await this.setState({
+      [ nome ]: valor,
+      fieldFalha,
+      message
+    })
+    this.getAllMarkByType()
+    this.getAllModelByMark()
+
+  }
+
+  // onBlurModalMarl = async(e) => {
+  //   const { 
+  //     nome,
+  //     valor,
+  //     fieldFalha,
+  //     message,
+  //   } = validators(e.target.name, e.target.value, this.state)
+    
+  //   this.setState({
+  //     [ nome ]: valor,
+  //     fieldFalha,
+  //     message
+  //   }, this.getAllMarkByType)
+
+  // }
+
+  success = () => {
+    message.success('Dados alterados com sucesso');
+  };
+  
+  error = () => {
+    message.error('Seus dados não foram alterados');
+  };
 
   componentDidMount = () => {
     this.getAll()
@@ -162,13 +288,64 @@ class DashEquip extends Component {
     })
   }
 
+  validatorsType = (valor) => {
+    let value = valor
+
+    value = value.toLowerCase()
+    value = value.replace(/de/gi, '')
+    value = value.replace(/\s/gi, '')
+    value = value.replace(/[é]/gi, 'e')
+    value = value.replace(/[ó]/gi, 'o')
+    value = value.replace(/[ç]/gi, 'c')
+
+    if (value === 'controleacesso') value = 'controleAcesso'
+
+    return value
+  }
+
   onChangeEditar = (e) => {
+    const  { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    let value
+
+    if (nome === 'type') {
+      value = this.validatorsType(valor)
+    } else {
+      value = valor
+    } 
+
     this.setState({
       equipSelected:{
         ...this.state.equipSelected,
-        [e.target.name]: e.target.value
-      }
+        [ nome ]: valor
+      },
+      equipSelectedUpdate:{
+        ...this.state.equipSelectedUpdate,
+        [ nome ]: value,
+      },
     })
+
+    // this.setState({
+    //   equipSelected:{
+    //     ...this.state.equipSelected,
+    //     [e.target.name]: e.target.value
+    //   }
+    // })
+  }
+
+  handleChangeLeitor= (value) => {
+    this.setState({
+      equipSelected:{
+        ...this.state.equipSelected,
+        readerColor: value,
+      },
+      equipSelectedUpdate:{
+        ...this.state.equipSelectedUpdate,
+        readerColor: value,
+      },
+    });
   }
 
 
@@ -220,11 +397,20 @@ class DashEquip extends Component {
     })
   }
 
-  openModalDetalhes = (equipamento) => {
-    this.setState({
+  openModalDetalhes = async(equipamento) => {
+    await this.setState({
       modalDetalhes: true,
-      equipSelected: equipamento
+      equipSelected: equipamento,
+      equipSelectedUpdate: {
+        type: equipamento.type,
+        mark: equipamento.mark,
+        model: equipamento.model,
+        serialNumber: equipamento.serialNumber,
+        readerColor: equipamento.readerColor,
+      },
     })
+    this.getAllMarkByType()
+    this.getAllModelByMark()
   }
 
   okModalDetalhes = () => {
@@ -236,9 +422,154 @@ class DashEquip extends Component {
 
   cancelModalDetalhes = () => {
     this.setState({
+      equipSelectedUpdate: {
+        type: '',
+        mark: '',
+        model: '',
+        serialNumber: '',
+        readerColor: '',
+      },
+      marksList:[],
+      modelsList:[],
       modalDetalhes: false,
-      editar: false
+      editar: false,
+      fieldFalha:{
+        serialNumber: false,
+        leitor: false,
+        type: false,
+        mark:false,
+        model:false,
+      },
     })
+  }
+
+  handleOk = () => {
+    this.setState({
+      modalDetalhes: !this.state.modalDetalhes,
+      editar: false,
+      fieldFalha:{
+        serialNumber: false,
+        leitor: false,
+        type: false,
+        mark:false,
+        model:false,
+      },
+    })
+  }
+
+  buttonEditar = () => {
+    this.setState({
+      editar: !this.state.editar
+    })
+  }
+
+  
+  onFocusModel = (e) => {
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    const { fieldFalha } = this.state
+
+    if (nome === 'serialNumber') fieldFalha.serialNumber = false
+    if (nome === 'type') fieldFalha.type = false
+    if (nome === 'mark') fieldFalha.mark = false
+    if (nome === 'model') fieldFalha.model = false
+    if (nome === 'readerColor') fieldFalha.readerColor = false
+
+    this.setState({
+      equipSelectedUpdate: {
+        ...this.state.equipSelectedUpdate,
+        [ nome ]: valor,
+      },
+      equipSelected: {
+        ...this.state.equipSelected,
+        [ nome ]: valor,
+      },
+      fieldFalha,
+    })
+  }
+
+  saveTargetUpdateEquip = async () => {
+    this.setState({
+      loading:true
+
+    })
+    const values = {
+      id: this.state.equipSelected.id,
+      serialNumber: this.state.equipSelected.serialNumber,
+      readerColor: this.state.equipSelected.readerColor,
+      type: this.state.equipSelected.type,
+      mark: this.state.equipSelected.mark,
+      model: this.state.equipSelected.model,
+    }
+
+    // console.log(this.state.fieldFalha)
+    if(this.state.fieldFalha.serialNumber 
+      || this.state.fieldFalha.leitor
+      || this.state.fieldFalha.type
+      || this.state.fieldFalha.mark
+      || this.state.fieldFalha.model) {
+        this.setState({
+          loading: false,
+          messageError: true,
+        })
+        return
+      }
+
+    const resposta = await updateEquip(values)
+
+    // console.log(
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        loading: false,
+        messageError: true,
+        fieldFalha: resposta.data.fields[0].field,
+        message: resposta.data.fields[0].message,
+      })
+      await this.error()
+      this.setState({
+        loading: false,
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        equipSelected: {
+          razaoSocial: '',
+          cnpj: '',
+          street: '',
+          number: '',
+          city: '',
+          state: '',
+          neighborhood: '',
+          referencePoint: '',
+          zipCode: '',
+          telphone: '',
+          email: '',
+          nameContact: '',
+          type: '',
+          mark: '',
+          model: '',
+          description: '',
+          serialNumber: '',
+          readerColor: '',
+          details: '',
+        },
+        messageSuccess: true,
+        editar: !this.state.editar,
+        modalDetalhes: false
+      })
+      
+      await this.success()
+      this.setState({
+        messageSuccess: false,
+        loading:false,
+      })
+      await this.getAll()
+    }
   }
 
   Pages = () => (
@@ -353,14 +684,53 @@ class DashEquip extends Component {
   )
 
   ModalDetalhes = () => (
+    // <Modal
+    //   title="Detalhes do equipamento"
+    //   visible={this.state.modalDetalhes}
+    //   onOk={this.okModalDetalhes}      
+    //   onCancel={this.cancelModalDetalhes}
+    // >
+
     <Modal
       title="Detalhes do equipamento"
       visible={this.state.modalDetalhes}
-      onOk={this.okModalDetalhes}
-      okText="Salvar"
       onCancel={this.cancelModalDetalhes}
-      cancelText="Cancelar"
+      footer={this.props.auth.addEquip ? (
+          <div className='gercomp-div-button-modal'>
+            {this.state.editar === false ?  
+            <div className='gercomp-div-button-editFalse-modal'>
+              <Button
+                type="primary"
+                onClick={this.buttonEditar}
+              >
+                Editar
+                  <Icon type="edit" />
+              </Button>
+              <Button key="submit" type="primary" onClick={this.handleOk}>
+              OK
+            </Button>
+            </div>
+            :
+            <div className='gercomp-div-button-editTrue-modal'>
+              <Button onClick={this.handleOk}>
+                Cancelar
+              </Button>
+              <Button
+                type="primary"
+                onClick={this.saveTargetUpdateEquip}
+                loading={this.state.loading}
+              >
+                Salvar
+                <Icon type="check" />
+              </Button>
+            </div>
+            }          
+        </div>
+       )
+       :null}
     >
+
+
       <div className='div-form-modal-dashEquip'>
         <h3 className='h3-modal-dashEquip'>Dados do equipamento</h3>
         <div className='div-linhaModal-dashEquip'>
@@ -368,28 +738,56 @@ class DashEquip extends Component {
             Número de série
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.serialNumber}</p> : <Input
               name='serialNumber'
-              className='gerComp-inputModal'
+              // className='gerComp-inputModal'
+              className={
+                this.state.fieldFalha.serialNumber ?
+                  'div-dashEquip-inputModal-inputError' :
+                  'div-dashEquip-inputModal'}
               value={this.state.equipSelected.serialNumber}
               onChange={this.onChangeEditar}
+              onBlur={this.onBlurValidator}
+              onFocus={this.onFocusModel}
             />}
+            {this.state.fieldFalha.serialNumber ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.serialNumber}
+                </p> : null}
           </div>
           <div className='div-textType-modal-dashEquip'>
             Tipo
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.type}</p> : <Input
               name='type'
-              className='gerComp-inputModal'
+              className={
+                this.state.fieldFalha.type ?
+                  'div-dashEquip-inputModal-inputError' :
+                  'div-dashEquip-inputModal'}
               value={this.state.equipSelected.type}
               onChange={this.onChangeEditar}
+              onBlur={this.onBlurValidator}
+              onFocus={this.onFocusModel}
             />}
+            {this.state.fieldFalha.type ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.type}
+                </p> : null}
           </div>
           <div className='div-textMark-modal-dashEquip'>
             Marca
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.mark}</p> : <Input
               name='mark'
-              className='gerComp-inputModal'
+              className={
+                this.state.fieldFalha.mark ?
+                  'div-dashEquip-inputModal-inputError' :
+                  'div-dashEquip-inputModal'}
               value={this.state.equipSelected.mark}
               onChange={this.onChangeEditar}
+              onBlur={this.onBlurValidator}
+              onFocus={this.onFocusModel}
             />}
+            {this.state.fieldFalha.mark ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.mark}
+                </p> : null}
           </div>
         </div>
         <div className='div-linhaModal2-dashEquip'>
@@ -397,19 +795,49 @@ class DashEquip extends Component {
             Modelo
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.model}</p> : <Input
               name='model'
-              className='gerComp-inputModal'
+              className={
+                this.state.fieldFalha.model ?
+                  'div-dashEquip-inputModal-inputError' :
+                  'div-dashEquip-inputModal'}
               value={this.state.equipSelected.model}
               onChange={this.onChangeEditar}
+              onBlur={this.onBlurValidator}
+              onFocus={this.onFocusModel}
             />}
+            {this.state.fieldFalha.model ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.model}
+                </p> : null}
           </div>
           <div className='div-textLeitor-modal-dashEquip'>
             Leitor
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.readerColor}</p> : <Input
-              name='readerColor'
-              className='gerComp-inputModal'
-              value={this.state.equipSelected.readerColor}
-              onChange={this.onChangeEditar}
-            />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.readerColor}</p> : 
+            // <Input
+            //   name='readerColor'
+            //   className={
+            //     this.state.fieldFalha.readerColor ?
+            //       'div-dashEquip-inputModal-inputError' :
+            //       'div-dashEquip-inputModal'}
+            //   value={this.state.equipSelected.readerColor}
+            //   onChange={this.onChangeEditar}
+            //   onBlur={this.onBlurValidator}
+            //   onFocus={this.onFocusModel}
+            // />
+            <Select value={this.state.equipSelected.readerColor} style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
+                <Option value="Branco">Branco</Option>
+                <Option value="Vermelho">Vermelho</Option>
+                <Option value="Azul">Azul</Option>
+                <Option value="Verde">Verde</Option>
+                <Option value="DedoVivo">Dedo vivo</Option>
+                <Option value="BioLFD">BioLFD</Option>
+                <Option value="BioLC">BioLC</Option>
+                <Option value="NaoSeAplica">Não se aplica</Option>
+              </Select>
+            }
+            {this.state.fieldFalha.readerColor ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.readerColor}
+                </p> : null}
           </div>
         </div>
         <h3 className='h3-modal-dashEquip'>Dados da empresa</h3>
@@ -470,13 +898,6 @@ class DashEquip extends Component {
         <p className='p-dashEquip'>{this.state.equipSelected.telphone}</p>
           </div>
         </div>
-         <Button
-          type="primary"
-          onClick={this.editarAble}
-        >
-          Editar
-            <Icon type="edit" />
-        </Button>
       </div>
     </Modal>
   )
@@ -628,6 +1049,7 @@ class DashEquip extends Component {
 
 
   render() {
+    console.log(this.state)
     return (
       <div className='div-comp-card'>
         <this.ModalDetalhes />
@@ -679,4 +1101,10 @@ class DashEquip extends Component {
   }
 }
 
-export default DashEquip
+function mapStateToProps (state) {
+  return {
+    auth: state.auth,
+  }
+}
+
+export default connect (mapStateToProps)(DashEquip)

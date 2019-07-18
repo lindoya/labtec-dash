@@ -347,7 +347,6 @@ class DashPeca extends Component {
 
 
   render() {
-    console.log(this.state)
     return (
       <div className='div-comp-card'>
 

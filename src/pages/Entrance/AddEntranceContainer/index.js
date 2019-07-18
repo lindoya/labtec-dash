@@ -457,7 +457,9 @@ class NewEntrance extends Component {
       motoboyName: this.state.nameMotoboy,
       responsibleName: this.state.nameResponsavel,
       technicianName: this.state.nameExterno,
-      accessories: this.state.acessorios
+      accessories: this.state.acessorios,
+      garantia: this.state.garantia,
+      conditionType: this.state.conditionType,
     }
 
     const resposta = await add (values)

@@ -94,8 +94,6 @@ class NewUser extends Component {
 
     const resposta = await newUser (values)
 
-    console.log(resposta)
-
     if (resposta.status === 422 || resposta.status === 409) {
 
       this.setState({
@@ -133,7 +131,6 @@ class NewUser extends Component {
 
 
   render() {
-    console.log(this.state)
     return (
       <div className='card-bg-newUser'>
         

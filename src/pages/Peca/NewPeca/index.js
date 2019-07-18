@@ -53,8 +53,6 @@ class NewPeca extends Component {
 
     const resposta = await add(values)
 
-    // console.log(this.state)
-
     if (resposta.status === 422) {
 
       this.setState({
@@ -229,7 +227,6 @@ class NewPeca extends Component {
   }
 
   render() {
-    // console.log(this.state)
     return (
       <div className='div-newPeca-card'>
 

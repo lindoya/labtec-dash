@@ -81,6 +81,8 @@ class NewEquip extends Component {
         mark:'Não selecionado',
         model:'Não selecionado',
         messageSuccess: true,
+        companyId: '',
+        equipModelId: '',
       }, this.getAllMarkByType)
       await this.success()
       this.setState({
@@ -111,7 +113,7 @@ class NewEquip extends Component {
 
   getModelsByMark = async () => {
     if (this.state.mark !== 'Nao selecionado') {
-      const resposta = await getAllModelByMarkService({ mark: this.state.mark })
+      const resposta = await getAllModelByMarkService({ mark: this.state.mark, type: this.state.type})
 
       this.setState({
         modelsList: resposta.data,
@@ -208,7 +210,6 @@ class NewEquip extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className='card-bg-newEquip'>
 

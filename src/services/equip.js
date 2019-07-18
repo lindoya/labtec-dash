@@ -123,7 +123,6 @@ export const getAllModelByMarkService = async (mark) => {
 } 
 
 export const addMark = async (marca) => {
-  console.log(marca)
   const storeObject = store.getState()
 
   const headers = {
@@ -148,7 +147,6 @@ export const addMark = async (marca) => {
 } 
 
 export const addModel = async (modelo) => {
-  console.log(modelo)
   const storeObject = store.getState()
 
   const headers = {
@@ -171,3 +169,27 @@ export const addModel = async (modelo) => {
   })
   return response
 } 
+
+export const updateEquip = async (values) => {
+  const storeObject = store.getState()
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  }
+
+  let response = {}
+
+  await axios.put(`${BACKEND_URL}/api/equip/update`, values, { headers: headers }).then(
+    resp => {
+      response = resp
+    }
+  ).catch((error) => {
+    if (error.response) {
+      response = error.response
+    } else {
+      console.log('Error', error.message);
+    }
+  })
+  return response
+}
