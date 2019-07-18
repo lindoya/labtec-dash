@@ -218,7 +218,7 @@
   justify-content: flex-end
 }
 .ant-modal-content{
-  width: 76vh !important
+  width: 800px !important
 }
 .p-carrinho-entrance-item{
   cursor: pointer;

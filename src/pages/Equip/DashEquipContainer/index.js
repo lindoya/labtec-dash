@@ -844,7 +844,7 @@ class DashEquip extends Component {
         <div className='div-linhaModal2-dashEquip'>
           <div className='div-textCnpj-modal-dashEquip'>
             Cnpj
-        <p className='p-dashEquip'>{this.state.equipSelected.cnpj}</p>
+        <p className='p-dashEquip'>{this.state.equipSelected.cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')}</p>
           </div>
           <div className='div-textRazaoSocial-modal-dashEquip'>
             Razão social
@@ -854,7 +854,7 @@ class DashEquip extends Component {
         <div className='div-linhaModal-dashEquip'>
           <div className='div-textCep-modal-dashEquip'>
             Cep
-        <p className='p-dashEquip'>{this.state.equipSelected.zipCode}</p>
+        <p className='p-dashEquip'>{this.state.equipSelected.zipCode.replace(/(\d{5})(\d{3})?/, '$1-$2')}</p>
           </div>
           <div className='div-textRua-modal-dashEquip'>
             Rua
@@ -895,7 +895,7 @@ class DashEquip extends Component {
           </div>
           <div className='div-textTel-modal-dashEquip'>
             Telefone
-        <p className='p-dashEquip'>{this.state.equipSelected.telphone}</p>
+        <p className='p-dashEquip'>{this.state.equipSelected.telphone.lenth === 10 ? this.state.equipSelected.telphone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3') : this.state.equipSelected.telphone.replace(/(\d{2})(\d{5})(\d{1,4})/, '($1) $2-$3')}</p>
           </div>
         </div>
       </div>
@@ -1012,7 +1012,7 @@ class DashEquip extends Component {
               </div>
               <div className='div-table-cel-cnpj-dashEquip'>
                 <label className='div-table-label-cel-dashEquip'>
-                  {line.cnpj}
+                  {line.cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')}
                 </label>
               </div>
               <div className='div-table-cel-razaoSocial-dashEquip'>

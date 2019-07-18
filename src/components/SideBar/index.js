@@ -41,6 +41,37 @@ class Sider extends Component {
     })
   }
 
+  handleClickCompany = (e) => {
+    
+    this.setState({
+      current: "company_dash",
+      redirect: true,
+      open: [
+        "Empresas"
+      ]
+    })
+  }
+  handleClickEquip = (e) => {
+    
+    this.setState({
+      current: "equip_dash",
+      redirect: true,
+      open: [
+        "Equipamento"
+      ]
+    })
+  }
+  handleClickPeca = (e) => {
+    
+    this.setState({
+      current: "peca_dash",
+      redirect: true,
+      open: [
+        "Pecas"
+      ]
+    })
+  }
+
   changeRedirectState = () => {
     this.setState({
       redirect: false
@@ -94,16 +125,16 @@ class Sider extends Component {
             />
           </Tooltip>
 
-          <Tooltip placement="bottom" title={'Empresas'}>
-            <Icon className='menuIcon-icon' type="bank" />
+          <Tooltip placement="bottom" title={'Empresas'} >
+            <Icon className='menuIcon-icon' type="bank" onClick={this.handleClickCompany}/>
           </Tooltip>
 
           <Tooltip placement="bottom" title={'Equipamentos'}>
-            <Icon className='menuIcon-icon' type="printer" />
+            <Icon className='menuIcon-icon' type="printer" onClick={this.handleClickEquip} />
           </Tooltip>
 
           <Tooltip placement="bottom" title={'Peças'}>
-            <Icon className='menuIcon-icon' type="eye" />
+            <Icon className='menuIcon-icon' type="setting" onClick={this.handleClickPeca} />
           </Tooltip>
  
           <Tooltip placement="bottom" title={'MinhaTela3'}>
