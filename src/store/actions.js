@@ -9,6 +9,8 @@ export default {
     TESTE: 'REDIRECT_TESTE'
   },
 
+  COUNT: 'COUNT', 
+
   COMPANY: {
     CREATE: {
       CHANGE_VALUE: 'COMPANY_CREATE_CHANGE_VALUE',
