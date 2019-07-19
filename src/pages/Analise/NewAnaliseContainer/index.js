@@ -149,7 +149,7 @@ class NewAnalise extends Component {
   };
 
   componentDidMount = () => {
-    this.getProps()
+    this.getAll()
 
     this.timerID = setInterval(
       (prevState, props) => this.tick(),
