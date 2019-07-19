@@ -109,7 +109,7 @@
   background-color: #001529;
 }
 .div-table-cel-Os-dashTec{
-  width: 8% !important;
+  width: 7% !important;
   display: flex;
   cursor: pointer;
 }
@@ -124,7 +124,7 @@
   cursor: pointer;
 }
 .div-table-cel-serialNumber-dashTec{
-  width: 18% !important;
+  width: 15% !important;
   display: flex;
   cursor: pointer;
 }
@@ -174,7 +174,7 @@
 
 
 .div-table-cel-Os-retornoFabrica-dashTec{
-  width: 50% !important;
+  width: 20% !important;
   display: flex;
   cursor: pointer;
 }
@@ -183,7 +183,11 @@
   display: flex;
   cursor: pointer;
 }
-
+.div-table-cel-serialNumber-retornoFabrica-dashTec{
+  width: 30% !important;
+  display: flex;
+  cursor: pointer;
+}
 
 .div-table-list-dashTec{
   width: 100%;

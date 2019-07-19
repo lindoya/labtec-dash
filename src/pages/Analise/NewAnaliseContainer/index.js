@@ -8,6 +8,7 @@ import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
 const { TextArea } = Input;
 const { Option } = Select;
 
+const date = Date.now()
 class NewAnalise extends Component {
 
   state = {
@@ -44,7 +45,10 @@ class NewAnalise extends Component {
     observções: '',
     modalPausa: false,
     motivoPausa: '',
-    rows: []
+    rows: [],
+    conditionType: this.props.analyze.conditionType.slice(0,1).toUpperCase() + this.props.analyze.conditionType.slice(1,15),
+    garantia: this.props.analyze.garantia.slice(0,1).toUpperCase() + this.props.analyze.garantia.slice(1,15),
+    currentTime: 0,
   }
 
   onChangeMotivo = (e) => {
@@ -144,6 +148,16 @@ class NewAnalise extends Component {
     })
   };
 
+  componentDidMount = () => {
+    this.getProps()
+
+    this.timerID = setInterval(
+      (prevState, props) => this.tick(),
+      1
+    );
+
+  
+  }
 
   handleCancel = () => {
     this.setState({
@@ -194,8 +208,42 @@ class NewAnalise extends Component {
     })
   }
 
+  tick(){
+
+    var ms = (Date.now()- date);
+			var diff = {};
+
+			for ( diff.years = 0; ms>=31536000000; diff.years++, ms -= 31536000000);
+			for ( diff.months = 0; ms>=2628000000; diff.months++, ms -= 2628000000);
+			for ( diff.days = 0; ms>=86400000; diff.days++, ms -= 86400000);
+			for ( diff.hours = 0; ms>=3600000; diff.hours++, ms -= 3600000);
+			for ( diff.minutes = 0; ms>=60000; diff.minutes++, ms -= 60000);
+			for ( diff.seconds = 0; ms>=1000; diff.seconds++, ms -= 1000);
+      diff.milliseconds = ms;
+
+      if (diff.seconds < 10) diff.seconds = `0${diff.seconds}`
+      if (diff.minutes < 10) diff.minutes = `0${diff.minutes}`
+      if (diff.hours < 10) diff.hours = `0${diff.hours}`
+      
+
+    this.setState((prevState, props) => ({
+
+      currentTime: `${diff.hours}:${diff.minutes}:${diff.seconds}:${diff.milliseconds}`,
+    }));
+  }
+
+  // onChange = (value) => {
+  //   this.setState({
+  //     checkList:{
+  //       value
+  //     }
+  //   })
+  // }
+
+
+
   render() {
-    console.log(this.state.rows)
+    // console.log(this.props.analyze)
 
     return (
       <div className='div-card-analise'>
@@ -205,12 +253,13 @@ class NewAnalise extends Component {
         </div>
 
         <div className='div-nosEservico-analise'>
-          <div className='div-nos-analise'>1132</div>
-          <div className='div-servico-analise'>Avulso Garantia</div>
+          <div className='div-nos-analise'>{this.props.analyze.os}</div>
+          <div className='div-servico-analise'>{`${this.state.conditionType} - ${this.state.garantia}`}</div>
         </div>
 
         <div className='div-linha-analise'>
-          <div className='div-tempo-analise'>01:30:27</div>
+          {/* <div className='div-tempo-analise'>{`${this.state.horas}:${this.state.minutos}:${this.state.segundos}`}</div> */}
+          <div className='div-tempo-analise'>{this.state.currentTime}</div>
           <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>
 
           <Modal

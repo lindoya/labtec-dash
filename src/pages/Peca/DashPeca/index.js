@@ -49,7 +49,17 @@ class DashPeca extends Component {
             costPrice: this.state.costPrice,
             salePrice: this.state.salePrice,
           }
-        }
+        },
+        equipMark:{
+          specific: {
+            mark: 'Lindóya',
+          }
+        },
+        equipType:{
+          specific: {
+            type: 'catraca',
+          }
+        },
       },
       page: this.state.page,
       total: this.state.total,
@@ -311,7 +321,7 @@ class DashPeca extends Component {
       <div className='div-table-separeteLineMain-dashPeca' />
       {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
       {
-        this.state.rows.map((line) =>
+        this.state.rows=== undefined? '' : this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow'>
               <div className='div-table-cel-peca-dashPeca'>
