@@ -7,7 +7,6 @@ import { getAllMarkByTypeService, getAllModelByMarkService } from '../../../serv
 
 
 import './index.css'
-import { from } from 'rxjs';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -114,16 +113,6 @@ class DashEquip extends Component {
           specific: {
             serialNumber: this.state.serialNumber,
             readerColor: leitor,
-          },
-        },
-        company: {
-          // global: {
-          //   fields: ['cnpj'],
-          //   value: this.state.global,
-          // },
-          specific: {
-            cnpj: this.state.cnpj,
-            razaoSocial: this.state.razaoSocial,
           },
         },
         equipModel: {
@@ -1049,9 +1038,8 @@ class DashEquip extends Component {
 
 
   render() {
-    console.log(this.state)
     return (
-      <div className='div-comp-card'>
+      <div className='div-card-dashEquip'>
         <this.ModalDetalhes />
 
         <div className='div-comp-Linha div-comp-header'>

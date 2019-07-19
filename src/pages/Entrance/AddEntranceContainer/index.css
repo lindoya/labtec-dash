@@ -6,6 +6,9 @@
   flex-direction: column;
   align-items: center;
   height: 100% !important;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 50px;
 }
 
 .div-entrance-linha1{

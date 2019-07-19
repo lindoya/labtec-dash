@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './index.css'
+import { getAllParts } from '../../../services/peca'
 
 import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
 
@@ -30,9 +31,6 @@ class NewAnalise extends Component {
       humidade: false,
       sinaisQueda: false,
     },
-    checkList: {
-
-    },
     peca: {
       id: '',
       peca: '',
@@ -45,18 +43,13 @@ class NewAnalise extends Component {
     }],
     observções: '',
     modalPausa: false,
-    motivoPausa: ''
+    motivoPausa: '',
+    rows: []
   }
 
   onChangeMotivo = (e) => {
     this.setState({
       peca: { ...this.state.peca, motivoTroca: e.target.value }
-    })
-  }
-
-  getProps = (props) => {
-    this.setState({
-      analiseSelected: this.props.teste
     })
   }
 
@@ -103,6 +96,39 @@ class NewAnalise extends Component {
     });
   };
 
+  getAll = async () => {
+
+    const query = {
+      filters: {
+        equipModel: {
+          specific: {
+            model: this.props.analyze.model,
+          },
+        },
+        equipMark: {
+          specific: {
+            mark: this.props.analyze.mark,
+          },
+        },
+        equipType: {
+          specific: {
+            type: this.props.analyze.type,
+          },
+        },
+      },
+    }
+
+    await getAllParts(query).then(
+      resposta => this.setState({
+        rows: resposta.data.rows,
+      })
+    )
+  }
+
+  componentDidMount = async () => {
+    await this.getAll()
+  }
+
   handleOk = () => {
     this.setState({
       modal: false,
@@ -118,9 +144,6 @@ class NewAnalise extends Component {
     })
   };
 
-  componentDidMount = () => {
-    this.getProps()
-  }
 
   handleCancel = () => {
     this.setState({
@@ -171,17 +194,8 @@ class NewAnalise extends Component {
     })
   }
 
-  // onChange = (value) => {
-  //   this.setState({
-  //     checkList:{
-  //       value
-  //     }
-  //   })
-  // }
-
-
   render() {
-    console.log(this.props.analyze)
+    console.log(this.state.rows)
 
     return (
       <div className='div-card-analise'>
