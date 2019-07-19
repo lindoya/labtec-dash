@@ -1,11 +1,14 @@
 .card-bg-dashTec{
   margin-top: 10px;
-  height: calc(200% - 10px) !important;
   width: 98% !important;
   box-shadow: 1px 5px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100% !important;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 50px;
 }
 .div-bemVindo-dashTec{
   width: 96%;

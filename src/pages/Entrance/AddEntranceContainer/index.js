@@ -53,7 +53,7 @@ class NewEntrance extends Component {
     quantAcessorios: '',
     input: '',
     conditionType: 'avulso',
-    garantia: 'none',
+    garantia: 'semGarantia',
     acessorios: [],
     acessoriosCarrinho: [],
     acessoriosBack: [
@@ -439,7 +439,7 @@ class NewEntrance extends Component {
       equipId: this.state.equipId,
       defect: this.state.defeito,
       externalDamage: this.state.radio,
-      // details: this.state.danos,
+      details: this.state.danos,
       observation: this.state.descricao,
       delivery: this.state.selected,
       clientName: this.state.nameCliente,
@@ -447,7 +447,7 @@ class NewEntrance extends Component {
       Cpf: this.state.cpf,
       senderName: this.state.nameRemetente,
       properlyPacked: this.state.embalado,
-      details: this.state.devEmbalado,
+      packingDetails: this.state.devEmbalado,
       zipCode: this.state.cep,
       state: this.state.state,
       city: this.state.city,
@@ -511,7 +511,7 @@ class NewEntrance extends Component {
         equipId: '',
         nameExterno: '',
         conditionType: 'avulso',
-        garantia: 'none',
+        garantia: 'semGarantia',
         messageSuccess: true,
       })
       await this.success()
@@ -654,8 +654,8 @@ class NewEntrance extends Component {
                 </p> : null}
           </div>
           <div className='div-entrance-condition'>
-          <h2 className='div-comp-label'>Tipo de serviço:</h2>
-          <Select value={this.state.conditionType} style={{ width: '100%' }} onChange={this.handleChangeType}>
+          <h2 className='div-comp-label'>Tipo de serviço:</h2> 
+          <Select value={this.state.conditionType} style={{ width: '100%' }} onChange={this.handleChangeCondition}>
             <Option value="avulso">Avulso</Option>
             <Option value="contrato">Contrato</Option>
             <Option value="emprestimo">Empréstimo</Option>
@@ -663,11 +663,11 @@ class NewEntrance extends Component {
           </div>
           <div className='div-entrance-garantia'>
           <h2 className='div-comp-label'>Garantia:</h2>
-          <Select value={this.state.garantia} style={{ width: '100%' }} onChange={this.handleChangeType}>
+          <Select value={this.state.garantia} style={{ width: '100%' }} onChange={this.handleChangeGalantia}>
             <Option value="externo">Serviço externo</Option>
-            <Option value="laboratorio">Venda</Option>
-            <Option value="venda">Laboratório</Option>
-            <Option value="none">Sem garantia</Option>
+            <Option value="laboratorio">Laboratório</Option>
+            <Option value="venda">Venda</Option>
+            <Option value="semGarantia">Sem garantia</Option>
           </Select>
           </div>
         </div>
@@ -724,7 +724,7 @@ class NewEntrance extends Component {
           <div className='div-danos'>
             <div className='div-entrance-danos'>
               <h2 className='div-comp-label'>Danos externos:</h2>
-              <Radio.Group name="radiogroup">
+              <Radio.Group name="radiogroup" value={this.state.radio}>
                 <Radio value={true} onChange={this.changeRadioSim}>Sim</Radio>
                 <Radio value={false} onChange={this.changeRadioNao}>Não</Radio>
               </Radio.Group>
@@ -988,8 +988,8 @@ class NewEntrance extends Component {
             <div className='div-entrance-embaladoExterno'>
               <h2 className='div-comp-label'>Devidamente embalado:</h2>
               <Radio.Group name="radiogroup">
-                <Radio value={true} nameRadio={true} onChange={this.changeEmbaladoSim}>Sim</Radio>
-                <Radio value={false} nameRadio={false} onChange={this.changeEmbaladoNao}>Não</Radio>
+                <Radio value={true} onChange={this.changeEmbaladoSim}>Sim</Radio>
+                <Radio value={false} onChange={this.changeEmbaladoNao}>Não</Radio>
               </Radio.Group>
             </div>
             <div className='div-entrance-inputEmbalagem'>
@@ -1042,12 +1042,12 @@ class NewEntrance extends Component {
               <div className='div-entrance-embaladoMotoboy'>
                 <h2 className='div-comp-label'>Devidamente embalado:</h2>
                 <Radio.Group name="radiogroup">
-                  <Radio value={'sim'} nameRadio='sim' onChange={this.changeEmbaladoSim}>Sim</Radio>
-                  <Radio value={'nao'} nameRadio='nao' onChange={this.changeEmbaladoNao}>Não</Radio>
+                  <Radio value={true} onChange={this.changeEmbaladoSim}>Sim</Radio>
+                  <Radio value={false} onChange={this.changeEmbaladoNao}>Não</Radio>
                 </Radio.Group>
               </div>
               <div className='div-entrance-inputEmbalagem'>
-                {this.state.embalado === 'nao' ?<Input
+                {this.state.embalado === false ? <Input
                 className={
                   this.state.fieldFalha.devEmbalado ?
                     'div-comp-inputError' :
@@ -1337,12 +1337,12 @@ class NewEntrance extends Component {
               <div className='div-entrance-embaladoMotoboy'>
               <h2 className='div-comp-label'>Devidamente embalado:</h2>
                 <Radio.Group name="radiogroup">
-                  <Radio value={'sim'} nameRadio='sim' onChange={this.changeEmbaladoSim}>Sim</Radio>
-                  <Radio value={'nao'} nameRadio='nao' onChange={this.changeEmbaladoNao}>Não</Radio>
+                  <Radio value={true} nameRadio='sim' onChange={this.changeEmbaladoSim}>Sim</Radio>
+                  <Radio value={false} nameRadio='nao' onChange={this.changeEmbaladoNao}>Não</Radio>
                 </Radio.Group>
               </div>
               <div className='div-entrance-inputEmbalagem'>
-                {this.state.embalado === 'nao' ?<Input
+                {this.state.embalado === false ? <Input
                 className={
                   this.state.fieldFalha.devEmbalado ?
                     'div-comp-inputError' :

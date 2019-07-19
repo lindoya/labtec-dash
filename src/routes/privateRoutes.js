@@ -3,7 +3,6 @@ import { Route, Redirect, Switch } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import uuidValidate from 'uuid-validate'
 
 import Sider from '../components/SideBar'
 

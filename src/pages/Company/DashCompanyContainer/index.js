@@ -128,7 +128,6 @@ class dashCompany extends Component {
       page: 1,
       total: value
     }, () => {
-      console.log(this.state)
       this.getAll()
     })
   }
@@ -180,6 +179,7 @@ class dashCompany extends Component {
         rows: resposta.data.rows,
       })
     )
+
   }
 
   saveTargetUpdateCompany = async () => {
@@ -201,9 +201,7 @@ class dashCompany extends Component {
       nameContact: this.state.compSelected.nameContact,
     }
 
-    const resposta = await updateCompany(values)
-
-    console.log(resposta)    
+    const resposta = await updateCompany(values) 
 
     if (resposta.status === 422) {
 
@@ -245,10 +243,21 @@ class dashCompany extends Component {
   }
 
 
-  openModalDetalhesCompany = (company) => {
-     this.setState({
+  openModalDetalhesCompany = async (company) => {
+     await this.setState({
       modalDetalhesCompany: true,
       compSelected: company
+    })
+
+    const cnpj = this.state.compSelected.cnpj
+    const cnpjFormated = cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
+
+    await this.setState({
+      compSelected:
+      {
+      ...this.state.compSelected,
+      cnpj: cnpjFormated 
+      }
     })
   }
 
@@ -258,23 +267,6 @@ class dashCompany extends Component {
   //   })
   // }
  
-
-  formatCnpj = () => {
-    const cnpj = this.state.compSelected.cnpj
-    const cnpjFormated = cnpj.replace(/\D/ig, '')
-
-
-    if (cnpjFormated.length === 14) {
-      cnpjFormated.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
-    }
-
-    this.setState({
-      compSelected: {
-        ...this.state.compSelected,
-        cnpj: cnpjFormated
-      }
-    })
-  }
 
   cancelModalDetalhesCompany = () => {
     this.setState({
@@ -404,7 +396,7 @@ class dashCompany extends Component {
         <div className='gercomp-div-linhaModal'>
           <div className='gercomp-div-textCep-modal'>
             Cep
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode}</p> : <Input
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode.replace(/(\d{5})(\d{3})?/, '$1-$2')}</p> : <Input
           onChange={this.onChangeEditar}
           name='zipCode'
           className='gerComp-inputModal'
@@ -492,7 +484,7 @@ class dashCompany extends Component {
           </div>
           <div className='gercomp-div-textTel-modal'>
             Telefone
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone}</p> : <Input
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone.lenth === 10 ? this.state.compSelected.telphone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3') : this.state.compSelected.telphone.replace(/(\d{2})(\d{5})(\d{1,4})/, '($1) $2-$3')}</p> : <Input
           onChange={this.onChangeEditar}
           name='telphone'
           className='gerComp-inputModal'
@@ -633,7 +625,7 @@ class dashCompany extends Component {
 
               <div className='gerCmp-div-table-cel-cnpj'>
                 <label className='gerCmp-div-table-label-cel'>
-                  {line.cnpj}
+                  {line.cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')}
                 </label>
               </div>
               <div className='gerCmp-div-table-cel-rs'>
@@ -648,7 +640,7 @@ class dashCompany extends Component {
               </div>
               <div className='gerCmp-div-table-cel-tel'>
                 <label className='gerCmp-div-table-label-cel'>
-                  {line.telphone}
+                  {line.telphone.length === 10 ? line.telphone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3') : line.telphone.replace(/(\d{2})(\d{5})(\d{1,4})/, '($1) $2-$3')}
                 </label>
               </div>
               <div className='gerCmp-div-table-cel-createdAt'>
@@ -670,7 +662,6 @@ class dashCompany extends Component {
   render() {
     return (
       <div className='gerCmp-div-card' >
-
         <this.ModalDetalhes />
 
         <div className='gerCmp-div-header'>

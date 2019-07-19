@@ -41,6 +41,17 @@ class Sider extends Component {
     })
   }
 
+  handleClickCompany = (current, keyPath) => {
+    
+    this.setState({
+      current,
+      redirect: true,
+      open: [
+        keyPath
+      ]
+    })
+  }
+
   changeRedirectState = () => {
     this.setState({
       redirect: false
@@ -88,26 +99,26 @@ class Sider extends Component {
       <div>
         <div className='menuIcon'>
 
-          <Tooltip placement="bottom" title={'Logout'}>
+          <Tooltip placement="bottom" title={'Logout'} >
             <Icon key='logout' className='menuIcon-icon' type="logout" 
             onClick={() => this.logout()}
             />
           </Tooltip>
 
-          <Tooltip placement="bottom" title={'Empresas'}>
-            <Icon className='menuIcon-icon' type="bank" />
+          <Tooltip placement="bottom" title={'Empresas'} >
+            <Icon className='menuIcon-icon' type="bank" onClick={()=> this.handleClickCompany("company_dash", "Empresas")}/>
           </Tooltip>
 
           <Tooltip placement="bottom" title={'Equipamentos'}>
-            <Icon className='menuIcon-icon' type="printer" />
+            <Icon className='menuIcon-icon' type="printer" onClick={()=> this.handleClickCompany("equip_dash", "Equipamento")} />
           </Tooltip>
 
           <Tooltip placement="bottom" title={'Peças'}>
-            <Icon className='menuIcon-icon' type="eye" />
+            <Icon className='menuIcon-icon' type="setting" onClick={()=> this.handleClickCompany("peca_dash", "Pecas")} />
           </Tooltip>
  
-          <Tooltip placement="bottom" title={'MinhaTela3'}>
-            <Icon className='menuIcon-icon' type="fire" />
+          <Tooltip placement="bottom" title={'Nova entrada'}>
+            <Icon className='menuIcon-icon' type="form" onClick={()=> this.handleClickCompany("entrada_add", "LabTec")}/>
           </Tooltip>
 
         </div>

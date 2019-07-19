@@ -6,6 +6,9 @@
   flex-direction: column;
   align-items: center;
   height: 100% !important;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 50px;
 }
 
 .div-entrance-linha1{
@@ -218,7 +221,7 @@
   justify-content: flex-end
 }
 .ant-modal-content{
-  width: 76vh !important
+  width: 800px !important
 }
 .p-carrinho-entrance-item{
   cursor: pointer;

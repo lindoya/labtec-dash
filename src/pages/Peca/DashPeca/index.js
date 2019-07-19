@@ -348,7 +348,7 @@ class DashPeca extends Component {
 
   render() {
     return (
-      <div className='div-comp-card'>
+      <div className='div-card-dashPeca'>
 
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Gerenciar peças</h1>
