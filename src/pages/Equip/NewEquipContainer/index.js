@@ -10,27 +10,27 @@ const { Option } = Select;
 class NewEquip extends Component {
 
   state = {
-    message:{
+    message: {
       razaoSocial: '',
       cnpj: '',
       serialNumber: '',
       leitor: '',
       type: '',
       marksList: '',
-      modelsList: '', 
-      mark:'',
-      model:'',
+      modelsList: '',
+      mark: '',
+      model: '',
     },
-    fieldFalha:{
+    fieldFalha: {
       razaoSocial: false,
       cnpj: false,
       serialNumber: false,
       leitor: false,
       type: false,
       marksList: false,
-      modelsList: false, 
-      mark:false,
-      model:false,
+      modelsList: false,
+      mark: false,
+      model: false,
     },
     razaoSocial: '',
     cnpj: '',
@@ -38,9 +38,9 @@ class NewEquip extends Component {
     leitor: 'NaoSeAplica',
     type: 'relogio',
     marksList: [],
-    modelsList: [], 
-    mark:'Não selecionado',
-    model:'Não selecionado',
+    modelsList: [],
+    mark: 'Não selecionado',
+    model: 'Não selecionado',
     companyId: '',
     equipModelId: '',
     messageError: false,
@@ -77,9 +77,9 @@ class NewEquip extends Component {
         leitor: 'NaoSeAplica',
         type: 'relogio',
         marksList: [],
-        modelsList: [], 
-        mark:'Não selecionado',
-        model:'Não selecionado',
+        modelsList: [],
+        mark: 'Não selecionado',
+        model: 'Não selecionado',
         messageSuccess: true,
         companyId: '',
         equipModelId: '',
@@ -113,7 +113,7 @@ class NewEquip extends Component {
 
   getModelsByMark = async () => {
     if (this.state.mark !== 'Nao selecionado') {
-      const resposta = await getAllModelByMarkService({ mark: this.state.mark, type: this.state.type})
+      const resposta = await getAllModelByMarkService({ mark: this.state.mark, type: this.state.type })
 
       this.setState({
         modelsList: resposta.data,
@@ -131,7 +131,7 @@ class NewEquip extends Component {
   }
 
   getRazaoSocial = async (e) => {
-    const cnpjWithMask= e.target.value
+    const cnpjWithMask = e.target.value
     const cnpj = cnpjWithMask.replace(/\D/g, '')
     try {
       const company = await getOneByCnpj(cnpj)
@@ -142,10 +142,10 @@ class NewEquip extends Component {
       })
     } catch (error) {
       const { fieldFalha, message } = this.state
-      
+
       fieldFalha.cnpj = true
       message.cnpj = 'Cnpj inválido.'
-        
+
       this.setState({
         fieldFalha,
         message,
@@ -155,15 +155,15 @@ class NewEquip extends Component {
   }
 
   onBlurValidator = (e) => {
-    const { 
+    const {
       nome,
       valor,
       fieldFalha,
       message,
     } = validators(e.target.name, e.target.value, this.state)
-    
+
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
       message
     })
@@ -180,7 +180,7 @@ class NewEquip extends Component {
     if (nome === 'serialNumber') fieldFalha.serialNumber = false
 
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
     })
   }
@@ -203,7 +203,7 @@ class NewEquip extends Component {
     });
   }
 
-  handleChangeLeitor= (value) => {
+  handleChangeLeitor = (value) => {
     this.setState({
       leitor: value,
     });
@@ -266,9 +266,9 @@ class NewEquip extends Component {
               }>Número de série:</h2>
               <Input
                 className={
-                this.state.fieldFalha.serialNumber ?
-                  'div-comp-inputError' :
-                  'input-newEquip'}
+                  this.state.fieldFalha.serialNumber ?
+                    'div-comp-inputError' :
+                    'input-newEquip'}
                 placeholder='Digite o número'
                 value={this.state.serialNumber}
                 name='serialNumber'
@@ -286,7 +286,7 @@ class NewEquip extends Component {
               <h2 className='div-comp-label'>Tipo:</h2>
               <Select
                 value={this.state.type}
-                style={{ width: '100%' }} 
+                style={{ width: '100%' }}
                 onChange={this.changeTypeSelected}
               >
                 <Option value="relogio">Relógio</Option>
@@ -300,7 +300,7 @@ class NewEquip extends Component {
             <div className='div-newEquip-mark'>
               <h2 className='div-comp-label'>Marca:</h2>
               <Select value={this.state.mark} style={{ width: '100%' }} onChange={(mark) => this.handleChangeMark(mark)}>
-              {this.state.marksList.map(mark => <Option key={mark.mark} value={mark.mark}>{mark.mark}</Option>)}
+                {this.state.marksList.map(mark => <Option key={mark.mark} value={mark.mark}>{mark.mark}</Option>)}
               </Select>
             </div>
           </div>
@@ -308,20 +308,20 @@ class NewEquip extends Component {
 
           <div className='div-newEquip-Linha'>
 
-           
+
             <div className='div-newEquip-modelo'>
               <h2 className={
                 this.state.fieldFalha.equipModelId ?
                   'div-comp-labelError' :
                   'div-comp-label'
               }>Modelo:</h2>
-              <Select 
-              className={
-                this.state.fieldFalha.equipModelId ?
-                  'div-comp-inputError' :
-                  ''}
-              defaultValue="Não selecionado" style={{ width: '100%' }} value={this.state.model} onChange={(model) => this.handleChangeModel(model)}>
-              {this.state.modelsList.length === 0 ? null : this.state.modelsList.map(model => <Option key={model.id} value={model.id}>{model.model}</Option>)}
+              <Select
+                className={
+                  this.state.fieldFalha.equipModelId ?
+                    'div-comp-inputError' :
+                    ''}
+                defaultValue="Não selecionado" style={{ width: '100%' }} value={this.state.model} onChange={(model) => this.handleChangeModel(model)}>
+                {this.state.modelsList.length === 0 ? null : this.state.modelsList.map(model => <Option key={model.id} value={model.id}>{model.model}</Option>)}
               </Select>
               {this.state.fieldFalha.equipModelId ?
                 <p className='div-comp-feedbackError'>

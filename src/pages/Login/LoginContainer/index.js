@@ -10,15 +10,15 @@ import { changeValue, onSubmit } from '../LoginRedux/action'
 
 class Login extends Component {
 
-  state={
+  state = {
     loading: false,
     messageSuccess: false,
     messageError: false,
   }
 
   enterKey = async (e) => {
-    if(e.which === 13 || e.keyCode === 13) {
-    await this.props.onSubmit(this.props.value)
+    if (e.which === 13 || e.keyCode === 13) {
+      await this.props.onSubmit(this.props.value)
     }
   }
 
@@ -37,49 +37,49 @@ class Login extends Component {
   render() {
     return (
       <div className='div-all'>
-      <div className='div-main-login'>
-      <label><h1 className='LabelLogin'>Lab - Tec</h1></label>
-      <img src='../../retina.png' className='img-Login'/>
-        <Input
-          className='InputUsernameLogin'
-          placeholder='Digite seu username'
-          name='username'
-          prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-          value={this.props.value.username} 
-          onChange={this.props.changeValue}
-          onKeyPress={this.enterKey}
-        />
-        <Input.Password
-          className='InputPasswordLogin'
-          placeholder="Digite a senha"
-          name='password'
-          prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-          value={this.props.value.password} 
-          onChange={this.props.changeValue}
-          onKeyPress={this.enterKey}
-        />
-        <div className='div-ButtonLogin'>
-        <Button 
-          onClick={this.onSubmit}
-          className='ButtonPaswordLogin'
-          type="primary">
-          Login
+        <div className='div-main-login'>
+          <label><h1 className='LabelLogin'>Lab - Tec</h1></label>
+          <img src='../../retina.png' className='img-Login' />
+          <Input
+            className='InputUsernameLogin'
+            placeholder='Digite seu username'
+            name='username'
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            value={this.props.value.username}
+            onChange={this.props.changeValue}
+            onKeyPress={this.enterKey}
+          />
+          <Input.Password
+            className='InputPasswordLogin'
+            placeholder="Digite a senha"
+            name='password'
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            value={this.props.value.password}
+            onChange={this.props.changeValue}
+            onKeyPress={this.enterKey}
+          />
+          <div className='div-ButtonLogin'>
+            <Button
+              onClick={this.onSubmit}
+              className='ButtonPaswordLogin'
+              type="primary">
+              Login
           </Button>
-      </div>
-      </div>
+          </div>
+        </div>
       </div>
     )
   }
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators ({ changeValue, onSubmit }, dispach)
+  return bindActionCreators({ changeValue, onSubmit }, dispach)
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     value: state.login,
   }
 }
 
-export default connect (mapStateToProps, mapDispacthToProps)(Login)
+export default connect(mapStateToProps, mapDispacthToProps)(Login)

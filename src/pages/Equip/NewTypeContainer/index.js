@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button, Card, Icon } from 'antd';
+import { Input, Modal, Button, Card, Icon, Spin } from 'antd';
 import { Select } from 'antd';
 import { getAllMarkByTypeService, getAllModelByMarkService, addMark, addModel } from '../../../services/equip'
 
@@ -13,27 +13,41 @@ const Option = Select.Option;
 class NewTypeEquip extends Component {
 
   state = {
+    loading: {
+      modelo: false,
+      marca: false,
+    },
     ModalVisibleMarca: false,
     ModalVisibleModelo: false,
     type: 'relogio',
-    typeFormat:'Relógio',
+    typeFormat: 'Relógio',
     marksList: [],
-    modelsList: [], 
+    modelsList: [],
     mark: {
       id: '',
       mark: '',
     },
     newMark: '',
-    newModel:'',
+    newModel: '',
     description: '',
     disable: true
   }
 
   getModelsByMark = async () => {
-    const resposta = await getAllModelByMarkService({ mark: this.state.mark.mark, type: this.state.type})
+
+    this.setState({
+      loading: {
+        modelo: true,
+      },
+    })
+
+    const resposta = await getAllModelByMarkService({ mark: this.state.mark.mark, type: this.state.type })
 
     this.setState({
       modelsList: resposta.data,
+      loading: {
+        modelo: false,
+      },
     })
   }
 
@@ -80,7 +94,7 @@ class NewTypeEquip extends Component {
 
     await addMark(marca)
     this.setState({
-      newMark: '' ,
+      newMark: '',
       ModalVisibleMarca: false,
     }, this.getAllMarkByType)
   }
@@ -94,7 +108,7 @@ class NewTypeEquip extends Component {
 
     await addModel(modelo)
     this.setState({
-      newModel: '' ,
+      newModel: '',
       description: '',
       ModalVisibleModelo: false,
     }, this.getModelsByMark)
@@ -105,16 +119,26 @@ class NewTypeEquip extends Component {
   }
 
   getAllMarkByType = async () => {
+
+    this.setState({
+      loading: {
+        marca: true,
+      },
+    })
+
     const resposta = await getAllMarkByTypeService({ type: this.state.type })
 
     this.setState({
-      marksList: resposta.data
+      marksList: resposta.data,
+      loading: {
+        marca: false,
+      },
     })
   }
 
   changeTypeSelected = (valueSelected) => {
     let typeFormated = valueSelected
-    switch(valueSelected){
+    switch (valueSelected) {
       case 'relogio':
         typeFormated = 'Relógio'
         break
@@ -130,7 +154,7 @@ class NewTypeEquip extends Component {
       case 'sirene':
         typeFormated = 'Sirene'
         break
-      default: 
+      default:
         typeFormated = 'Relógio'
     }
 
@@ -138,7 +162,7 @@ class NewTypeEquip extends Component {
       disable: true,
       type: valueSelected,
       typeFormat: typeFormated,
-      modelsList:[],
+      modelsList: [],
       mark: {
         id: '',
         mark: '',
@@ -210,12 +234,13 @@ class NewTypeEquip extends Component {
           <div className='div-equipType-Linha-card'>
             <div className='div-equipType-cardMarca'>
               <Card size="small" title="Marcas" style={{ width: '100%' }}>
-              {this.state.marksList.length === 0 ? <p>Nenhuma marca cadastrada</p> : 
-              this.state.marksList.map(mark => <div key={mark.mark} className={this.state.mark.mark === mark.mark ? 'markList-equipType-selecionado': 'markList-equipType'}
-              onClick={() => this.selectMark(mark)}>
-              {mark.mark}
-              </div>
-              )}
+                {this.state.loading.marca ? <div className='div-spin-accessories'><Spin spinning={this.state.loading.marca} /></div> : null}
+                {this.state.marksList.length === 0 ? <p>Nenhuma marca cadastrada</p> :
+                  this.state.marksList.map(mark => <div key={mark.mark} className={this.state.mark.mark === mark.mark ? 'markList-equipType-selecionado' : 'markList-equipType'}
+                    onClick={() => this.selectMark(mark)}>
+                    {mark.mark}
+                  </div>
+                  )}
               </Card>
               <div className='div-equipType-buttonModelo'>
                 <Button
@@ -261,8 +286,9 @@ class NewTypeEquip extends Component {
             </div>
             <div className='div-equipType-cardModelo'>
               <Card size="small" title="Modelos" style={{ width: '100%' }}>
-              {this.state.modelsList.length === 0 ? this.state.mark.mark === '' ? <p>Nenhuma marca selecionada</p> : <p>Nenhum modelo cadastrado</p> :
-              this.state.modelsList.map(model => <div>{model.model}</div>)}
+                {this.state.loading.modelo ? <div className='div-spin-accessories'><Spin spinning={this.state.loading.modelo} /></div> : null}
+                {this.state.modelsList.length === 0 ? this.state.mark.mark === '' ? <p>Nenhuma marca selecionada</p> : <p>Nenhum modelo cadastrado</p> :
+                  this.state.modelsList.map(model => <div>{model.model}</div>)}
               </Card>
               <div className='div-equipType-buttonModelo'>
                 <Button
@@ -310,15 +336,15 @@ class NewTypeEquip extends Component {
                       onChange={this.onChangeModelo}
                       allowClear
                     /> : <Input
-                    disabled
-                    className='input-marca-equipType'
-                    name='modelo'
-                    placeholder='Digite o modelo'
-                    value={this.state.newModel}
-                    onChange={this.onChangeModelo}
-                    allowClear
-                  />}
-                  
+                        disabled
+                        className='input-marca-equipType'
+                        name='modelo'
+                        placeholder='Digite o modelo'
+                        value={this.state.newModel}
+                        onChange={this.onChangeModelo}
+                        allowClear
+                      />}
+
                   </div>
                   <div className='div-type'>
                     <h2 className='div-equipType-label'>Descrição:</h2>

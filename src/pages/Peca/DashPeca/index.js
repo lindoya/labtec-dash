@@ -50,12 +50,12 @@ class DashPeca extends Component {
             salePrice: this.state.salePrice,
           }
         },
-        equipMark:{
+        equipMark: {
           specific: {
             mark: 'Lindóya',
           }
         },
-        equipType:{
+        equipType: {
           specific: {
             type: 'catraca',
           }
@@ -233,15 +233,15 @@ class DashPeca extends Component {
   Pages = () => (
 
     <div className='gerCmp-div-table-footer'>
-      {Math.ceil(this.state.count/this.state.total) >= 5 && Math.ceil(this.state.count/this.state.total)-this.state.page < 1? <Button type="primary" onClick={() => this.changePages(this.state.page-4)}>{this.state.page-4}</Button> : ''}
-      {Math.ceil(this.state.count/this.state.total) >= 4 && Math.ceil(this.state.count/this.state.total)-this.state.page < 2 && this.state.page >3? <Button type="primary" onClick={() => this.changePages(this.state.page-3)}>{this.state.page-3}</Button> : ''}
-      {this.state.page >= 3? <Button type="primary" onClick={() => this.changePages(this.state.page-2)}>{this.state.page-2}</Button> : ''}
-      {this.state.page >= 2? <Button type="primary" onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</Button> :''}
+      {Math.ceil(this.state.count / this.state.total) >= 5 && Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 4)}>{this.state.page - 4}</Button> : ''}
+      {Math.ceil(this.state.count / this.state.total) >= 4 && Math.ceil(this.state.count / this.state.total) - this.state.page < 2 && this.state.page > 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 3)}>{this.state.page - 3}</Button> : ''}
+      {this.state.page >= 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 2)}>{this.state.page - 2}</Button> : ''}
+      {this.state.page >= 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 1)}>{this.state.page - 1}</Button> : ''}
       <div className='div-buttonSelected-dashPeca' type="primary">{this.state.page}</div>
-      {this.state.page < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</Button> :''}
-      {this.state.page+1 < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</Button> :''}
-      {this.state.page+2 < (this.state.count/this.state.total) && this.state.page < 3? <Button type="primary" onClick={() => this.changePages(this.state.page+3)}>{this.state.page+3}</Button> : ''}
-      {this.state.page+3 < (this.state.count/this.state.total) && this.state.page < 2? <Button type="primary" onClick={() => this.changePages(this.state.page+4)}>{this.state.page+4}</Button> : ''}
+      {this.state.page < (this.state.count / this.state.total) ? <Button type="primary" onClick={() => this.changePages(this.state.page + 1)}>{this.state.page + 1}</Button> : ''}
+      {this.state.page + 1 < (this.state.count / this.state.total) ? <Button type="primary" onClick={() => this.changePages(this.state.page + 2)}>{this.state.page + 2}</Button> : ''}
+      {this.state.page + 2 < (this.state.count / this.state.total) && this.state.page < 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 3)}>{this.state.page + 3}</Button> : ''}
+      {this.state.page + 3 < (this.state.count / this.state.total) && this.state.page < 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 4)}>{this.state.page + 4}</Button> : ''}
     </div>
   )
 
@@ -319,9 +319,9 @@ class DashPeca extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashPeca' />
-      {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
+      {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
       {
-        this.state.rows=== undefined? '' : this.state.rows.map((line) =>
+        this.state.rows === undefined ? '' : this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow'>
               <div className='div-table-cel-peca-dashPeca'>
@@ -350,7 +350,7 @@ class DashPeca extends Component {
         )
       }
       <div className='div-table-footer-dashPeca'>
-       <this.Pages/>
+        <this.Pages />
       </div>
     </div>
   )
@@ -401,7 +401,7 @@ class DashPeca extends Component {
         </div>
         {this.state.searchAvancado ? <this.SearchAdvanced /> : null}
         <this.TableParts />
-        
+
       </div>
     )
   }

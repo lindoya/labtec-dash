@@ -79,7 +79,7 @@ class NewAcessorio extends Component {
     )
 
     this.setState({
-      loading:false,
+      loading: false,
     })
   }
 
@@ -112,7 +112,7 @@ class NewAcessorio extends Component {
             <h2 className='div-comp-label'>Acessórios cadastrados:</h2>
             <Card className='card-newAcessorio' key='card-accessories'>
               {this.state.loading ? <div className='div-spin-accessories'><Spin spinning={this.state.loading} /></div> : null}
-              {this.state.rows.map((line) => <p className='p-newAcessorio'>{line.accessories}</p>)}             
+              {this.state.rows.map((line) => <p className='p-newAcessorio'>{line.accessories}</p>)}
             </Card>
           </div>
 

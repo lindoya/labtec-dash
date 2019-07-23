@@ -41,8 +41,8 @@ class PagesRoute extends Component {
     response = await auth(value).then(
       resp => this.setState({
         auth: resp.data
-      }, 
-      // console.log(this.state)
+      },
+        // console.log(this.state)
       )
     )
 
@@ -54,22 +54,22 @@ class PagesRoute extends Component {
   }
 
   render() {
-    if (this.state.auth){
+    if (this.state.auth) {
       return (
-          <Switch>
-            <Route exact path='/logged/dash' component={Dash}/>
-            <Route path='/logged/entrance' component={EntranceRoute}/>
-            <Route path='/logged/analise' component={AnaliseRoute}/>
-            <Route path='/logged/user' component={NewUserRoute}/>
-            <Route path='/logged/typeAccount' component={TypeAccountRoute}/>
-            <Route path='/logged/tecnico' component={TecnicoRoute}/>
-            <Route path='/logged/company' component={CompanyRoute}/>
-            <Route path='/logged/equip' component={EquipRoute}/>
-            <Route path='/logged/peca' component={PecaRoute}/>
-            <Route path='/logged/acessories' component={AcessoriosRoute}/>
-          </Switch>
-        ) 
-    }else{
+        <Switch>
+          <Route exact path='/logged/dash' component={Dash} />
+          <Route path='/logged/entrance' component={EntranceRoute} />
+          <Route path='/logged/analise' component={AnaliseRoute} />
+          <Route path='/logged/user' component={NewUserRoute} />
+          <Route path='/logged/typeAccount' component={TypeAccountRoute} />
+          <Route path='/logged/tecnico' component={TecnicoRoute} />
+          <Route path='/logged/company' component={CompanyRoute} />
+          <Route path='/logged/equip' component={EquipRoute} />
+          <Route path='/logged/peca' component={PecaRoute} />
+          <Route path='/logged/acessories' component={AcessoriosRoute} />
+        </Switch>
+      )
+    } else {
       this.logout()
       return <Redirect to='/login' />
     }
@@ -80,10 +80,10 @@ function mapDispacthToProps(dispach) {
   return bindActionCreators({ Logout }, dispach)
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     auth: state.auth,
   }
 }
 
-export default connect (mapStateToProps, mapDispacthToProps)(PagesRoute)
+export default connect(mapStateToProps, mapDispacthToProps)(PagesRoute)

@@ -51,19 +51,19 @@ class DashEquip extends Component {
       serialNumber: '',
       readerColor: '',
     },
-    message:{
+    message: {
       serialNumber: '',
       leitor: '',
       type: '',
-      mark:'',
-      model:'',
+      mark: '',
+      model: '',
     },
-    fieldFalha:{
+    fieldFalha: {
       serialNumber: false,
       leitor: false,
       type: false,
-      mark:false,
-      model:false,
+      mark: false,
+      model: false,
     },
     marksList: [],
     modelsList: [],
@@ -91,7 +91,7 @@ class DashEquip extends Component {
     let leitor = null
     let typeSearch = null
 
-    if (this.state.leitor === 'Todos' || this.state.leitor === 'Escolha o leitor' ) {
+    if (this.state.leitor === 'Todos' || this.state.leitor === 'Escolha o leitor') {
       leitor = ''
     } else {
       leitor = this.state.leitor
@@ -151,14 +151,14 @@ class DashEquip extends Component {
     const type = this.state.equipSelectedUpdate.type
 
     if (type !== 'catraca'
-      &&  type !== 'relogio'
-      &&  type !== 'controleAcesso'
-      &&  type !== 'peca'
-      &&  type !== 'sirene'){
-        this.setState({
-          marksList: []
-        })
-        return
+      && type !== 'relogio'
+      && type !== 'controleAcesso'
+      && type !== 'peca'
+      && type !== 'sirene') {
+      this.setState({
+        marksList: []
+      })
+      return
     }
 
     const resposta = await getAllMarkByTypeService({ type })
@@ -173,10 +173,10 @@ class DashEquip extends Component {
     const type = this.state.equipSelectedUpdate.type
 
     if (this.state.fieldFalha.mark) {
-        this.setState({
-          modelsList: []
-        })
-        return
+      this.setState({
+        modelsList: []
+      })
+      return
     }
 
     const resposta = await getAllModelByMarkService({ mark, type })
@@ -185,20 +185,20 @@ class DashEquip extends Component {
     })
   }
 
-  onBlurValidator = async(e) => {
-    const { 
+  onBlurValidator = async (e) => {
+    const {
       nome,
       valor,
       fieldFalha,
       message,
     } = validators(e.target.name, e.target.value, this.state)
-    
+
     await this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
       message
     })
-    
+
     this.getAllMarkByType()
     this.getAllModelByMark()
 
@@ -211,7 +211,7 @@ class DashEquip extends Component {
   //     fieldFalha,
   //     message,
   //   } = validators(e.target.name, e.target.value, this.state)
-    
+
   //   this.setState({
   //     [ nome ]: valor,
   //     fieldFalha,
@@ -223,7 +223,7 @@ class DashEquip extends Component {
   success = () => {
     message.success('Dados alterados com sucesso');
   };
-  
+
   error = () => {
     message.error('Seus dados não foram alterados');
   };
@@ -271,7 +271,7 @@ class DashEquip extends Component {
       this.getAll()
     })
   }
-  
+
   editarAble = () => {
     this.setState({
       editar: !this.state.editar
@@ -294,7 +294,7 @@ class DashEquip extends Component {
   }
 
   onChangeEditar = (e) => {
-    const  { nome,
+    const { nome,
       valor,
     } = masks(e.target.name, e.target.value)
 
@@ -304,16 +304,16 @@ class DashEquip extends Component {
       value = this.validatorsType(valor)
     } else {
       value = valor
-    } 
+    }
 
     this.setState({
-      equipSelected:{
+      equipSelected: {
         ...this.state.equipSelected,
-        [ nome ]: valor
+        [nome]: valor
       },
-      equipSelectedUpdate:{
+      equipSelectedUpdate: {
         ...this.state.equipSelectedUpdate,
-        [ nome ]: value,
+        [nome]: value,
       },
     })
 
@@ -325,13 +325,13 @@ class DashEquip extends Component {
     // })
   }
 
-  handleChangeLeitor= (value) => {
+  handleChangeLeitor = (value) => {
     this.setState({
-      equipSelected:{
+      equipSelected: {
         ...this.state.equipSelected,
         readerColor: value,
       },
-      equipSelectedUpdate:{
+      equipSelectedUpdate: {
         ...this.state.equipSelectedUpdate,
         readerColor: value,
       },
@@ -361,7 +361,7 @@ class DashEquip extends Component {
 
   onChangeTipo = (valueSelected) => {
 
-    if (valueSelected === "Escolha o tipo" || valueSelected === "Todos" ) {
+    if (valueSelected === "Escolha o tipo" || valueSelected === "Todos") {
       this.setState({
         typeSearch: '',
       })
@@ -387,7 +387,7 @@ class DashEquip extends Component {
     })
   }
 
-  openModalDetalhes = async(equipamento) => {
+  openModalDetalhes = async (equipamento) => {
     await this.setState({
       modalDetalhes: true,
       equipSelected: equipamento,
@@ -419,16 +419,16 @@ class DashEquip extends Component {
         serialNumber: '',
         readerColor: '',
       },
-      marksList:[],
-      modelsList:[],
+      marksList: [],
+      modelsList: [],
       modalDetalhes: false,
       editar: false,
-      fieldFalha:{
+      fieldFalha: {
         serialNumber: false,
         leitor: false,
         type: false,
-        mark:false,
-        model:false,
+        mark: false,
+        model: false,
       },
     })
   }
@@ -437,12 +437,12 @@ class DashEquip extends Component {
     this.setState({
       modalDetalhes: !this.state.modalDetalhes,
       editar: false,
-      fieldFalha:{
+      fieldFalha: {
         serialNumber: false,
         leitor: false,
         type: false,
-        mark:false,
-        model:false,
+        mark: false,
+        model: false,
       },
     })
   }
@@ -453,7 +453,7 @@ class DashEquip extends Component {
     })
   }
 
-  
+
   onFocusModel = (e) => {
     const { nome,
       valor,
@@ -470,11 +470,11 @@ class DashEquip extends Component {
     this.setState({
       equipSelectedUpdate: {
         ...this.state.equipSelectedUpdate,
-        [ nome ]: valor,
+        [nome]: valor,
       },
       equipSelected: {
         ...this.state.equipSelected,
-        [ nome ]: valor,
+        [nome]: valor,
       },
       fieldFalha,
     })
@@ -482,7 +482,7 @@ class DashEquip extends Component {
 
   saveTargetUpdateEquip = async () => {
     this.setState({
-      loading:true
+      loading: true
 
     })
     const values = {
@@ -495,17 +495,17 @@ class DashEquip extends Component {
     }
 
     // console.log(this.state.fieldFalha)
-    if(this.state.fieldFalha.serialNumber 
+    if (this.state.fieldFalha.serialNumber
       || this.state.fieldFalha.leitor
       || this.state.fieldFalha.type
       || this.state.fieldFalha.mark
       || this.state.fieldFalha.model) {
-        this.setState({
-          loading: false,
-          messageError: true,
-        })
-        return
-      }
+      this.setState({
+        loading: false,
+        messageError: true,
+      })
+      return
+    }
 
     const resposta = await updateEquip(values)
 
@@ -552,11 +552,11 @@ class DashEquip extends Component {
         editar: !this.state.editar,
         modalDetalhes: false
       })
-      
+
       await this.success()
       this.setState({
         messageSuccess: false,
-        loading:false,
+        loading: false,
       })
       await this.getAll()
     }
@@ -565,15 +565,15 @@ class DashEquip extends Component {
   Pages = () => (
 
     <div className='gerCmp-div-table-footer'>
-      {Math.ceil(this.state.count/this.state.total) >= 5 && Math.ceil(this.state.count/this.state.total)-this.state.page < 1? <Button type="primary" onClick={() => this.changePages(this.state.page-4)}>{this.state.page-4}</Button> : ''}
-      {Math.ceil(this.state.count/this.state.total) >= 4 && Math.ceil(this.state.count/this.state.total)-this.state.page < 2 && this.state.page >3? <Button type="primary" onClick={() => this.changePages(this.state.page-3)}>{this.state.page-3}</Button> : ''}
-      {this.state.page >= 3? <Button type="primary" onClick={() => this.changePages(this.state.page-2)}>{this.state.page-2}</Button> : ''}
-      {this.state.page >= 2? <Button type="primary" onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</Button> :''}
+      {Math.ceil(this.state.count / this.state.total) >= 5 && Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 4)}>{this.state.page - 4}</Button> : ''}
+      {Math.ceil(this.state.count / this.state.total) >= 4 && Math.ceil(this.state.count / this.state.total) - this.state.page < 2 && this.state.page > 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 3)}>{this.state.page - 3}</Button> : ''}
+      {this.state.page >= 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 2)}>{this.state.page - 2}</Button> : ''}
+      {this.state.page >= 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 1)}>{this.state.page - 1}</Button> : ''}
       <div className='div-buttonSelected-dashEquip' type="primary">{this.state.page}</div>
-      {this.state.page < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</Button> :''}
-      {this.state.page+1 < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</Button> :''}
-      {this.state.page+2 < (this.state.count/this.state.total) && this.state.page < 3? <Button type="primary" onClick={() => this.changePages(this.state.page+3)}>{this.state.page+3}</Button> : ''}
-      {this.state.page+3 < (this.state.count/this.state.total) && this.state.page < 2? <Button type="primary" onClick={() => this.changePages(this.state.page+4)}>{this.state.page+4}</Button> : ''}
+      {this.state.page < (this.state.count / this.state.total) ? <Button type="primary" onClick={() => this.changePages(this.state.page + 1)}>{this.state.page + 1}</Button> : ''}
+      {this.state.page + 1 < (this.state.count / this.state.total) ? <Button type="primary" onClick={() => this.changePages(this.state.page + 2)}>{this.state.page + 2}</Button> : ''}
+      {this.state.page + 2 < (this.state.count / this.state.total) && this.state.page < 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 3)}>{this.state.page + 3}</Button> : ''}
+      {this.state.page + 3 < (this.state.count / this.state.total) && this.state.page < 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 4)}>{this.state.page + 4}</Button> : ''}
     </div>
   )
 
@@ -686,8 +686,8 @@ class DashEquip extends Component {
       visible={this.state.modalDetalhes}
       onCancel={this.cancelModalDetalhes}
       footer={this.props.auth.addEquip ? (
-          <div className='gercomp-div-button-modal'>
-            {this.state.editar === false ?  
+        <div className='gercomp-div-button-modal'>
+          {this.state.editar === false ?
             <div className='gercomp-div-button-editFalse-modal'>
               <Button
                 type="primary"
@@ -697,7 +697,7 @@ class DashEquip extends Component {
                   <Icon type="edit" />
               </Button>
               <Button key="submit" type="primary" onClick={this.handleOk}>
-              OK
+                OK
             </Button>
             </div>
             :
@@ -714,10 +714,10 @@ class DashEquip extends Component {
                 <Icon type="check" />
               </Button>
             </div>
-            }          
+          }
         </div>
-       )
-       :null}
+      )
+        : null}
     >
 
 
@@ -739,9 +739,9 @@ class DashEquip extends Component {
               onFocus={this.onFocusModel}
             />}
             {this.state.fieldFalha.serialNumber ?
-                <p className='div-comp-feedbackError'>
-                  {this.state.message.serialNumber}
-                </p> : null}
+              <p className='div-comp-feedbackError'>
+                {this.state.message.serialNumber}
+              </p> : null}
           </div>
           <div className='div-textType-modal-dashEquip'>
             Tipo
@@ -757,9 +757,9 @@ class DashEquip extends Component {
               onFocus={this.onFocusModel}
             />}
             {this.state.fieldFalha.type ?
-                <p className='div-comp-feedbackError'>
-                  {this.state.message.type}
-                </p> : null}
+              <p className='div-comp-feedbackError'>
+                {this.state.message.type}
+              </p> : null}
           </div>
           <div className='div-textMark-modal-dashEquip'>
             Marca
@@ -775,9 +775,9 @@ class DashEquip extends Component {
               onFocus={this.onFocusModel}
             />}
             {this.state.fieldFalha.mark ?
-                <p className='div-comp-feedbackError'>
-                  {this.state.message.mark}
-                </p> : null}
+              <p className='div-comp-feedbackError'>
+                {this.state.message.mark}
+              </p> : null}
           </div>
         </div>
         <div className='div-linhaModal2-dashEquip'>
@@ -795,25 +795,25 @@ class DashEquip extends Component {
               onFocus={this.onFocusModel}
             />}
             {this.state.fieldFalha.model ?
-                <p className='div-comp-feedbackError'>
-                  {this.state.message.model}
-                </p> : null}
+              <p className='div-comp-feedbackError'>
+                {this.state.message.model}
+              </p> : null}
           </div>
           <div className='div-textLeitor-modal-dashEquip'>
             Leitor
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.readerColor}</p> : 
-            // <Input
-            //   name='readerColor'
-            //   className={
-            //     this.state.fieldFalha.readerColor ?
-            //       'div-dashEquip-inputModal-inputError' :
-            //       'div-dashEquip-inputModal'}
-            //   value={this.state.equipSelected.readerColor}
-            //   onChange={this.onChangeEditar}
-            //   onBlur={this.onBlurValidator}
-            //   onFocus={this.onFocusModel}
-            // />
-            <Select value={this.state.equipSelected.readerColor} style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.equipSelected.readerColor}</p> :
+              // <Input
+              //   name='readerColor'
+              //   className={
+              //     this.state.fieldFalha.readerColor ?
+              //       'div-dashEquip-inputModal-inputError' :
+              //       'div-dashEquip-inputModal'}
+              //   value={this.state.equipSelected.readerColor}
+              //   onChange={this.onChangeEditar}
+              //   onBlur={this.onBlurValidator}
+              //   onFocus={this.onFocusModel}
+              // />
+              <Select value={this.state.equipSelected.readerColor} style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
                 <Option value="Branco">Branco</Option>
                 <Option value="Vermelho">Vermelho</Option>
                 <Option value="Azul">Azul</Option>
@@ -825,9 +825,9 @@ class DashEquip extends Component {
               </Select>
             }
             {this.state.fieldFalha.readerColor ?
-                <p className='div-comp-feedbackError'>
-                  {this.state.message.readerColor}
-                </p> : null}
+              <p className='div-comp-feedbackError'>
+                {this.state.message.readerColor}
+              </p> : null}
           </div>
         </div>
         <h3 className='h3-modal-dashEquip'>Dados da empresa</h3>
@@ -989,8 +989,8 @@ class DashEquip extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashEquip' />
-      {this.state.loading ? <div className='spin-dashEquip'><Spin spinning={this.state.loading}/></div> : null}
-      {this.state.rows?
+      {this.state.loading ? <div className='spin-dashEquip'><Spin spinning={this.state.loading} /></div> : null}
+      {this.state.rows ?
         this.state.rows.map((line) =>
           <div className='div-table-list-dashEquip'>
             <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(line)}>
@@ -1032,7 +1032,7 @@ class DashEquip extends Component {
         : ''
       }
       <div className='gerCmp-div-table-footer'>
-       <this.Pages/>
+        <this.Pages />
       </div>
     </div>
   )
@@ -1090,10 +1090,10 @@ class DashEquip extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     auth: state.auth,
   }
 }
 
-export default connect (mapStateToProps)(DashEquip)
+export default connect(mapStateToProps)(DashEquip)
