@@ -1,0 +1,19 @@
+/* .card-bg-dash{
+  width: 100% !important;
+  box-shadow: 1px 5px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100% !important;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 50px;
+} */
+
+.card-image-dash{
+  width: 100%;
+}
+.bg-dash{
+  width: 100%;
+  height: 100%;
+}

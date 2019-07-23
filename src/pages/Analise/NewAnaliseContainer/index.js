@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux'
 
 import './index.css'
 import { getAllParts } from '../../../services/peca'
-import { validators, masks }from './validator'
+import { validators }from './validator'
 
 import { setCrono } from '../AnaliseRedux/actions'
 
-import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
+import { Button, Input, Card, Checkbox, Modal, Select, message } from 'antd';
+import { newAnalyze } from '../../../services/analyze';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -17,6 +18,8 @@ const { Option } = Select;
 class NewAnalise extends Component {
 
   state = {
+    messageError: false,
+    messageSuccess: false,
     analiseSelected:{
       Os: '',
       contrato: '',
@@ -64,6 +67,14 @@ class NewAnalise extends Component {
     inicio: [ this.props.crono.initDate],
     final: [],
   }
+
+  success = () => {
+    message.success('This is a success message');
+  };
+  
+  error = () => {
+    message.error('This is an error message');
+  };
 
   onChangeMotivo = (e) => {
     this.setState({
@@ -156,17 +167,8 @@ class NewAnalise extends Component {
       filters: {
         equipModel: {
           specific: {
-            model: this.props.analyze.model,
-          },
-        },
-        equipMark: {
-          specific: {
-            mark: this.props.analyze.mark,
-          },
-        },
-        equipType: {
-          specific: {
-            type: this.props.analyze.type,
+            // model: this.props.analyze.model,
+            id: this.props.analyze.equipModelId
           },
         },
       },
@@ -178,23 +180,62 @@ class NewAnalise extends Component {
       })
     )
   }
+    
+  saveTargetNewCompany = async () => {
+    const values = {
+      humidity: this.state.problems.humidade,
+      misuse: this.state.problems.mauUso,
+      brokenSeal: this.state.problems.violado,
+      fall: this.state.problems.sinaisQueda,
+      analysisPart: this.state.carrinho,
+    }
 
-  handleOk = () => {
-    this.setState({
-      modal: false,
-      carrinho: [...this.state.carrinho, this.state.peca]
-    });
+    const resposta = await newAnalyze(values)
 
-    this.setState({
-      peca: {
-        id: '',
-        peca: '',
-        motivoTroca: '',
-      }
-    })
-  };
+    console.log(resposta)    
 
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+      })
+      await this.error()
+      this.setState({
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        problems:{
+          humidade: false,
+          mauUso: false,
+          violado: false,
+          sinaisQueda: false,
+        },
+        carrinho:[],
+        messageSuccess: true,
+      })
+      await this.success()
+      this.setState({
+        messageSuccess: false
+      })
+    }
+  }
+
+  componentDidMount = async () => {
+    await this.getAll()
+  }
   
+  componentDidMount = () => {
+    this.getAll()
+
+    // this.timerID = setInterval(
+      //   (prevState, props) => this.tick(),
+      //   1
+    // );
+    
+  }
+
   handleCancel = () => {
     this.setState({
       modal: false,
@@ -207,15 +248,25 @@ class NewAnalise extends Component {
   };
 
   clickPeca = (selecionados) => {
-    const notExist = this.state.carrinho
-      .filter((valor) => valor.id === selecionados.id).length === 0
-      
-    if (notExist) {
+    const notExist = this.state.carrinho.filter((valor) => valor.id === selecionados.valor)
+
+    console.log(notExist)
+    if (notExist.length === 0) {
       this.setState({
-        carrinho: [
-          ...this.state.carrinho,
-          selecionados
-        ]
+        modal: false,
+        carrinho: [...this.state.carrinho, this.state.peca]
+      });
+  
+      this.setState({
+        peca: {
+          id: '',
+          peca: '',
+          motivoTroca: '',
+        }
+      })
+    } else {
+      this.setState({
+        modal: false
       })
     }
   }
@@ -289,9 +340,6 @@ class NewAnalise extends Component {
   }
 
   render() {
-    console.log(this.state)
-    // console.log(this.props)
-
     return (
       <div className='div-card-analise'>
         <div className='div-comp-Linha div-comp-header'>
@@ -427,7 +475,7 @@ class NewAnalise extends Component {
 
         <Card className='card-analise'>
 
-          <div className='div-linha-analise'>
+          <div className='div-linhaDefeitos-analise'>
           {this.props.analyze.defect}
           </div>
 
@@ -477,12 +525,12 @@ class NewAnalise extends Component {
 
                 <div className='div-listaDasPecas-analise'>
 
-                  {this.state.listaPecas.length === 0 ? <p className='p-nao'>Nenhuma peça selecionada</p> : this.state.listaPecas.map(pecas => <div className='p-selecionados' onClick={() => this.showModal({ id: pecas.id, peca: pecas.peca })}>{pecas.peca}</div>)}
+                  {this.state.rows.length === 0 ? <p className='p-nao'>Nenhuma peça cadastrada</p> : this.state.rows.map(pecas => <div className='p-selecionados' onClick={() => this.showModal({ id: pecas.id, peca: pecas.item },console.log(pecas))}>{pecas.item}</div>)}
 
                   <Modal
                     title="Troca de peça"
                     visible={this.state.modal}
-                    onOk={this.handleOk}
+                    onOk={() => this.clickPeca( {valor: this.state.peca.id} ) }
                     okText='Salvar'
                     onCancel={this.handleCancel}
                   >
@@ -519,7 +567,7 @@ class NewAnalise extends Component {
 
           <TextArea
             className='textArea-analise'
-            placeholder="Digite o motivo"
+            placeholder="Digite a observação"
             onChange={this.onChangeObservacao}
             autosize={{ minRows: 5, maxRows: 10 }}
           />
@@ -536,7 +584,7 @@ class NewAnalise extends Component {
 
           <Button
             type="primary"
-            // onClick={this.saveTargetAnalyze}
+            onClick={this.saveTargetNewCompany}
           >
             Salvar
          </Button>

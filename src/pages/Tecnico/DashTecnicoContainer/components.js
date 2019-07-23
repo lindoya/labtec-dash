@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './index.css'
-import { Card, Icon, Button, Spin } from 'antd';
+import {  Icon, Button, Spin } from 'antd';
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
