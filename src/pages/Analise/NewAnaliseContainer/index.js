@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
 import './index.css'
 import { getAllParts } from '../../../services/peca'
+import { validators, masks }from './validator'
+
+import { setCrono } from '../AnaliseRedux/actions'
 
 import { Button, Input, Card, Checkbox, Modal, Select } from 'antd';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const date = Date.now()
+
 class NewAnalise extends Component {
 
   state = {
@@ -42,13 +47,22 @@ class NewAnalise extends Component {
       id: 'bobina',
       peca: 'Bobina',
     }],
+    fieldFalha: {
+      motivoPausa: false,
+    },
+    message: {
+      motivoPausa: '',
+    },
     observções: '',
     modalPausa: false,
     motivoPausa: '',
     rows: [],
     conditionType: this.props.analyze.conditionType.slice(0,1).toUpperCase() + this.props.analyze.conditionType.slice(1,15),
     garantia: this.props.analyze.garantia.slice(0,1).toUpperCase() + this.props.analyze.garantia.slice(1,15),
-    currentTime: 0,
+    currenMilliseconds: this.props.crono.currenMilliseconds,
+    time: 0,
+    inicio: [ this.props.crono.initDate],
+    final: [],
   }
 
   onChangeMotivo = (e) => {
@@ -63,11 +77,37 @@ class NewAnalise extends Component {
     })
   }
 
+  onBlurValidator = (e) => {
+
+    // console.log(e.target)
+    const { 
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+    
+    this.setState({
+      [ nome ]: valor,
+      fieldFalha,
+      message
+    })
+  }
+
   handleOkPausa = () => {
+    this.state.final.push(new Date())
+
     this.setState({
       openModalPausa: false,
-      motivoPausa: ''
+      time: this.state.currenMilliseconds,
     })
+
+    const value = {
+      currenMilliseconds: this.state.currenMilliseconds,
+      pausa: true,
+    }
+
+    this.props.setCrono(value)
   }
 
   handleCancelPausa = () => {
@@ -75,6 +115,16 @@ class NewAnalise extends Component {
       openModalPausa: false,
       motivoPausa: ''
     })
+  }
+  
+  handleOkVoltar = () =>{
+    
+    // date = Date.now()
+    this.state.inicio.push(new Date())
+    
+    this.props.setCrono({ 
+      date: Date.now(),
+      pausa: false })
   }
 
   openModalPausa = () => {
@@ -129,10 +179,6 @@ class NewAnalise extends Component {
     )
   }
 
-  componentDidMount = async () => {
-    await this.getAll()
-  }
-
   handleOk = () => {
     this.setState({
       modal: false,
@@ -148,17 +194,7 @@ class NewAnalise extends Component {
     })
   };
 
-  componentDidMount = () => {
-    this.getAll()
-
-    this.timerID = setInterval(
-      (prevState, props) => this.tick(),
-      1
-    );
-
   
-  }
-
   handleCancel = () => {
     this.setState({
       modal: false,
@@ -173,7 +209,7 @@ class NewAnalise extends Component {
   clickPeca = (selecionados) => {
     const notExist = this.state.carrinho
       .filter((valor) => valor.id === selecionados.id).length === 0
-
+      
     if (notExist) {
       this.setState({
         carrinho: [
@@ -187,12 +223,12 @@ class NewAnalise extends Component {
   removePecas = (value) => {
     const oldPecasList = this.state.carrinho
     const newPecasList = oldPecasList.filter(pecasList => pecasList !== value)
-
+    
     this.setState({
       carrinho: newPecasList
     })
   }
-
+  
   onChangeProblems = (e) => {
     this.setState({
       problems:{
@@ -201,53 +237,63 @@ class NewAnalise extends Component {
       }
     })
   }
-
+  
   changeSelect = (value) => {
     this.setState({
       status: value
     })
   }
-
+  
   tick(){
-
-    var ms = (Date.now()- date);
-			var diff = {};
-
-			for ( diff.years = 0; ms>=31536000000; diff.years++, ms -= 31536000000);
-			for ( diff.months = 0; ms>=2628000000; diff.months++, ms -= 2628000000);
-			for ( diff.days = 0; ms>=86400000; diff.days++, ms -= 86400000);
-			for ( diff.hours = 0; ms>=3600000; diff.hours++, ms -= 3600000);
-			for ( diff.minutes = 0; ms>=60000; diff.minutes++, ms -= 60000);
-			for ( diff.seconds = 0; ms>=1000; diff.seconds++, ms -= 1000);
-      diff.milliseconds = ms;
-
-      if (diff.seconds < 10) diff.seconds = `0${diff.seconds}`
-      if (diff.minutes < 10) diff.minutes = `0${diff.minutes}`
-      if (diff.hours < 10) diff.hours = `0${diff.hours}`
+    
+    if(!this.props.crono.pausa){
       
-
-    this.setState((prevState, props) => ({
-
-      currentTime: `${diff.hours}:${diff.minutes}:${diff.seconds}:${diff.milliseconds}`,
-    }));
+      this.setState((prevState, props) => ({
+        currenMilliseconds: Date.now() - this.props.crono.date + this.props.crono.currenMilliseconds,
+      }));
+    }
   }
+  
+  formatedCrono = ( milliseconds ) => {
+    const cronoMilliseconds = milliseconds % 1000
+    let cronoSeconds = Math.trunc(milliseconds/1000)%60
+    let cronoMinutes = Math.trunc(milliseconds/60000)%60
+    let cronoHours = Math.trunc(milliseconds/3600000)
 
+    if (cronoHours < 10) cronoHours = `0${cronoHours}`
+    if (cronoMinutes < 10) cronoMinutes = `0${cronoMinutes}`
+    if (cronoSeconds < 10) cronoSeconds = `0${cronoSeconds}`
+    
+    
+    return `${cronoHours}:${cronoMinutes}:${cronoSeconds}:${cronoMilliseconds}`
+  }
+  
   // onChange = (value) => {
   //   this.setState({
-  //     checkList:{
+    //     checkList:{
   //       value
   //     }
   //   })
   // }
 
+  
+  componentDidMount = async () => {
+    await this.getAll()
 
+    // this.timerID = setInterval(
+    //   (prevState, props) => this.tick(),
+    //   100
+    // );
+
+  
+  }
 
   render() {
-    // console.log(this.props.analyze)
+    console.log(this.state)
+    // console.log(this.props)
 
     return (
       <div className='div-card-analise'>
-
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Análise</h1>
         </div>
@@ -259,8 +305,11 @@ class NewAnalise extends Component {
 
         <div className='div-linha-analise'>
           {/* <div className='div-tempo-analise'>{`${this.state.horas}:${this.state.minutos}:${this.state.segundos}`}</div> */}
-          <div className='div-tempo-analise'>{this.state.currentTime}</div>
-          <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>
+          <div className='div-tempo-analise'>{this.formatedCrono(this.state.currenMilliseconds)}</div>
+
+          {this.props.crono.pausa? <Button type="primary" onClick={this.handleOkVoltar}>Voltar</Button>
+          : <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>}
+          
 
           <Modal
             visible={this.state.openModalPausa}
@@ -272,11 +321,21 @@ class NewAnalise extends Component {
               <h2 className='div-comp-label'>Motivo da pausa:</h2>
               <TextArea
                 value={this.state.motivoPausa}
-                className='textArea-motivoPausa-analise'
+                name='motivoPausa'
+                // className='textArea-motivoPausa-analise'
+                className={
+                  this.state.fieldFalha.motivoPausa ?
+                    'textArea-motivoPausa-analise-inputError' :
+                    'textArea-motivoPausa-analise'}
                 placeholder="Digite o motivo da pausa"
                 autosize={{ minRows: 3, maxRows: 10 }}
                 onChange={this.onChangeMotivoPausa}
+                onBlur={this.onBlurValidator}
               />
+              {this.state.fieldFalha.motivoPausa ?
+                <p className='div-analise-feedbackError'>
+                  {this.state.message.motivoPausa}
+                </p> : null}
             </div>
 
           </Modal>
@@ -477,6 +536,7 @@ class NewAnalise extends Component {
 
           <Button
             type="primary"
+            // onClick={this.saveTargetAnalyze}
           >
             Salvar
          </Button>
@@ -491,8 +551,14 @@ class NewAnalise extends Component {
 
 function mapStateToProps (state) {
   return {
-    analyze: state.analyze
+    analyze: state.analyze,
+    crono: state.crono,
   }
 }
 
-export default connect (mapStateToProps)(NewAnalise)
+function mapDispacthToProps(dispach) {
+  return bindActionCreators ({ setCrono }, dispach)
+}
+
+
+export default connect (mapStateToProps, mapDispacthToProps)(NewAnalise)

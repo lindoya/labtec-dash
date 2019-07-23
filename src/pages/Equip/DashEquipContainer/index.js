@@ -198,6 +198,7 @@ class DashEquip extends Component {
       fieldFalha,
       message
     })
+    
     this.getAllMarkByType()
     this.getAllModelByMark()
 

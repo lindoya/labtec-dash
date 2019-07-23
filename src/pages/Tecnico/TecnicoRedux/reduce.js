@@ -2,6 +2,7 @@ import actions from '../../../store/actions'
 
 
 const INICIAL_STATE_REDIRECT ={
+  os: '',
   serialNumber: '',
   razaoSocial: '',
   type: '',
@@ -9,6 +10,10 @@ const INICIAL_STATE_REDIRECT ={
   model: '',
   leitor: '',
   defect: '',
+  garantia: '',
+  conditionType: '',
+  equipModelId: '',
+  analysisCompleted: true,
 }
 
 const INICIAL_COUNT = {
