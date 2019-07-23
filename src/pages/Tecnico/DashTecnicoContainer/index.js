@@ -11,42 +11,42 @@ import { redirectAnalyze } from '../TecnicoRedux/action'
 import TableAgAnalise from './components'
 
 class DashTecnico extends Component {
-constructor(props){
-  super(props)
+  constructor(props) {
+    super(props)
 
-  this.state={
-    loading: false,
-    order: {
-      field: 'createdAt',
-      acendent: true,
-    },
-    analiseSelected: {
-      Os: '',
-      contrato: '',
-      garantia: '',
-      serialNumber: '',
-      razaoSocial: '',
-      type: '',
-      mark: '',
-      model: '',
-      OsRetorno: '',
-      dataFabrica: '',
-    },
-    TableAgRetornoFabrica: {
+    this.state = {
+      loading: false,
+      order: {
+        field: 'createdAt',
+        acendent: true,
+      },
+      analiseSelected: {
+        Os: '',
+        contrato: '',
+        garantia: '',
+        serialNumber: '',
+        razaoSocial: '',
+        type: '',
+        mark: '',
+        model: '',
+        OsRetorno: '',
+        dataFabrica: '',
+      },
+      TableAgRetornoFabrica: {
+        page: 1,
+        total: 25,
+        count: 0,
+        show: 0,
+        rows: [],
+      },
+      redirect: false,
       page: 1,
       total: 25,
       count: 0,
       show: 0,
       rows: [],
-    },
-    redirect: false,
-    page: 1,
-    total: 25,
-    count: 0,
-    show: 0,
-    rows: [],
+    }
   }
-}
 
 
   changeOrder = (field) => {
@@ -94,7 +94,7 @@ constructor(props){
       loading: true,
     })
 
-    const  query = {
+    const query = {
       page: this.state.page,
       total: this.state.total,
       order: this.state.order,
@@ -190,10 +190,10 @@ constructor(props){
           <h2 className='div-table-label-dashTec'>Data de ida para fábrica</h2>
         </div>
       </div>
-     <div className='div-table-separeteLineMain-dashTec' /> 
-     {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
-       {this.state.TableAgRetornoFabrica.rows === undefined ? 'Não há entradas cadastrada' :
-         this.state.TableAgRetornoFabrica.rows.map((line) =>
+      <div className='div-table-separeteLineMain-dashTec' />
+      {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
+      {this.state.TableAgRetornoFabrica.rows === undefined ? 'Não há entradas cadastrada' :
+        this.state.TableAgRetornoFabrica.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             <div className='div-tableRow-dashTec'>
               <div className='div-table-cel-Os-retornoFabrica-dashTec'>
@@ -232,69 +232,69 @@ constructor(props){
           <h1 className='div-comp-title'>Tela técnica</h1>
         </div>
 
-        <div className='div-bemVindo-dashTec'>Bem-vindo Guilherme</div> 
-        
+        <div className='div-bemVindo-dashTec'>Bem-vindo Guilherme</div>
+
         <div className='div-linha-cardsInfo-dashTec'>
 
-        <Card className='card-info-dashTec'>
-          <div className='div-card-agAnalise-dashTec'>Aguardando análise</div>
-          <div className='div-card-numero-dashTec'>{this.props.count.analise === undefined ? 0 : this.props.count.analise}</div>
-        </Card>
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Aguardando análise</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.analise === undefined ? 0 : this.props.count.analise}</div>
+          </Card>
 
-        <Card className='card-info-dashTec'>
-          <div className='div-card-agAnalise-dashTec'>Aguardando retorno</div>
-          <div className='div-card-numero-dashTec'>{this.state.TableAgRetornoFabrica.count === undefined ? 0 : this.state.TableAgRetornoFabrica.count}</div>
-        </Card>
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Aguardando retorno</div>
+            <div className='div-card-numero-dashTec'>{this.state.TableAgRetornoFabrica.count === undefined ? 0 : this.state.TableAgRetornoFabrica.count}</div>
+          </Card>
 
-        <Card className='card-info-dashTec'>
-          <div className='div-card-agAnalise-dashTec'>Revisão testes</div>
-          <div className='div-card-numero-dashTec'>{this.props.count.revisao === undefined ? 0 : this.props.count.revisao}</div>
-        </Card>
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Revisão testes</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.revisao === undefined ? 0 : this.props.count.revisao}</div>
+          </Card>
 
-        <Card className='card-info-dashTec'>
-          <div className='div-card-agAnalise-dashTec'>Aguardando aprov.</div>
-          <div className='div-card-numero-dashTec'>{this.props.count.aprovacao === undefined ? 0 : this.props.count.aprovacao}</div>
-        </Card>
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Aguardando aprov.</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.aprovacao === undefined ? 0 : this.props.count.aprovacao}</div>
+          </Card>
 
-        <Card className='card-info-dashTec'>
-          <div className='div-card-agAnalise-dashTec'>Revisão final</div>
-          <div className='div-card-numero-dashTec'>{this.props.count.revisaoFinal === undefined ? 0 : this.props.count.revisaoFinal}</div>
-        </Card>
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Revisão final</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.revisaoFinal === undefined ? 0 : this.props.count.revisaoFinal}</div>
+          </Card>
 
         </div>
 
         <div className='div-linha-dashTec'>
-          
+
           <div className='text-info-dashTec'>Aguardando análise</div>
-          <TableAgAnalise  status='preAnalise'  name='analise'/>
-        
+          <TableAgAnalise status='preAnalise' name='analise' />
+
         </div>
 
         <div className='div-linha-dashTec'>
-          
+
           <div className='text-info-dashTec'>Aguardando retorno da fábrica</div>
           <this.TableAgRetornoFabrica />
-        
+
         </div>
 
         <div className='div-linha-dashTec'>
-          
+
           <div className='text-info-dashTec'>Revisão testes</div>
           <TableAgAnalise  status='revisao1' name='revisao'/>
         </div>
 
         <div className='div-linha-dashTec'>
-          
+
           <div className='text-info-dashTec'>Aguardando aprovação</div>
-          <TableAgAnalise  status='orcamento'  name='aprovacao'/>
-        
+          <TableAgAnalise status='orcamento' name='aprovacao' />
+
         </div>
 
         <div className='div-linha-dashTec'>
-          
+
           <div className='text-info-dashTec'>Revisão testes finais</div>
-          <TableAgAnalise  status='revisaoFinal'  name='revisaoFinal'/>
-        
+          <TableAgAnalise status='revisaoFinal' name='revisaoFinal' />
+
         </div>
 
       </div>
@@ -305,13 +305,13 @@ constructor(props){
 // export default DashTecnico
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators ({ redirectAnalyze, }, dispach)
+  return bindActionCreators({ redirectAnalyze, }, dispach)
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     count: state.count,
   }
 }
 
-export default connect (mapStateToProps, mapDispacthToProps)(DashTecnico)
+export default connect(mapStateToProps, mapDispacthToProps)(DashTecnico)

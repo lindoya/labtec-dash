@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './index.css'
-import {  Icon, Button, Spin } from 'antd';
+import { Icon, Button, Spin } from 'antd';
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -12,35 +12,35 @@ import { redirectAnalyze, count } from '../TecnicoRedux/action'
 import { setCrono } from '../../Analise/AnaliseRedux/actions'
 
 class TableAgAnalise extends Component {
-constructor(props){
-  super(props)
+  constructor(props) {
+    super(props)
 
-  this.state={
-    loading: false,
-    order: {
-      field: 'createdAt',
-      acendent: true,
-    },
-    analiseSelected: {
-      Os: '',
-      contrato: '',
-      garantia: '',
-      serialNumber: '',
-      razaoSocial: '',
-      type: '',
-      mark: '',
-      model: '',
-      OsRetorno: '',
-      dataFabrica: '',
-    },
-    redirect: false,
-    page: 1,
-    total: 25,
-    count: 0,
-    show: 0,
-    rows: [],
+    this.state = {
+      loading: false,
+      order: {
+        field: 'createdAt',
+        acendent: true,
+      },
+      analiseSelected: {
+        Os: '',
+        contrato: '',
+        garantia: '',
+        serialNumber: '',
+        razaoSocial: '',
+        type: '',
+        mark: '',
+        model: '',
+        OsRetorno: '',
+        dataFabrica: '',
+      },
+      redirect: false,
+      page: 1,
+      total: 25,
+      count: 0,
+      show: 0,
+      rows: [],
+    }
   }
-}
 
 
   changeOrder = (field) => {
@@ -74,9 +74,9 @@ constructor(props){
       date: Date.now(),
       initDate: new Date(),
     }
-    
+
     await this.props.setCrono(valueCrono)
-    
+
     await this.props.redirectAnalyze(value)
 
     this.setState({
@@ -116,14 +116,14 @@ constructor(props){
     await getAllProcess(queryAnalyze).then(
       resposta => this.setState({
         loading: false,
-          page: resposta.data.page,
-          count: resposta.data.count,
-          show: resposta.data.show,
-          rows: resposta.data.rows,
+        page: resposta.data.page,
+        count: resposta.data.count,
+        show: resposta.data.show,
+        rows: resposta.data.rows,
       })
     )
 
-    await this.props.count({ [ this.props.name ] : this.state.count })
+    await this.props.count({ [this.props.name]: this.state.count })
   }
 
 
@@ -145,114 +145,114 @@ constructor(props){
   render() {
     // console.log(this.props)
     return (
-        <div className='div-mainHeader-dashTec'>
-          <div className='div-table-separeteLineMain-dashTec' />
-          <div className='div-table-header-dashTec'>
-            <div className='div-table-cel-Os-dashTec'
-              onClick={() => this.changeOrder('Os')}
-            >
-              {this.state.order.field === 'Os' ?
-                <div className='div-icon-dashTec'>
-                  {this.state.order.acendent ?
-                    <Icon type="caret-down" /> :
-                    <Icon type="caret-up" />}
-                </div>
-                : <div className='div-icon-dashTec'></div>}
-              <h2 className='div-table-label-dashTec'>OS</h2>
-            </div>
-            <div className='div-table-cel-contrato-dashTec'
-              onClick={() => this.changeOrder('contrato')}>
-              {this.state.order.field === 'contrato' ?
-                <div className='div-icon-dashTec'>
-                  {this.state.order.acendent ?
-                    <Icon type="caret-down" /> :
-                    <Icon type="caret-up" />}
-                </div>
-                : <div className='div-icon-dashTec'></div>}
-              <h2 className='div-table-label-dashTec'>Contrato</h2>
-            </div>
-            <div className='div-table-cel-garantia-dashTec'
-              onClick={() => this.changeOrder('garantia')}>
-              {this.state.order.field === 'garantia' ?
-                <div className='div-icon-dashTec'>
-                  {this.state.order.acendent ?
-                    <Icon type="caret-down" /> :
-                    <Icon type="caret-up" />}
-                </div>
-                : <div className='div-icon-dashTec'></div>}
-              <h2 className='div-table-label-dashTec'>Garantia</h2>
-            </div>
-            <div className='div-table-cel-serialNumber-dashTec'
-              onClick={() => this.changeOrder('serialNumber')}>
-              {this.state.order.field === 'serialNumber' ?
-                <div className='div-icon-dashTec'>
-                  {this.state.order.acendent ?
-                    <Icon type="caret-down" /> :
-                    <Icon type="caret-up" />}
-                </div>
-                : <div className='div-icon-dashTec'></div>}
-              <h2 className='div-table-label-dashTec'>Número de série</h2>
-            </div>
-            <div className='div-table-cel-razaoSocial-dashTec'
-              onClick={() => this.changeOrder('razaoSocial')}>
-              {this.state.order.field === 'razaoSocial' ?
-                <div className='div-icon-dashTec'>
-                  {this.state.order.acendent ?
-                    <Icon type="caret-down" /> :
-                    <Icon type="caret-up" />}
-                </div>
-                : <div className='div-icon-dashTec'></div>}
-              <h2 className='div-table-label-dashTec'>Razão social</h2>
-            </div>
-            <div className='div-table-cel-tipoMarcaModelo-dashTec'
-              onClick={() => this.changeOrder('type')}>
-              {this.state.order.field === 'type' ?
-                <div className='div-icon-dashTec'>
-                  {this.state.order.acendent ?
-                    <Icon type="caret-down" /> :
-                    <Icon type="caret-up" />}
-                </div>
-                : <div className='div-icon-dashTec'></div>}
-              <h2 className='div-table-label-dashTec'>Tipo - Marca - Modelo</h2>
-            </div>
+      <div className='div-mainHeader-dashTec'>
+        <div className='div-table-separeteLineMain-dashTec' />
+        <div className='div-table-header-dashTec'>
+          <div className='div-table-cel-Os-dashTec'
+            onClick={() => this.changeOrder('Os')}
+          >
+            {this.state.order.field === 'Os' ?
+              <div className='div-icon-dashTec'>
+                {this.state.order.acendent ?
+                  <Icon type="caret-down" /> :
+                  <Icon type="caret-up" />}
+              </div>
+              : <div className='div-icon-dashTec'></div>}
+            <h2 className='div-table-label-dashTec'>OS</h2>
           </div>
-         <div className='div-table-separeteLineMain-dashTec' /> 
-         {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading}/></div> : null}
-           {this.state.rows === undefined ? 'Não há entradas cadastrada' : this.state.rows.map((line) =>
-              <div className='div-table-list-dashTec'>
-              {this.renderRedirect()}
-                <div className='div-tableRow-dashTec' onClick={() => this.redirectToAnalise(line)}>
-                <div className='div-table-cel-Os-dashTec'>
-                    <label className='div-table-label-cel-dashTec'>
-                      {line.id}
-                    </label>
-                  </div>
-                  <div className='div-table-cel-contrato-dashTec'>
-                    <label className='div-table-label-cel-dashTec'>
-                      {line.conditionType}
-                    </label>
-                  </div>
-                  <div className='div-table-cel-garantia-dashTec'>
-                    <label className='div-table-label-cel-dashTec'>
-                      {line.garantia}
-                    </label>
-                  </div>
-                  <div className='div-table-cel-serialNumber-dashTec'>
-                    <label className='div-table-label-cel-dashTec'>
-                      {line.serialNumber}
-                    </label>
-                  </div>
-                  <div className='div-table-cel-razaoSocial-dashTec'>
-                    <label className='div-table-label-cel-dashTec'>
-                      {line.razaoSocial}
-                    </label>
-                  </div>
-                  <div className='div-table-cel-modelo-dashTec'>
-                    <label className='div-table-label-cel-dashTec'>
-                      {`${line.type} - ${line.mark} - ${line.model}`}
-                    </label>
-                  </div>
-                  {/* <div className='div-table-cel-modelo-dashTec'>
+          <div className='div-table-cel-contrato-dashTec'
+            onClick={() => this.changeOrder('contrato')}>
+            {this.state.order.field === 'contrato' ?
+              <div className='div-icon-dashTec'>
+                {this.state.order.acendent ?
+                  <Icon type="caret-down" /> :
+                  <Icon type="caret-up" />}
+              </div>
+              : <div className='div-icon-dashTec'></div>}
+            <h2 className='div-table-label-dashTec'>Contrato</h2>
+          </div>
+          <div className='div-table-cel-garantia-dashTec'
+            onClick={() => this.changeOrder('garantia')}>
+            {this.state.order.field === 'garantia' ?
+              <div className='div-icon-dashTec'>
+                {this.state.order.acendent ?
+                  <Icon type="caret-down" /> :
+                  <Icon type="caret-up" />}
+              </div>
+              : <div className='div-icon-dashTec'></div>}
+            <h2 className='div-table-label-dashTec'>Garantia</h2>
+          </div>
+          <div className='div-table-cel-serialNumber-dashTec'
+            onClick={() => this.changeOrder('serialNumber')}>
+            {this.state.order.field === 'serialNumber' ?
+              <div className='div-icon-dashTec'>
+                {this.state.order.acendent ?
+                  <Icon type="caret-down" /> :
+                  <Icon type="caret-up" />}
+              </div>
+              : <div className='div-icon-dashTec'></div>}
+            <h2 className='div-table-label-dashTec'>Número de série</h2>
+          </div>
+          <div className='div-table-cel-razaoSocial-dashTec'
+            onClick={() => this.changeOrder('razaoSocial')}>
+            {this.state.order.field === 'razaoSocial' ?
+              <div className='div-icon-dashTec'>
+                {this.state.order.acendent ?
+                  <Icon type="caret-down" /> :
+                  <Icon type="caret-up" />}
+              </div>
+              : <div className='div-icon-dashTec'></div>}
+            <h2 className='div-table-label-dashTec'>Razão social</h2>
+          </div>
+          <div className='div-table-cel-tipoMarcaModelo-dashTec'
+            onClick={() => this.changeOrder('type')}>
+            {this.state.order.field === 'type' ?
+              <div className='div-icon-dashTec'>
+                {this.state.order.acendent ?
+                  <Icon type="caret-down" /> :
+                  <Icon type="caret-up" />}
+              </div>
+              : <div className='div-icon-dashTec'></div>}
+            <h2 className='div-table-label-dashTec'>Tipo - Marca - Modelo</h2>
+          </div>
+        </div>
+        <div className='div-table-separeteLineMain-dashTec' />
+        {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
+        {this.state.rows === undefined ? 'Não há entradas cadastrada' : this.state.rows.map((line) =>
+          <div className='div-table-list-dashTec'>
+            {this.renderRedirect()}
+            <div className='div-tableRow-dashTec' onClick={() => this.redirectToAnalise(line)}>
+              <div className='div-table-cel-Os-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.id}
+                </label>
+              </div>
+              <div className='div-table-cel-contrato-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.conditionType}
+                </label>
+              </div>
+              <div className='div-table-cel-garantia-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.garantia}
+                </label>
+              </div>
+              <div className='div-table-cel-serialNumber-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.serialNumber}
+                </label>
+              </div>
+              <div className='div-table-cel-razaoSocial-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {line.razaoSocial}
+                </label>
+              </div>
+              <div className='div-table-cel-modelo-dashTec'>
+                <label className='div-table-label-cel-dashTec'>
+                  {`${line.type} - ${line.mark} - ${line.model}`}
+                </label>
+              </div>
+              {/* <div className='div-table-cel-modelo-dashTec'>
                     <label className='div-table-label-cel-dashTec'>
                       {line.status}
                     </label>
@@ -265,21 +265,21 @@ constructor(props){
           <div className='gerCmp-div-table-footer'>
             <this.Pages />
           </div>
-        </div>
-      )
+      </div>
+    )
   }
 }
 
 // export default DashTecnico
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators ({ redirectAnalyze, count, setCrono }, dispach)
+  return bindActionCreators({ redirectAnalyze, count, setCrono }, dispach)
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     // value: state.teste,
   }
 }
 
-export default connect (mapStateToProps, mapDispacthToProps)(TableAgAnalise)
+export default connect(mapStateToProps, mapDispacthToProps)(TableAgAnalise)

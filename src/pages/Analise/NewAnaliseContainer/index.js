@@ -37,7 +37,7 @@ class NewAnalise extends Component {
   state = {
     messageError: false,
     messageSuccess: false,
-    analiseSelected:{
+    analiseSelected: {
       Os: '',
       contrato: '',
       garantia: '',
@@ -89,7 +89,7 @@ class NewAnalise extends Component {
   success = () => {
     message.success('This is a success message');
   };
-  
+
   error = () => {
     message.error('This is an error message');
   };
@@ -108,16 +108,15 @@ class NewAnalise extends Component {
 
   onBlurValidator = (e) => {
 
-    // console.log(e.target)
-    const { 
+    const {
       nome,
       valor,
       fieldFalha,
       message,
     } = validators(e.target.name, e.target.value, this.state)
-    
+
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
       message
     })
@@ -174,15 +173,16 @@ class NewAnalise extends Component {
       motivoPausa: ''
     })
   }
-  
-  handleOkVoltar = () =>{
-    
+
+  handleOkVoltar = () => {
+
     // date = Date.now()
     this.state.inicio.push(new Date())
-    
-    this.props.setCrono({ 
+
+    this.props.setCrono({
       date: Date.now(),
-      pausa: false })
+      pausa: false
+    })
   }
 
   openModalPausa = () => {
@@ -233,7 +233,7 @@ class NewAnalise extends Component {
       })
     })
   }
-    
+
   saveTargetNewCompany = async () => {
     const  pause = []
 
@@ -257,7 +257,7 @@ class NewAnalise extends Component {
 
     const resposta = await newAnalyze(values)
 
-    console.log(resposta)    
+    console.log(resposta)
 
     if (resposta.status === 422) {
 
@@ -375,7 +375,7 @@ class NewAnalise extends Component {
           }
           ]
       });
-  
+
       this.setState({
         peca: {
           id: '',
@@ -393,60 +393,60 @@ class NewAnalise extends Component {
   removePecas = (value) => {
     const oldPecasList = this.state.carrinho
     const newPecasList = oldPecasList.filter(pecasList => pecasList !== value)
-    
+
     this.setState({
       carrinho: newPecasList
     })
   }
-  
+
   onChangeProblems = (e) => {
     this.setState({
-      problems:{
+      problems: {
         ...this.state.problems,
-        [e.target.name]: e.target.checked 
+        [e.target.name]: e.target.checked
       }
     })
   }
-  
+
   changeSelect = (value) => {
     this.setState({
       status: value
     })
   }
-  
-  tick(){
-    
-    if(!this.props.crono.pausa){
-      
+
+  tick() {
+
+    if (!this.props.crono.pausa) {
+
       this.setState((prevState, props) => ({
         currenMilliseconds: Date.now() - this.props.crono.date + this.props.crono.currenMilliseconds,
       }));
     }
   }
-  
-  formatedCrono = ( milliseconds ) => {
+
+  formatedCrono = (milliseconds) => {
     const cronoMilliseconds = milliseconds % 1000
-    let cronoSeconds = Math.trunc(milliseconds/1000)%60
-    let cronoMinutes = Math.trunc(milliseconds/60000)%60
-    let cronoHours = Math.trunc(milliseconds/3600000)
+    let cronoSeconds = Math.trunc(milliseconds / 1000) % 60
+    let cronoMinutes = Math.trunc(milliseconds / 60000) % 60
+    let cronoHours = Math.trunc(milliseconds / 3600000)
 
     if (cronoHours < 10) cronoHours = `0${cronoHours}`
     if (cronoMinutes < 10) cronoMinutes = `0${cronoMinutes}`
     if (cronoSeconds < 10) cronoSeconds = `0${cronoSeconds}`
-    
-    
+
+
     return `${cronoHours}:${cronoMinutes}:${cronoSeconds}:${cronoMilliseconds}`
   }
-  
+
   // onChange = (value) => {
   //   this.setState({
-    //     checkList:{
+  //     checkList:{
   //       value
   //     }
   //   })
   // }
 
-  
+
   componentDidMount = async () => {
     await this.getAll()
 
@@ -455,7 +455,6 @@ class NewAnalise extends Component {
       1
     );
 
-  
   }
 
   render() {
@@ -475,9 +474,9 @@ class NewAnalise extends Component {
           {/* <div className='div-tempo-analise'>{`${this.state.horas}:${this.state.minutos}:${this.state.segundos}`}</div> */}
           <div className='div-tempo-analise'>{this.formatedCrono(this.state.currenMilliseconds)}</div>
 
-          {this.props.crono.pausa? <Button type="primary" onClick={this.handleOkVoltar}>Voltar</Button>
-          : <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>}
-          
+          {this.props.crono.pausa ? <Button type="primary" onClick={this.handleOkVoltar}>Voltar</Button>
+            : <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>}
+
 
           <Modal
             visible={this.state.openModalPausa}
@@ -520,7 +519,7 @@ class NewAnalise extends Component {
               className='input-cnpj'
               name='numeroSerie'
               value={this.props.analyze.serialNumber}
-              />
+            />
           </div>
 
           <div className='div-razaoSocial-analise'>
@@ -596,7 +595,7 @@ class NewAnalise extends Component {
         <Card className='card-analise'>
 
           <div className='div-linhaDefeitos-analise'>
-          {this.props.analyze.defect}
+            {this.props.analyze.defect}
           </div>
 
         </Card>
@@ -645,12 +644,12 @@ class NewAnalise extends Component {
 
                 <div className='div-listaDasPecas-analise'>
 
-                  {this.state.rows.length === 0 ? <p className='p-nao'>Nenhuma peça cadastrada</p> : this.state.rows.map(pecas => <div className='p-selecionados' onClick={() => this.showModal({ id: pecas.id, peca: pecas.item },console.log(pecas))}>{pecas.item}</div>)}
+                  {this.state.rows.length === 0 ? <p className='p-nao'>Nenhuma peça cadastrada</p> : this.state.rows.map(pecas => <div className='p-selecionados' onClick={() => this.showModal({ id: pecas.id, peca: pecas.item }, console.log(pecas))}>{pecas.item}</div>)}
 
                   <Modal
                     title="Troca de peça"
                     visible={this.state.modal}
-                    onOk={() => this.clickPeca( {valor: this.state.peca.id} ) }
+                    onOk={() => this.clickPeca({ valor: this.state.peca.id })}
                     okText='Salvar'
                     onCancel={this.handleCancel}
                   >
@@ -717,7 +716,7 @@ class NewAnalise extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     analyze: state.analyze,
     crono: state.crono,
@@ -729,4 +728,4 @@ function mapDispacthToProps(dispach) {
 }
 
 
-export default connect (mapStateToProps, mapDispacthToProps)(NewAnalise)
+export default connect(mapStateToProps, mapDispacthToProps)(NewAnalise)

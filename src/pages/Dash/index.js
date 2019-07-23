@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
-import { Card } from 'antd';
+import './index.css'
 
 
-class Dash extends Component{
-  render(){
-    return(
-      <div className='bg-dash'>
-      <Card
-        hoverable
-        className='card-image-dash'
-        cover={<img alt="example" src='../../bgDash.jpeg' />}
-      />
+class Dash extends Component {
+  render() {
+    return (
+      <div className='bg-wrapper-dash'>
+        <img alt="example" src='../../bgDash1.png' className='image-dash' />
       </div>
     )
   }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './index.css'
-import { Input, Button, Card, Select, message } from 'antd'
+import { Input, Button, Card, Select, message, Spin } from 'antd'
 import { getAllMarkByTypeService, getAllModelByMarkService } from '../../../services/equip'
-import { validators, masks }from './validator'
+import { validators, masks } from './validator'
 import { add } from '../../../services/peca'
 
 const { Option } = Select;
@@ -10,6 +10,7 @@ const { Option } = Select;
 class NewPeca extends Component {
 
   state = {
+    loading: false,
     type: 'relogio',
     mark: 'Nao selecionado',
     marksList: [],
@@ -174,7 +175,7 @@ class NewPeca extends Component {
 
 
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
     })
   }
@@ -188,11 +189,17 @@ class NewPeca extends Component {
   }
 
   getModelsByMark = async () => {
+
+    this.setState({
+      loading: true,
+    })
+
     if (this.state.mark !== 'Nao selecionado') {
-      const resposta = await getAllModelByMarkService({mark:this.state.mark, type:this.state.type})
+      const resposta = await getAllModelByMarkService({ mark: this.state.mark, type: this.state.type })
 
       this.setState({
         modelsList: resposta.data,
+        loading: false,
       })
     }
   }
@@ -212,15 +219,15 @@ class NewPeca extends Component {
   }
 
   onBlurValidator = (e) => {
-    const { 
+    const {
       nome,
       valor,
       fieldFalha,
       message,
     } = validators(e.target.name, e.target.value, this.state)
-    
+
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
       message
     })
@@ -238,21 +245,21 @@ class NewPeca extends Component {
           <div className='div-linha-peca'>
             <div className='div-peca-peca'>
               <h2 className={this.state.fieldFalha.item ?
-                  'div-comp-labelError' :
-                  'div-comp-label'}
+                'div-comp-labelError' :
+                'div-comp-label'}
               >Peça:</h2>
               <Input
                 className={
                   this.state.fieldFalha.item ?
                     'div-comp-inputError' :
                     // 'input-newEquip'
-                  ''}
+                    ''}
                 placeholder='Digite o nome da peça'
                 name='item'
                 value={this.state.item}
                 onChange={this.onChangePeca}
                 onBlur={this.onBlurValidator}
-                // allowClear
+              // allowClear
               />
               {this.state.fieldFalha.item ?
                 <p className='div-comp-feedbackError'>
@@ -262,20 +269,20 @@ class NewPeca extends Component {
 
             <div className='div-custo-peca'>
               <h2 className={this.state.fieldFalha.costPrice ?
-                  'div-comp-labelError' :
-                  'div-comp-label'}>Custo:</h2>
+                'div-comp-labelError' :
+                'div-comp-label'}>Custo:</h2>
               <Input
                 className={
                   this.state.fieldFalha.costPrice ?
                     'div-comp-inputError' :
                     // 'input-newEquip'
-                  ''}
+                    ''}
                 placeholder='R$'
                 name='costPrice'
                 value={this.state.costPrice}
                 onChange={this.onChangePeca}
                 onBlur={this.onBlurValidator}
-                // allowClear
+              // allowClear
               />
               {this.state.fieldFalha.costPrice ?
                 <p className='div-comp-feedbackError'>
@@ -285,20 +292,20 @@ class NewPeca extends Component {
 
             <div className='div-venda-peca'>
               <h2 className={this.state.fieldFalha.salePrice ?
-                  'div-comp-labelError' :
-                  'div-comp-label'}>Venda:</h2>
+                'div-comp-labelError' :
+                'div-comp-label'}>Venda:</h2>
               <Input
                 className={
                   this.state.fieldFalha.salePrice ?
                     'div-comp-inputError' :
                     // 'input-newEquip'
-                  ''}
+                    ''}
                 placeholder='R$'
                 name='salePrice'
                 value={this.state.salePrice}
                 onChange={this.onChangePeca}
                 onBlur={this.onBlurValidator}
-                // allowClear
+              // allowClear
               />
               {this.state.fieldFalha.salePrice ?
                 <p className='div-comp-feedbackError'>
@@ -311,20 +318,20 @@ class NewPeca extends Component {
 
             <div className='div-desc-peca'>
               <h2 className={this.state.fieldFalha.description ?
-                  'div-comp-labelError' :
-                  'div-comp-label'}>Descrição:</h2>
+                'div-comp-labelError' :
+                'div-comp-label'}>Descrição:</h2>
               <Input
                 className={
                   this.state.fieldFalha.description ?
                     'div-comp-inputError' :
                     // 'input-newEquip'
-                  ''}
+                    ''}
                 placeholder='Digite a descrição da peça'
                 name='description'
                 value={this.state.description}
                 onChange={this.onChangePeca}
                 onBlur={this.onBlurValidator}
-                // allowClear
+              // allowClear
               />
               {this.state.fieldFalha.description ?
                 <p className='div-comp-feedbackError'>
@@ -350,7 +357,7 @@ class NewPeca extends Component {
 
               <div className='div-marca-peca'>
                 <h2 className='div-comp-label'>Marca:</h2>
-                <Select style={{ width: '100%' }}  value={this.state.mark} onChange={(mark) => this.handleChangeMark(mark)}>
+                <Select style={{ width: '100%' }} value={this.state.mark} onChange={(mark) => this.handleChangeMark(mark)}>
                   {this.state.marksList.map(mark => <Option key={mark.mark} value={mark.mark}>{mark.mark}</Option>)}
                 </Select>
               </div>
@@ -360,6 +367,7 @@ class NewPeca extends Component {
               <h2 className='div-comp-label'>Modelos:</h2>
               <Card className='card-modelo-peca'>
                 <div className='div-dataCard-peca'>
+                  {this.state.loading ? <div className='div-spin-accessories'><Spin spinning={this.state.loading} /></div> : null}
                   {this.state.modelsList.length === 0 ? this.state.mark === 'Nao selecionado' ? <p className='p-nao'>Nenhuma marca selecionada</p> : <p className='p'>Nenhum modelo cadastrado</p> :
                     this.state.modelsList.map(model => <div className='p-selecionados' onClick={() => this.clickModel({ id: model.id, model: model.model, mark: this.state.mark, type: this.state.type })}>{model.model}</div>)}</div>
               </Card>
@@ -370,36 +378,36 @@ class NewPeca extends Component {
           <div className='div-linha-peca'>
 
             <div className='div-relacionados-peca'>
-            <h2 className={this.state.fieldFalha.modelListCard ?
-                  'div-comp-labelError' :
-                  'div-comp-label'}>Modelos relacionados:</h2>
+              <h2 className={this.state.fieldFalha.modelListCard ?
+                'div-comp-labelError' :
+                'div-comp-label'}>Modelos relacionados:</h2>
               <Card className='card-relacionados-peca'>
-              <div className='cabecalho-newPeca-card'>
+                <div className='cabecalho-newPeca-card'>
                   <div className='type-newPeca-cabecalho'>Tipo</div>
                   <div className='mark-newPeca-cabecalho'>Marca</div>
                   <div className='model-newPeca-cabecalho'>Modelo</div>
                 </div>
-                {this.state.modelListCard.length === 0 ? <p 
-                className={
-                  this.state.fieldFalha.modelListCard ?
-                    'p-nao-error' :
-                    'p-nao'}
-                >Não há nenhum modelo relacionado</p> : this.state.modelListCard.map(modelList => 
-                <div className='div-pai-newPeca' onClick={() => this.removeAcessorio(modelList)}>
-                  <div className='div-filha-newPeca-type'>
-                    <p className='p'>{`${modelList.type}`}</p>
-                  </div>
-                  <div className='div-filha-newPeca-mark'>
-                    <p className='p'>{`${modelList.mark}`}</p>
-                  </div>
-                  <div className='div-filha-newPeca-model'>
-                    <p className='p'>{`${modelList.model}`}</p>
-                  </div>
-                </div>)}
+                {this.state.modelListCard.length === 0 ? <p
+                  className={
+                    this.state.fieldFalha.modelListCard ?
+                      'p-nao-error' :
+                      'p-nao'}
+                >Não há nenhum modelo relacionado</p> : this.state.modelListCard.map(modelList =>
+                  <div className='div-pai-newPeca' onClick={() => this.removeAcessorio(modelList)}>
+                    <div className='div-filha-newPeca-type'>
+                      <p className='p'>{`${modelList.type}`}</p>
+                    </div>
+                    <div className='div-filha-newPeca-mark'>
+                      <p className='p'>{`${modelList.mark}`}</p>
+                    </div>
+                    <div className='div-filha-newPeca-model'>
+                      <p className='p'>{`${modelList.model}`}</p>
+                    </div>
+                  </div>)}
                 {this.state.fieldFalha.modelListCard ?
-                <p className='div-comp-feedbackError'>
-                  {this.state.message.modelListCard}
-                </p> : null}
+                  <p className='div-comp-feedbackError'>
+                    {this.state.message.modelListCard}
+                  </p> : null}
               </Card>
             </div>
 

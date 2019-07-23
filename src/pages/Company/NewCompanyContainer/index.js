@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Input, Button, message } from 'antd';
 import * as R from 'ramda'
 import { newCompany, getAddressByZipCode } from '../../../services/company'
-import { validators, masks }from './validator'
+import { validators, masks } from './validator'
 
 
 import './index.css'
@@ -74,7 +74,7 @@ class NewCompany extends Component {
 
     const resposta = await newCompany(values)
 
-    console.log(resposta)    
+    console.log(resposta)
 
     if (resposta.status === 422) {
 
@@ -113,7 +113,7 @@ class NewCompany extends Component {
   }
 
   success = () => {
-      message.success('Empresa cadastrada com sucesso');
+    message.success('Empresa cadastrada com sucesso');
   };
 
   error = () => {
@@ -141,31 +141,31 @@ class NewCompany extends Component {
     if (nome === 'referencePoint') fieldFalha.referencePoint = false
 
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
     })
   }
 
   onBlurValidator = (e) => {
-    const { 
+    const {
       nome,
       valor,
       fieldFalha,
       message,
     } = validators(e.target.name, e.target.value, this.state)
-    
+
     this.setState({
-      [ nome ]: valor,
+      [nome]: valor,
       fieldFalha,
       message
     })
   }
 
-    getAddress = async (e) => { 
+  getAddress = async (e) => {
     const zipCode = e.target.value
     try {
       const { fieldFalha, message } = this.state
-      
+
       fieldFalha.state = false
       fieldFalha.city = false
       fieldFalha.neighborhood = false
@@ -174,7 +174,7 @@ class NewCompany extends Component {
 
       // console.log(address)
 
-      if (R.has('erro', address.data)){
+      if (R.has('erro', address.data)) {
         fieldFalha.zipCode = true
         message.zipCode = 'Cep não encontrado.'
 
@@ -183,7 +183,7 @@ class NewCompany extends Component {
           message,
         })
       } else {
-        this.setState({ 
+        this.setState({
           street: address.data.logradouro,
           city: address.data.localidade,
           neighborhood: address.data.bairro,
@@ -193,10 +193,10 @@ class NewCompany extends Component {
 
     } catch (error) {
       const { fieldFalha, message } = this.state
-      
+
       fieldFalha.zipCode = true
       message.zipCode = 'Cep inválido.'
-        
+
       this.setState({
         fieldFalha,
         message
