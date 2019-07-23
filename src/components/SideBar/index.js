@@ -143,7 +143,9 @@ class Sider extends Component {
           >
             <Menu.Item key="entrada_add" disabled={!this.props.auth.addEntry}><Icon type="form" />Nova entrada</Menu.Item>
             <Menu.Item key="analise_add" disabled={!this.props.auth.addAnalyze}><Icon type="line-chart" />Análise</Menu.Item>
-            <Menu.Item key="tecnico_dash" disabled={!this.props.auth.tecnico || !this.props.analyze.analysisCompleted}><Icon type="user" />Técnico</Menu.Item>
+            <Menu.Item key="tecnico_dash" disabled={!this.props.auth.tecnico 
+              || !this.props.analyze.analysisCompleted
+              }><Icon type="user" />Técnico</Menu.Item>
 
             
           </SubMenu>

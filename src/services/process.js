@@ -25,3 +25,28 @@ export const getAllProcess = async (query) => {
     })
     return response
   } 
+
+
+export const updateProcess = async (values) => {
+  const storeObject = store.getState()
+
+  const headers = {
+    token: storeObject.auth.token,
+    username: storeObject.auth.username,
+  }
+
+  let response = {}
+
+  await axios.put(`${BACKEND_URL}/api/process/update`, values, { headers: headers }).then(
+    resp => {
+      response = resp
+    }
+  ).catch((error) => {
+    if (error.response) {
+      response = error.response
+    } else {
+      console.log('Error', error.message);
+    }
+  })
+  return response
+}
