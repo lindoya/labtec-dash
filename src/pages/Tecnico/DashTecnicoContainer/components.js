@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux'
 // import { getAllEntrance } from '../../../services/entrance'
 import { getAllProcess } from '../../../services/process'
 import { redirectAnalyze, count } from '../TecnicoRedux/action'
+import { setCrono } from '../../Analise/AnaliseRedux/actions'
 
 class TableAgAnalise extends Component {
 constructor(props){
@@ -63,7 +64,19 @@ constructor(props){
       defect: lineSelected.defect,
       garantia: lineSelected.garantia,
       conditionType: lineSelected.conditionType,
+      equipModelId: lineSelected.equipModelId,
+      analysisCompleted: false,
     }
+
+    const valueCrono = {
+      currenMilliseconds: 0,
+      pausa: false,
+      date: Date.now(),
+      initDate: new Date(),
+    }
+    
+    await this.props.setCrono(valueCrono)
+    
     await this.props.redirectAnalyze(value)
 
     this.setState({
@@ -117,7 +130,7 @@ constructor(props){
   
 
   render() {
-    // console.log(this.props.name)
+    // console.log(this.props)
     return (
         <div className='div-mainHeader-dashTec'>
           <div className='div-table-separeteLineMain-dashTec' />
@@ -251,7 +264,7 @@ constructor(props){
 // export default DashTecnico
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators ({ redirectAnalyze, count }, dispach)
+  return bindActionCreators ({ redirectAnalyze, count, setCrono }, dispach)
 }
 
 function mapStateToProps (state) {

@@ -9,7 +9,11 @@ export default {
     TESTE: 'REDIRECT_TESTE'
   },
 
-  COUNT: 'COUNT', 
+  COUNT: 'COUNT',
+
+  CRONO: {
+    SET: 'CRONO_SET',
+  },
 
   COMPANY: {
     CREATE: {

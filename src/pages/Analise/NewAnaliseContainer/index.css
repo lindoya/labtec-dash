@@ -182,10 +182,24 @@
 .time-analise{
   width: 100%
 }
+.select-analise{
+  width: 23%
+}
 .textArea-motivoPausa-analise{
   width: 100%;
   margin-top: 10px
 }
-.select-analise{
-  width: 23%
+
+.textArea-motivoPausa-analise-inputError{
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #ff0000 !important;
+  background-color: #ff6c6c3b !important;
+}
+
+.div-analise-feedbackError{
+  color: #a80000;
+  font-size: smaller;
+  margin: 0 !important;
+  height: 15px !important;
 }
