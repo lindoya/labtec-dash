@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './index.css'
 
-import { Input, Card, Button, message } from 'antd';
+import { Input, Card, Button, message, Spin } from 'antd';
 import { newAcessorio, getAllAccessories } from '../../../services/acessorio';
 
 
@@ -9,6 +9,7 @@ import { newAcessorio, getAllAccessories } from '../../../services/acessorio';
 class NewAcessorio extends Component {
 
   state = {
+    loading: false,
     messageError: false,
     messageSuccess: false,
     inputAcessorio: '',
@@ -67,25 +68,19 @@ class NewAcessorio extends Component {
   }
 
   getAll = async () => {
-    // const query = {
-    //   filters: {
-    //     accessories: {
-    //       global: {
-    //         fields: ['accessories'],
-    //         value: this.state.global,
-    //       },
-    //       specific: {
-    //         accessories: this.state.searchAccessories,
-    //       }
-    //     }
-    //   },
-    // }
+    this.setState({
+      loading: true,
+    })
 
     await getAllAccessories().then(
       resposta => this.setState({
         rows: resposta.data.rows,
       })
     )
+
+    this.setState({
+      loading:false,
+    })
   }
 
   componentDidMount = () => {
@@ -93,7 +88,6 @@ class NewAcessorio extends Component {
   }
 
   render() {
-    console.log(this.state.rows)
     return (
       <div className='card-bg-newAcessorio'>
 
@@ -117,6 +111,7 @@ class NewAcessorio extends Component {
           <div className='div-card-newAcessorio'>
             <h2 className='div-comp-label'>Acessórios cadastrados:</h2>
             <Card className='card-newAcessorio' key='card-accessories'>
+              {this.state.loading ? <div className='div-spin-accessories'><Spin spinning={this.state.loading} /></div> : null}
               {this.state.rows.map((line) => <p className='p-newAcessorio'>{line.accessories}</p>)}             
             </Card>
           </div>

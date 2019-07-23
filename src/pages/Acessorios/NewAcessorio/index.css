@@ -34,3 +34,9 @@
 .p-newAcessorio{
   padding:  5px 0 0 10px
 }
+.div-spin-accessories{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px
+}

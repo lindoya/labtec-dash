@@ -101,7 +101,7 @@ class NewUser extends Component {
       addUser: this.state.permission.addUser,
       addTypeAccount: this.state.permission.addTypeAccount,
     }
-
+    console.log(values)
     const resposta = await newUser (values)
 
     if (resposta.status === 422 || resposta.status === 409) {
@@ -146,6 +146,7 @@ class NewUser extends Component {
 
 
   render() {
+    console.log(this.state)
     return (
       <div className='card-bg-newUser'>
         

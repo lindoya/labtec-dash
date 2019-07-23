@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Select, Input, Button, DatePicker, Icon, Modal, message, Spin} from 'antd'
+import { Select, Input, Button, DatePicker, Icon, Modal, message, Spin } from 'antd'
 import { getAllCompany, updateCompany } from '../../../services/company'
+import { validators, masks } from './validator'
 
 import 'antd/dist/antd.css'
 import './index.css'
@@ -11,7 +12,7 @@ const Search = Input.Search;
 const { Option } = Select;
 
 class dashCompany extends Component {
-  
+
   state = {
     loading: false,
     messageError: false,
@@ -35,6 +36,32 @@ class dashCompany extends Component {
       updatedAt: '',
       createdAt: '',
     },
+    fieldFalha: {
+      nameContact: false,
+      razaoSocial: false,
+      zipCode: false,
+      state: false,
+      number: false,
+      telphone: false,
+      email: false,
+      city: false,
+      neighborhood: false,
+      street: false,
+      referencePoint: false
+    },
+    message: {
+      nameContact: '',
+      razaoSocial: '',
+      zipCode: '',
+      state: '',
+      number: '',
+      telphone: '',
+      email: '',
+      city: '',
+      neighborhood: '',
+      street: '',
+      referencePoint: ''
+    },
     order: {
       field: 'createdAt',
       acendent: true,
@@ -55,19 +82,52 @@ class dashCompany extends Component {
   success = () => {
     message.success('Dados alterados com sucesso');
   };
-  
+
   error = () => {
     message.error('Seus dados não foram alterados');
   };
-  
+
 
   onChange = (e) => {
-    const evento = e.target
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    const { fieldFalha } = this.state
+
+    if (nome === 'razaoSocial') fieldFalha.razaoSocial = false
+    if (nome === 'nameContact') fieldFalha.nameContact = false
+    if (nome === 'email') fieldFalha.email = false
+    if (nome === 'telphone') fieldFalha.telphone = false
+    if (nome === 'zipCode') fieldFalha.zipCode = false
+    if (nome === 'state') fieldFalha.state = false
+    if (nome === 'city') fieldFalha.city = false
+    if (nome === 'neighborhood') fieldFalha.neighborhood = false
+    if (nome === 'street') fieldFalha.street = false
+    if (nome === 'number') fieldFalha.number = false
+    if (nome === 'referencePoint') fieldFalha.referencePoint = false
 
     this.setState({
-      [evento.name]: evento.value,
-    }, () => {
-      this.getAll()
+      compSelected: {
+        ...this.state.compSelected,
+        [nome]: valor
+      },
+      fieldFalha,
+    })
+  }
+
+  onBlurValidator = async (e) => {
+    const {
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+
+    await this.setState({
+      [nome]: valor,
+      fieldFalha,
+      message
     })
   }
 
@@ -95,11 +155,12 @@ class dashCompany extends Component {
     }, () => {
       this.getAll()
     }
-    )}
-                  
+    )
+  }
+
   onChangeEditar = (e) => {
     this.setState({
-      compSelected:{
+      compSelected: {
         ...this.state.compSelected,
         [e.target.name]: e.target.value
       }
@@ -184,7 +245,7 @@ class dashCompany extends Component {
 
   saveTargetUpdateCompany = async () => {
     this.setState({
-      loading:true
+      loading: true
     })
     const values = {
       razaoSocial: this.state.compSelected.razaoSocial,
@@ -201,7 +262,7 @@ class dashCompany extends Component {
       nameContact: this.state.compSelected.nameContact,
     }
 
-    const resposta = await updateCompany(values) 
+    const resposta = await updateCompany(values)
 
     if (resposta.status === 422) {
 
@@ -215,19 +276,19 @@ class dashCompany extends Component {
     } if (resposta.status === 200) {
 
       this.setState({
-        compSelected:{
-        razaoSocial: '',
-        cnpj: '',
-        street: '',
-        number: '',
-        city: '',
-        state: '',
-        neighborhood: '',
-        referencePoint: '',
-        zipCode: '',
-        telphone: '',
-        email: '',
-        nameContact: '',
+        compSelected: {
+          razaoSocial: '',
+          cnpj: '',
+          street: '',
+          number: '',
+          city: '',
+          state: '',
+          neighborhood: '',
+          referencePoint: '',
+          zipCode: '',
+          telphone: '',
+          email: '',
+          nameContact: '',
         },
         messageSuccess: true,
         editar: !this.state.editar,
@@ -236,7 +297,7 @@ class dashCompany extends Component {
       await this.success()
       this.setState({
         messageSuccess: false,
-        loading:false,
+        loading: false,
       })
       await this.getAll()
     }
@@ -244,7 +305,7 @@ class dashCompany extends Component {
 
 
   openModalDetalhesCompany = async (company) => {
-     await this.setState({
+    await this.setState({
       modalDetalhesCompany: true,
       compSelected: company
     })
@@ -255,8 +316,8 @@ class dashCompany extends Component {
     await this.setState({
       compSelected:
       {
-      ...this.state.compSelected,
-      cnpj: cnpjFormated 
+        ...this.state.compSelected,
+        cnpj: cnpjFormated
       }
     })
   }
@@ -266,12 +327,12 @@ class dashCompany extends Component {
   //     modalDetalhesCompany: false
   //   })
   // }
- 
+
 
   cancelModalDetalhesCompany = () => {
     this.setState({
       modalDetalhesCompany: false,
-      editar:false,
+      editar: false,
     })
   }
 
@@ -340,8 +401,8 @@ class dashCompany extends Component {
       // onOk={this.okModalDetalhesCompany}
       onCancel={this.cancelModalDetalhesCompany}
       footer={this.props.auth.addCompany ? (
-          <div className='gercomp-div-button-modal'>
-            {this.state.editar === false ?  
+        <div className='gercomp-div-button-modal'>
+          {this.state.editar === false ?
             <div className='gercomp-div-button-editFalse-modal'>
               <Button
                 type="primary"
@@ -351,7 +412,7 @@ class dashCompany extends Component {
                   <Icon type="edit" />
               </Button>
               <Button key="submit" type="primary" onClick={this.handleOk}>
-              OK
+                OK
             </Button>
             </div>
             :
@@ -368,10 +429,10 @@ class dashCompany extends Component {
                 <Icon type="check" />
               </Button>
             </div>
-            }          
+          }
         </div>
-       )
-       :null}
+      )
+        : null}
     >
 
 
@@ -380,84 +441,155 @@ class dashCompany extends Component {
         <div className='gercomp-div-linhaModal2'>
           <div className='gercomp-div-textCnpj-modal'>
             Cnpj
-        <p className='gercomp-p'>{this.state.compSelected.cnpj}</p> 
+        <p className='gercomp-p'>{this.state.compSelected.cnpj}</p>
           </div>
           <div className='gercomp-div-textRazaoSocial-modal'>
             Razão social
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.razaoSocial}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='razaoSocial'
-              className='gerComp-inputModal'
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.razaoSocial}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='razaoSocial'
+              className={
+                this.state.fieldFalha.razaoSocial ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
               value={this.state.compSelected.razaoSocial}
-
-            />}
+            />
+              {this.state.fieldFalha.razaoSocial ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.razaoSocial}
+                </p> : null}
+            </div>}
           </div>
         </div>
         <div className='gercomp-div-linhaModal'>
           <div className='gercomp-div-textCep-modal'>
             Cep
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode.replace(/(\d{5})(\d{3})?/, '$1-$2')}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='zipCode'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.zipCode}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode.replace(/(\d{5})(\d{3})?/, '$1-$2')}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='zipCode'
+              className={
+                this.state.fieldFalha.zipCode ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.zipCode}
+            />
+              {this.state.fieldFalha.zipCode ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.zipCode}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textRua-modal'>
             Rua
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.street}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='street'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.street}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.street}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='street'
+              className={
+                this.state.fieldFalha.street ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.street}
+            />
+              {this.state.fieldFalha.street ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.street}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textNumero-modal'>
             Número
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.number}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='number'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.number}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.number}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='number'
+              className={
+                this.state.fieldFalha.number ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.number}
+            />
+              {this.state.fieldFalha.number ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.number}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textBairro-modal'>
             Bairro
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.neighborhood}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='neighborhood'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.neighborhood}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.neighborhood}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='neighborhood'
+              className={
+                this.state.fieldFalha.neighborhood ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.neighborhood}
+            />
+              {this.state.fieldFalha.neighborhood ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.neighborhood}
+                </p> : null}
+            </div>}
           </div>
         </div>
         <div className='gercomp-div-linhaModal'>
           <div className='gercomp-div-textCity-modal'>
             Cidade
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.city}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='city'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.city}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.city}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='city'
+              className={
+                this.state.fieldFalha.city ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.city}
+            />
+              {this.state.fieldFalha.city ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.city}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textState-modal'>
             Estado
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.state}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='state'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.state}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.state}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='state'
+              className={
+                this.state.fieldFalha.state ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.state}
+            />
+              {this.state.fieldFalha.state ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.state}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textRef-modal'>
             Ponto de referência
-        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='referencePoint'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.referencePoint}
-        />}
+        {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='referencePoint'
+              className={
+                this.state.fieldFalha.referencePoint ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.referencePoint}
+            />
+              {this.state.fieldFalha.referencePoint ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.referencePoint}
+                </p> : null}
+            </div>}
           </div>
         </div>
         <h3 className='gercomp-h3-modal'>Dados do registro</h3>
@@ -475,30 +607,58 @@ class dashCompany extends Component {
         <div className='gercomp-div-linhaModal'>
           <div className='gercomp-div-textNome-modal'>
             Nome
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.nameContact}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='nameContact'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.nameContact}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.nameContact}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='nameContact'
+              className={
+                this.state.fieldFalha.nameContact ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.nameContact}
+            />
+              {this.state.fieldFalha.nameContact ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.nameContact}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textTel-modal'>
             Telefone
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone.lenth === 10 ? this.state.compSelected.telphone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3') : this.state.compSelected.telphone.replace(/(\d{2})(\d{5})(\d{1,4})/, '($1) $2-$3')}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='telphone'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.telphone}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              name='telphone'
+              className={
+                this.state.fieldFalha.telphone ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.telphone}
+            />
+              {this.state.fieldFalha.telphone ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.telphone}
+                </p> : null}
+            </div>}
           </div>
           <div className='gercomp-div-textEmail-modal'>
             Email
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.email}</p> : <Input
-          onChange={this.onChangeEditar}
-          name='email'
-          className='gerComp-inputModal'
-          value={this.state.compSelected.email}
-        />}
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.email}</p> : <div><Input
+              onBlur={this.onBlurValidator}
+              onChange={this.onChange}
+              onFocus={this.onChange}
+              name='email'
+              className={
+                this.state.fieldFalha.email ?
+                  'div-comp-inputError' :
+                  'gerComp-inputModal'}
+              value={this.state.compSelected.email}
+            />
+              {this.state.fieldFalha.email ?
+                <p className='div-comp-feedbackError'>
+                  {this.state.message.email}
+                </p> : null}
+            </div>}
           </div>
         </div>
 
@@ -518,7 +678,7 @@ class dashCompany extends Component {
           </Button>}
         </div> :''} */}
 
-        
+
       </div>
     </Modal>
   )
@@ -526,15 +686,15 @@ class dashCompany extends Component {
   Pages = () => (
 
     <div className='gerCmp-div-table-footer'>
-      {Math.ceil(this.state.count/this.state.total) >= 5 && Math.ceil(this.state.count/this.state.total)-this.state.page < 1? <Button type="primary" onClick={() => this.changePages(this.state.page-4)}>{this.state.page-4}</Button> : ''}
-      {Math.ceil(this.state.count/this.state.total) >= 4 && Math.ceil(this.state.count/this.state.total)-this.state.page < 2 && this.state.page >3? <Button type="primary" onClick={() => this.changePages(this.state.page-3)}>{this.state.page-3}</Button> : ''}
-      {this.state.page >= 3? <Button type="primary" onClick={() => this.changePages(this.state.page-2)}>{this.state.page-2}</Button> : ''}
-      {this.state.page >= 2? <Button type="primary" onClick={() => this.changePages(this.state.page-1)}>{this.state.page-1}</Button> :''}
+      {Math.ceil(this.state.count / this.state.total) >= 5 && Math.ceil(this.state.count / this.state.total) - this.state.page < 1 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 4)}>{this.state.page - 4}</Button> : ''}
+      {Math.ceil(this.state.count / this.state.total) >= 4 && Math.ceil(this.state.count / this.state.total) - this.state.page < 2 && this.state.page > 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 3)}>{this.state.page - 3}</Button> : ''}
+      {this.state.page >= 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 2)}>{this.state.page - 2}</Button> : ''}
+      {this.state.page >= 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page - 1)}>{this.state.page - 1}</Button> : ''}
       <div className='div-buttonSelected-dashComp' type="primary">{this.state.page}</div>
-      {this.state.page < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+1)}>{this.state.page+1}</Button> :''}
-      {this.state.page+1 < (this.state.count/this.state.total)? <Button type="primary" onClick={() => this.changePages(this.state.page+2)}>{this.state.page+2}</Button> :''}
-      {this.state.page+2 < (this.state.count/this.state.total) && this.state.page < 3? <Button type="primary" onClick={() => this.changePages(this.state.page+3)}>{this.state.page+3}</Button> : ''}
-      {this.state.page+3 < (this.state.count/this.state.total) && this.state.page < 2? <Button type="primary" onClick={() => this.changePages(this.state.page+4)}>{this.state.page+4}</Button> : ''}
+      {this.state.page < (this.state.count / this.state.total) ? <Button type="primary" onClick={() => this.changePages(this.state.page + 1)}>{this.state.page + 1}</Button> : ''}
+      {this.state.page + 1 < (this.state.count / this.state.total) ? <Button type="primary" onClick={() => this.changePages(this.state.page + 2)}>{this.state.page + 2}</Button> : ''}
+      {this.state.page + 2 < (this.state.count / this.state.total) && this.state.page < 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 3)}>{this.state.page + 3}</Button> : ''}
+      {this.state.page + 3 < (this.state.count / this.state.total) && this.state.page < 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 4)}>{this.state.page + 4}</Button> : ''}
     </div>
   )
 
@@ -617,7 +777,7 @@ class dashCompany extends Component {
         </div>
       </div>
       <div className='gerCmp-div-table-separeteLineMain' />
-      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading}/></div> : null}
+      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading} /></div> : null}
       {
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list' >
@@ -654,12 +814,13 @@ class dashCompany extends Component {
         )
       }
       <div className='gerCmp-div-table-footer'>
-       <this.Pages/>   
+        <this.Pages />
       </div>
     </div>
   )
 
   render() {
+    console.log(this.state)
     return (
       <div className='gerCmp-div-card' >
         <this.ModalDetalhes />
@@ -708,10 +869,10 @@ class dashCompany extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     auth: state.auth,
   }
 }
 
-export default connect (mapStateToProps)(dashCompany)
+export default connect(mapStateToProps)(dashCompany)

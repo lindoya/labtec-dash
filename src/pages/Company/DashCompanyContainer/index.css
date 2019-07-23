@@ -33,6 +33,14 @@
   margin: 0 0 0 5px !important;
 }
 
+.div-comp-inputError{
+  width: 90%;
+  margin: 5px 0 2px 0;
+  padding: 0 0 1px 5px;
+  border: 1px solid #ff0000 !important;
+  background-color: #ff6c6c3b !important;
+}
+
 .gerCmp-div-card{
   margin-top: 10px;
   width: 98% !important;
