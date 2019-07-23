@@ -1,21 +1,38 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Button, Input, Card, Checkbox, Modal, Select, message } from 'antd';
 
 import './index.css'
 import { getAllParts } from '../../../services/peca'
+import { updateProcess } from '../../../services/process'
+import { newAnalyze } from '../../../services/analyze';
+
 import { validators }from './validator'
 
 import { setCrono } from '../AnaliseRedux/actions'
+import { redirectAnalyze } from '../../Tecnico/TecnicoRedux/action'
 
-import { Button, Input, Card, Checkbox, Modal, Select, message } from 'antd';
-import { newAnalyze } from '../../../services/analyze';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 
 class NewAnalise extends Component {
+
+  garantia (){
+    if(this.props.analyze.garantia.length > 1){
+      return this.props.analyze.garantia.slice(0,1).toUpperCase() + this.props.analyze.garantia.slice(1,15)
+    }
+    return ''
+  }
+
+  conditionType (){
+    if(this.props.analyze.conditionType.length > 1){
+      return this.props.analyze.conditionType.slice(0,1).toUpperCase() + this.props.analyze.conditionType.slice(1,15)
+    }
+    return ''
+  }
 
   state = {
     messageError: false,
@@ -33,7 +50,7 @@ class NewAnalise extends Component {
       dataFabrica: '',
     },
     modal: false,
-    status: 'prontoParaOrcamento',
+    status: 'revisao1',
     problems:{
       violado: false,
       mauUso: false,
@@ -58,12 +75,13 @@ class NewAnalise extends Component {
     },
     observções: '',
     modalPausa: false,
-    motivoPausa: '',
     rows: [],
-    conditionType: this.props.analyze.conditionType.slice(0,1).toUpperCase() + this.props.analyze.conditionType.slice(1,15),
-    garantia: this.props.analyze.garantia.slice(0,1).toUpperCase() + this.props.analyze.garantia.slice(1,15),
+    conditionType: this.conditionType(),
+    garantia: this.garantia(),
     currenMilliseconds: this.props.crono.currenMilliseconds,
     time: 0,
+    motivoPausa: '',
+    motivoPausaList: [],
     inicio: [ this.props.crono.initDate],
     final: [],
   }
@@ -105,20 +123,49 @@ class NewAnalise extends Component {
     })
   }
 
-  handleOkPausa = () => {
-    this.state.final.push(new Date())
-
+  onFocusMotivo = (e) => {
     this.setState({
-      openModalPausa: false,
-      time: this.state.currenMilliseconds,
+      fieldFalha: {
+        motivoPausa: false,
+      },
+      message: {
+        motivoPausa: '',
+      },
     })
+  }
 
-    const value = {
-      currenMilliseconds: this.state.currenMilliseconds,
-      pausa: true,
+  handleOkPausa = () => {
+
+    if (this.state.motivoPausa) {
+
+      this.state.final.push(new Date())
+      this.state.motivoPausaList.push(this.state.motivoPausa)
+  
+      this.setState({
+        openModalPausa: false,
+        time: this.state.currenMilliseconds,
+        motivoPausa: '',
+      })
+  
+      const value = {
+        currenMilliseconds: this.state.currenMilliseconds,
+        pausa: true,
+      }
+  
+      this.props.setCrono(value)
+
+    } else {
+      this.setState({
+        message: {
+          ...this.state.message,
+          motivoPausa: 'É obrigatório.',
+        },
+        fieldFalha: {
+          motivoPausa: true,
+        }
+      })
     }
 
-    this.props.setCrono(value)
   }
 
   handleCancelPausa = () => {
@@ -175,19 +222,37 @@ class NewAnalise extends Component {
     }
 
     await getAllParts(query).then(
-      resposta => this.setState({
-        rows: resposta.data.rows,
+      resposta => {
+        if(resposta.data.rows){
+          this.setState({
+            rows: resposta.data.rows,
+          })
+        }
+        this.setState({
+        rows: [],
       })
-    )
+    })
   }
     
   saveTargetNewCompany = async () => {
+    const  pause = []
+
+    for (let i=0; i < this.state.final.length; i++){
+      pause.push({
+        inicio:  this.state.inicio[i+1],
+        final: this.state.final[i],
+        motivoPausa: this.state.motivoPausaList[i],
+      })
+    }
+
     const values = {
       humidity: this.state.problems.humidade,
       misuse: this.state.problems.mauUso,
       brokenSeal: this.state.problems.violado,
       fall: this.state.problems.sinaisQueda,
       analysisPart: this.state.carrinho,
+      processId: this.props.analyze.os,
+      pause,
     }
 
     const resposta = await newAnalyze(values)
@@ -204,21 +269,70 @@ class NewAnalise extends Component {
         messageError: false
       })
     } if (resposta.status === 200) {
-
-      this.setState({
-        problems:{
-          humidade: false,
-          mauUso: false,
-          violado: false,
-          sinaisQueda: false,
+      const value = {
+        id: this.props.analyze.os,
+        updateProcessMock: {
+          status: this.state.status,
         },
-        carrinho:[],
-        messageSuccess: true,
-      })
-      await this.success()
-      this.setState({
-        messageSuccess: false
-      })
+      }
+
+      const response = await updateProcess(value)
+
+      if (response.status === 422) {
+
+        this.setState({
+          messageError: true,
+        })
+        await this.error()
+        this.setState({
+          messageError: false
+        })
+      } else if (resposta.status === 200) {
+        this.setState({
+          problems:{
+            humidade: false,
+            mauUso: false,
+            violado: false,
+            sinaisQueda: false,
+          },
+          carrinho:[],
+          messageSuccess: true,
+        })
+
+        const INICIAL_STATE_REDIRECT ={
+          os: '',
+          serialNumber: '',
+          razaoSocial: '',
+          type: '',
+          mark: '',
+          model: '',
+          leitor: '',
+          defect: '',
+          garantia: '',
+          conditionType: '',
+          equipModelId: '',
+          analysisCompleted: true,
+        }
+
+        await this.props.redirectAnalyze(INICIAL_STATE_REDIRECT)
+
+        const valueCrono = {
+          currenMilliseconds: 0,
+          pausa: true,
+          date: Date.now(),
+          initDate: new Date(),
+        }
+        
+        await this.props.setCrono(valueCrono)
+
+        await this.success()
+        this.setState({
+          messageSuccess: false,
+          garantia: '',
+          conditionType: '',
+          currenMilliseconds: 0
+        })
+      }
     }
   }
 
@@ -229,10 +343,10 @@ class NewAnalise extends Component {
   componentDidMount = () => {
     this.getAll()
 
-    // this.timerID = setInterval(
-      //   (prevState, props) => this.tick(),
-      //   1
-    // );
+    this.timerID = setInterval(
+        (prevState, props) => this.tick(),
+        1
+    );
     
   }
 
@@ -254,7 +368,12 @@ class NewAnalise extends Component {
     if (notExist.length === 0) {
       this.setState({
         modal: false,
-        carrinho: [...this.state.carrinho, this.state.peca]
+        carrinho: [...this.state.carrinho, 
+          {
+            partId: this.state.peca.id,
+            description: this.state.peca.motivoTroca,
+          }
+          ]
       });
   
       this.setState({
@@ -331,15 +450,16 @@ class NewAnalise extends Component {
   componentDidMount = async () => {
     await this.getAll()
 
-    // this.timerID = setInterval(
-    //   (prevState, props) => this.tick(),
-    //   100
-    // );
+    this.timerID = setInterval(
+      (prevState, props) => this.tick(),
+      1
+    );
 
   
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className='div-card-analise'>
         <div className='div-comp-Linha div-comp-header'>
@@ -370,7 +490,6 @@ class NewAnalise extends Component {
               <TextArea
                 value={this.state.motivoPausa}
                 name='motivoPausa'
-                // className='textArea-motivoPausa-analise'
                 className={
                   this.state.fieldFalha.motivoPausa ?
                     'textArea-motivoPausa-analise-inputError' :
@@ -379,6 +498,7 @@ class NewAnalise extends Component {
                 autosize={{ minRows: 3, maxRows: 10 }}
                 onChange={this.onChangeMotivoPausa}
                 onBlur={this.onBlurValidator}
+                onFocus={this.onFocusMotivo}
               />
               {this.state.fieldFalha.motivoPausa ?
                 <p className='div-analise-feedbackError'>
@@ -577,9 +697,9 @@ class NewAnalise extends Component {
         <div className='div-linhaButton-analise'>
 
         <Select defaultValue={this.state.status} onChange={this.changeSelect} className='select-analise'>
-          <Option value="irParaFabrica">Ir para fábrica</Option>
-          <Option value="irParaTestes">Ir para testes</Option>
-          <Option value="prontoParaOrcamento">Pronto para orçamento</Option>
+          <Option value="fabrica">Ir para fábrica</Option>
+          <Option value="revisao1">Ir para testes</Option>
+          <Option value="orcamento">Pronto para orçamento</Option>
         </Select>
 
           <Button
@@ -605,7 +725,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispacthToProps(dispach) {
-  return bindActionCreators ({ setCrono }, dispach)
+  return bindActionCreators ({ setCrono, redirectAnalyze }, dispach)
 }
 
 
