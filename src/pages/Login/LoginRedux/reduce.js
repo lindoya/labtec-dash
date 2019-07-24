@@ -12,6 +12,7 @@ const INICIAL_STATE_AUTH ={
   username: 'userName',
   email: 'email',
   validTonken: false,
+  password: '',
 }
 
 
@@ -44,7 +45,7 @@ export function auth(state = INICIAL_STATE_AUTH, action) {
       return auth
     
     case actions.LOGIN.LOGOUT:
-      return INICIAL_STATE_AUTH
+      return state = {}
 
     default:
       return state
