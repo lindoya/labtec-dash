@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Icon, Tooltip } from 'antd';
+import { Menu, Icon, Tooltip, message, } from 'antd';
 import './index.css'
 import { Redirect } from 'react-router-dom'
 import { Logout } from '../../pages/Login/LoginRedux/action'
@@ -15,12 +15,25 @@ class Sider extends Component {
     open: ['LabTec'],
   };
 
+  onClose = e => {
+    console.log(e, 'I was closed.');
+  };
+
+  warning = () => {
+    message.warning('Há uma análise em andamento');
+  };
+
   logout = async () => {
     // const token = localStorage.getItem('token')
     // token.replace(/"/ig, '')
     
     // console.log(token)
     // await Logout(token)    //aqui não apaga no banco de dados
+
+    if (this.props.analyze.serialNumber) {
+      return this.warning()
+    }
+
     await this.props.Logout(this.props.auth.token)
     
     this.setState({
@@ -235,7 +248,7 @@ function mapDispacthToProps(dispach) {
 function mapStateToProps (state) {
   return {
     auth: state.auth,
-    analyze: state.analyze
+    analyze: state.analyze,
   }
 }
 

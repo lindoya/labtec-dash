@@ -37,18 +37,18 @@ class NewAnalise extends Component {
   state = {
     messageError: false,
     messageSuccess: false,
-    analiseSelected: {
-      Os: '',
-      contrato: '',
-      garantia: '',
-      serialNumber: '',
-      razaoSocial: '',
-      type: '',
-      mark: '',
-      model: '',
-      OsRetorno: '',
-      dataFabrica: '',
-    },
+    // analiseSelected: {
+    //   Os: '',
+    //   contrato: '',
+    //   garantia: '',
+    //   serialNumber: '',
+    //   razaoSocial: '',
+    //   type: '',
+    //   mark: '',
+    //   model: '',
+    //   OsRetorno: '',
+    //   dataFabrica: '',
+    // },
     modal: false,
     status: 'revisao1',
     problems:{
@@ -227,14 +227,15 @@ class NewAnalise extends Component {
           this.setState({
             rows: resposta.data.rows,
           })
-        }
-        this.setState({
-        rows: [],
-      })
+        } else {
+          this.setState({
+          rows: [],
+        })
+      }
     })
   }
 
-  saveTargetNewCompany = async () => {
+  saveTargetNewAnaly = async () => {
     const  pause = []
 
     for (let i=0; i < this.state.final.length; i++){
@@ -458,7 +459,7 @@ class NewAnalise extends Component {
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <div className='div-card-analise'>
         <div className='div-comp-Linha div-comp-header'>
@@ -472,13 +473,14 @@ class NewAnalise extends Component {
 
         <div className='div-linha-analise'>
           {/* <div className='div-tempo-analise'>{`${this.state.horas}:${this.state.minutos}:${this.state.segundos}`}</div> */}
-          <div className='div-tempo-analise'>{this.formatedCrono(this.state.currenMilliseconds)}</div>
+          {this.props.analyze.serialNumber? <div className='div-tempo-analise'>{this.formatedCrono(this.state.currenMilliseconds)}</div> : null}
 
+          {this.props.analyze.serialNumber? <div>
           {this.props.crono.pausa ? <Button type="primary" onClick={this.handleOkVoltar}>Voltar</Button>
             : <Button type="primary" onClick={this.openModalPausa}>Pausar</Button>}
+          </div> : null}
 
-
-          <Modal
+          {this.props.analyze.serialNumber? <Modal
             visible={this.state.openModalPausa}
             onOk={this.handleOkPausa}
             okText='Pausar'
@@ -505,7 +507,7 @@ class NewAnalise extends Component {
                 </p> : null}
             </div>
 
-          </Modal>
+          </Modal> : null}
         </div>
 
         <div className='div-dadosDoEquipamento-analise'>Dados do equipamento</div>
@@ -612,10 +614,10 @@ class NewAnalise extends Component {
 
                 <div className='div-checkbox-analise'>
 
-                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.violado} name='violado'>Violado</Checkbox>
-                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.mauUso} name='mauUso'>Mau uso</Checkbox>
-                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.humidade} name='humidade'>Humidade</Checkbox>
-                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.sinaisQueda} name='sinaisQueda'>Sinais de queda</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.violado} disabled={this.props.crono.pausa} name='violado'>Violado</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.mauUso} disabled={this.props.crono.pausa} name='mauUso'>Mau uso</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.humidade} disabled={this.props.crono.pausa} name='humidade'>Humidade</Checkbox>
+                  <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.sinaisQueda} disabled={this.props.crono.pausa} name='sinaisQueda'>Sinais de queda</Checkbox>
 
                 </div>
 
@@ -625,7 +627,7 @@ class NewAnalise extends Component {
 
             <div className='div-historico-analise'>Carrinho</div>
 
-            <Card className='card-carrinho-analise'>
+            <Card className='card-carrinho-analise' >
 
               {this.state.carrinho.length === 0 ? <p className='p-nao'>Não há nenhuma peça selecionada</p> : this.state.carrinho.map(pecasList =>
                 <div className='div-pai-newPeca' onClick={() => this.removePecas(pecasList)}>{pecasList.peca}</div>)}
@@ -699,11 +701,12 @@ class NewAnalise extends Component {
           <Option value="fabrica">Ir para fábrica</Option>
           <Option value="revisao1">Ir para testes</Option>
           <Option value="orcamento">Pronto para orçamento</Option>
+          <Option value="pendente">Pendente</Option>
         </Select>
 
           <Button
             type="primary"
-            onClick={this.saveTargetNewCompany}
+            onClick={this.saveTargetNewAnaly}
           >
             Salvar
          </Button>

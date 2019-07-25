@@ -108,11 +108,13 @@ class dashCompany extends Component {
     if (nome === 'referencePoint') fieldFalha.referencePoint = false
 
     this.setState({
-      compSelected: {
-        ...this.state.compSelected,
-        [nome]: valor
-      },
+      // compSelected: {
+      //   ...this.state.compSelected,
+        [nome]: valor,
+      // },
       fieldFalha,
+    }, () => {
+      this.getAll()
     })
   }
 
@@ -159,11 +161,30 @@ class dashCompany extends Component {
   }
 
   onChangeEditar = (e) => {
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    const { fieldFalha } = this.state
+
+    if (nome === 'razaoSocial') fieldFalha.razaoSocial = false
+    if (nome === 'nameContact') fieldFalha.nameContact = false
+    if (nome === 'email') fieldFalha.email = false
+    if (nome === 'telphone') fieldFalha.telphone = false
+    if (nome === 'zipCode') fieldFalha.zipCode = false
+    if (nome === 'state') fieldFalha.state = false
+    if (nome === 'city') fieldFalha.city = false
+    if (nome === 'neighborhood') fieldFalha.neighborhood = false
+    if (nome === 'street') fieldFalha.street = false
+    if (nome === 'number') fieldFalha.number = false
+    if (nome === 'referencePoint') fieldFalha.referencePoint = false
+
     this.setState({
       compSelected: {
         ...this.state.compSelected,
-        [e.target.name]: e.target.value
-      }
+        [nome]: valor,
+      },
+      fieldFalha,
     })
   }
 
@@ -447,7 +468,8 @@ class dashCompany extends Component {
             Razão social
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.razaoSocial}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onChange={this.onChangeEditar}
+              onFocus={this.onChangeEditar}
               name='razaoSocial'
               className={
                 this.state.fieldFalha.razaoSocial ?
@@ -467,7 +489,8 @@ class dashCompany extends Component {
             Cep
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode.replace(/(\d{5})(\d{3})?/, '$1-$2')}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='zipCode'
               className={
                 this.state.fieldFalha.zipCode ?
@@ -485,7 +508,8 @@ class dashCompany extends Component {
             Rua
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.street}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='street'
               className={
                 this.state.fieldFalha.street ?
@@ -503,7 +527,7 @@ class dashCompany extends Component {
             Número
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.number}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onChange={this.onChangeEditar}
               name='number'
               className={
                 this.state.fieldFalha.number ?
@@ -521,7 +545,8 @@ class dashCompany extends Component {
             Bairro
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.neighborhood}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='neighborhood'
               className={
                 this.state.fieldFalha.neighborhood ?
@@ -541,7 +566,8 @@ class dashCompany extends Component {
             Cidade
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.city}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='city'
               className={
                 this.state.fieldFalha.city ?
@@ -559,7 +585,8 @@ class dashCompany extends Component {
             Estado
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.state}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='state'
               className={
                 this.state.fieldFalha.state ?
@@ -577,7 +604,8 @@ class dashCompany extends Component {
             Ponto de referência
         {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.referencePoint === null ? '-' : this.state.compSelected.referencePoint}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='referencePoint'
               className={
                 this.state.fieldFalha.referencePoint ?
@@ -609,7 +637,8 @@ class dashCompany extends Component {
             Nome
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.nameContact}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='nameContact'
               className={
                 this.state.fieldFalha.nameContact ?
@@ -627,7 +656,8 @@ class dashCompany extends Component {
             Telefone
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
+              onFocus={this.onChangeEditar}
+              onChange={this.onChangeEditar}
               name='telphone'
               className={
                 this.state.fieldFalha.telphone ?
@@ -645,8 +675,8 @@ class dashCompany extends Component {
             Email
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.email}</p> : <div><Input
               onBlur={this.onBlurValidator}
-              onChange={this.onChange}
-              onFocus={this.onChange}
+              onChange={this.onChangeEditar}
+              onFocus={this.onChangeEditar}
               name='email'
               className={
                 this.state.fieldFalha.email ?
