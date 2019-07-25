@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Modal, Button, Select, Radio, Card, Icon, message } from 'antd';
+import { Input, Modal, Button, Select, Radio, Card, Icon, message, Checkbox } from 'antd';
 
 import * as R from 'ramda'
 
@@ -67,6 +67,12 @@ class NewEntrance extends Component {
       // 'BATERIA',
       // 'MODRP'
     ],
+    problems: {
+      violado: false,
+      mauUso: false,
+      humidade: false,
+      sinaisQueda: false,
+    },
     message: {
       numeroSerie: '',
       corLeitor: '',
@@ -140,6 +146,15 @@ class NewEntrance extends Component {
     this.setState({
       [nome]: valor,
       fieldFalha,
+    })
+  }
+
+  onChangeProblems = (e) => {
+    this.setState({
+      problems: {
+        ...this.state.problems,
+        [e.target.name]: e.target.checked
+      }
     })
   }
 
@@ -752,11 +767,26 @@ class NewEntrance extends Component {
         </div>
         <div className='div-entrance-linha1'>
           <div className='div-entrance-acessorio'>
+          <div className='div-checklist-acessorio'>
+        <h2 className='div-comp-label'>Checklist:</h2>
+          <Card className='card-checkbox-acessorio'>
+                <div className='div-linha-analise'>
+                  <div className='div-checkbox-analise'>
+                    <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.violado} name='violado'>Violado</Checkbox>
+                    <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.mauUso} name='mauUso'>Mau uso</Checkbox>
+                    <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.humidade} name='humidade'>Humidade</Checkbox>
+                    <Checkbox onChange={this.onChangeProblems} checked={this.state.problems.sinaisQueda} name='sinaisQueda'>Sinais de queda</Checkbox>
+                  </div>
+                </div>
+              </Card>
+              </div>
+          <div className='div-checklist-acessorio'>
             <h2 className='div-comp-label'>Acessórios:</h2>
-            <Card size="small" title="Acessórios selecionados" style={{ width: '100%' }}>
+            <Card size="small" title="Acessórios selecionados" style={{ width: '95%' }}>
               {this.state.acessorios.length === 0 ? <p>Nenhum item selecionado</p> :
                 this.state.acessorios.map(item => <p>{item}</p>)}
             </Card>
+            </div>
           </div>
         </div>
         <div className='div-button-entrance'>

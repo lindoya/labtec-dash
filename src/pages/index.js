@@ -16,6 +16,7 @@ import NewUserRoute from './NovoUsuario';
 import AcessoriosRoute from './Acessorios';
 import { auth } from '../services/auth'
 import { Logout } from './Login/LoginRedux/action'
+import ScreenControlRoute from './ScreenControl';
 
 
 
@@ -67,6 +68,7 @@ class PagesRoute extends Component {
           <Route path='/logged/equip' component={EquipRoute} />
           <Route path='/logged/peca' component={PecaRoute} />
           <Route path='/logged/acessories' component={AcessoriosRoute} />
+          <Route path='/logged/screenControl' component={ScreenControlRoute} />
         </Switch>
       )
     } else {

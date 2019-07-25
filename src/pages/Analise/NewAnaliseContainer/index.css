@@ -1,3 +1,15 @@
+.div-card-analise{
+  margin-top: 10px;
+  width: 98% !important;
+  box-shadow: 1px 0px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100% !important;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 50px;
+}
 .div-nosEservico-analise{
   display: flex;
   justify-content: space-between;
@@ -95,17 +107,12 @@
   margin-bottom: 10px;
   padding: 5px
 }
-.div-card-analise{
-  margin-top: 10px;
+.div-condicao-analise{
   width: 98% !important;
-  box-shadow: 1px 0px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100% !important;
-  position: sticky;
-  bottom: 0;
-  padding-bottom: 50px;
 }
 .div-checkbox-analise{
   width: 100%;
@@ -153,9 +160,7 @@
   flex-direction: column
 }
 .div-allCheckbox-analise{
-  display: flex;
   width: 45%;
-  flex-direction: column;
 }
 .div-allListaPecas-analise{
   display: flex;

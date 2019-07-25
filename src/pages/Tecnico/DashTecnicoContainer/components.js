@@ -87,7 +87,7 @@ class TableAgAnalise extends Component {
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to='/logged/analise/add' />
+      return <Redirect to='/logged/analise/add'/>
     }
   }
 
@@ -143,7 +143,6 @@ class TableAgAnalise extends Component {
   )  
 
   render() {
-    // console.log(this.props)
     return (
       <div className='div-mainHeader-dashTec'>
         <div className='div-table-separeteLineMain-dashTec' />
@@ -221,7 +220,7 @@ class TableAgAnalise extends Component {
         {this.state.rows === undefined ? 'Não há entradas cadastrada' : this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             {this.renderRedirect()}
-            <div className='div-tableRow-dashTec' onClick={() => this.redirectToAnalise(line)}>
+            <div className={this.props.className} onClick={() => this.redirectToAnalise(line)}>
               <div className='div-table-cel-Os-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
                   {line.id}

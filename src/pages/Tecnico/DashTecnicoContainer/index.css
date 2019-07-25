@@ -57,7 +57,73 @@
 }
 
 
+.div-tableRow-analise-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: red;
+  color: black
+}
 
+
+.div-tableRow-revisao1-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: red;
+  color: yellow
+}
+
+
+
+.div-tableRow-revisao2-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: rgb(90, 6, 6);
+  color: yellow
+}
+
+
+
+.div-tableRow-idaFabrica-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: gray;
+  color: black
+}
+
+
+
+.div-tableRow-retornoFabrica-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: gray;
+  color: yellow
+}
+
+
+
+.div-tableRow-liberadoEstoque-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: rgba(0, 0, 255, 0.637);
+  color: black
+}
+
+
+
+.div-tableRow-liberadoSemConserto-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: orange;
+  color: black
+}
+
+
+.div-tableRow-aguardando-dashTec{
+  padding-top: 3px;
+  display: flex;
+  background-color: yellow;
+  color: black
+}
 
 
 .div-mainHeader-dashTec{
