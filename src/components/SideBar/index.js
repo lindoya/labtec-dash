@@ -102,6 +102,8 @@ class Sider extends Component {
           return <Redirect to='/logged/peca/dash' />
         case 'acessories_add':
           return <Redirect to='/logged/acessories/add' />
+        case 'screenControl_dash':
+          return <Redirect to='/logged/screenControl/dash' />
         case 'logout':
           return <Redirect to='/login' />
         default:
@@ -155,7 +157,7 @@ class Sider extends Component {
             }
           >
             <Menu.Item key="entrada_add" disabled={!this.props.auth.addEntry}><Icon type="form" />Nova entrada</Menu.Item>
-            <Menu.Item key="analise_add" disabled={!this.props.auth.addAnalyze}><Icon type="line-chart" />Análise</Menu.Item>
+            <Menu.Item key="analise_add" disabled={!this.props.auth.addAnalyze || !this.props.analyze.serialNumber}><Icon type="line-chart" />Análise</Menu.Item>
             <Menu.Item key="tecnico_dash" disabled={!this.props.auth.tecnico 
               || !this.props.analyze.analysisCompleted
               }><Icon type="user" />Técnico</Menu.Item>
@@ -216,23 +218,9 @@ class Sider extends Component {
           >
             <Menu.Item key="user_add" disabled={!this.props.auth.addUser}><Icon type="user-add" />Novo usuário</Menu.Item>
             <Menu.Item key="typeAccount_dash" disabled={!this.props.auth.addTypeAccount}><Icon type="profile" />Tipo conta</Menu.Item>
+            <Menu.Item key="screenControl_dash"><Icon type="profile" />Tela de controle</Menu.Item>
 
           </SubMenu>
-
-          {/* <SubMenu
-            key="Modulo"
-            title={
-              <span>
-                <Icon type="printer" />
-                <span>Módulos</span>
-              </span>
-            }
-          >
-            <Menu.Item key="equip_add"><Icon type="form" /> Cadastrar</Menu.Item>
-            <Menu.Item key="equip_dash"><Icon type="edit" /> Gerenciar</Menu.Item>
-
-            <Menu.Item key="equip_addType"><Icon type="edit" /> Gerenciar marcas</Menu.Item>
-          </SubMenu> */}
   
         </Menu>
       </div>
