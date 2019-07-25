@@ -238,7 +238,7 @@ class NewAnalise extends Component {
     })
   }
 
-  saveTargetNewAnaly = async () => {
+  saveTargetNewAnalyze = async () => {
     const  pause = []
 
     for (let i = 0; i < this.state.final.length; i++) {
@@ -250,10 +250,7 @@ class NewAnalise extends Component {
     }
 
     const values = {
-      // humidity: this.state.problems.humidade,
-      // misuse: this.state.problems.mauUso,
-      // brokenSeal: this.state.problems.violado,
-      // fall: this.state.problems.sinaisQueda,
+      observations: this.state.observções,
       analysisPart: this.state.carrinho,
       processId: this.props.analyze.os,
       pause,
@@ -294,6 +291,7 @@ class NewAnalise extends Component {
       } else if (resposta.status === 200) {
         this.setState({
           redirect: true,
+          observções: '',
           carrinho: [],
           messageSuccess: true,
         })
@@ -360,13 +358,13 @@ class NewAnalise extends Component {
   clickPeca = (selecionados) => {
     const notExist = this.state.carrinho.filter((valor) => valor.id === selecionados.valor)
 
-    console.log(notExist)
     if (notExist.length === 0) {
       this.setState({
         modal: false,
         carrinho: [...this.state.carrinho,
         {
           partId: this.state.peca.id,
+          peca: this.state.peca.peca,
           description: this.state.peca.motivoTroca,
         }
         ]
@@ -426,6 +424,7 @@ class NewAnalise extends Component {
   }
 
   render() {
+    console.log(this.state.carrinho)
     return (
       <div className='div-card-analise'>
       {this.renderRedirect()}
@@ -637,6 +636,7 @@ class NewAnalise extends Component {
               placeholder="Digite a observação"
               onChange={this.onChangeObservacao}
               autosize={{ minRows: 5, maxRows: 10 }}
+              value={this.state.observções}
             />
 
           </div>
@@ -651,7 +651,7 @@ class NewAnalise extends Component {
             </Select>
             <Button
               type="primary"
-              onClick={this.saveTargetNewCompany}
+              onClick={this.saveTargetNewAnalyze}
             >
               Salvar
             </Button>

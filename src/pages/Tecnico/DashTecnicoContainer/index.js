@@ -265,28 +265,28 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Aguardando análise</div>
-          <TableAgAnalise className='div-tableRow-analise-dashTec' status='revisao1' name='analise' />
+          <TableAgAnalise className='div-tableRow-analise-dashTec' status='preAnalise' name='analise' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Revisão - 1</div>
-          <TableAgAnalise className='div-tableRow-revisao1-dashTec' status='revisao1' name='analise' />
+          <TableAgAnalise className='div-tableRow-revisao1-dashTec' status='preAnalise' name='analise' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Revisão - 2</div>
-          <TableAgAnalise className='div-tableRow-revisao2-dashTec' status='revisao1' name='analise' />
+          <TableAgAnalise className='div-tableRow-revisao2-dashTec' status='preAnalise' name='analise' />
 
         </div>
 
         {/* <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Ida para fábrica</div>
-          <TableAgAnalise  className='div-tableRow-analise-dashTec' status='revisao1' name='revisao'/>
+          <TableAgAnalise  className='div-tableRow-analise-dashTec' status='preAnalise' name='revisao'/>
         </div> */}
 
         <div className='div-linha-dashTec'>
@@ -299,21 +299,21 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Liberado estoque</div>
-          <TableAgAnalise className='div-tableRow-liberadoEstoque-dashTec' status='revisao1' name='revisaoFinal' />
+          <TableAgAnalise className='div-tableRow-liberadoEstoque-dashTec' status='preAnalise' name='revisaoFinal' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Liberado sem conserto</div>
-          <TableAgAnalise className='div-tableRow-liberadoSemConserto-dashTec' status='revisao1' name='revisaoFinal' />
+          <TableAgAnalise className='div-tableRow-liberadoSemConserto-dashTec' status='preAnalise' name='revisaoFinal' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Aguardando</div>
-          <TableAgAnalise className='div-tableRow-aguardando-dashTec' status='revisao1' name='revisaoFinal' />
+          <TableAgAnalise className='div-tableRow-aguardando-dashTec' status='preAnalise' name='revisaoFinal' />
 
         </div>
 
