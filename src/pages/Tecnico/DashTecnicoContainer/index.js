@@ -297,6 +297,13 @@ class DashTecnico extends Component {
 
         </div>
 
+        <div className='div-linha-dashTec'>
+
+          <div className='text-info-dashTec'>Análises pendentes</div>
+          <TableAgAnalise status='pendente' name='pendente' />
+
+        </div>
+
       </div>
     )
   }

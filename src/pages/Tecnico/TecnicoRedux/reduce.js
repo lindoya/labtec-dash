@@ -22,6 +22,7 @@ const INICIAL_COUNT = {
   revisao: '',
   aprovacao: '',
   revisaoFinal: '',
+  pendente: '',
 }
 
 export function analyze(state = INICIAL_STATE_REDIRECT, action) {
