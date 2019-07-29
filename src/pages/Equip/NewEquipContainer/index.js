@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Input, Button, Select, message } from 'antd';
+import { Input, Button, Select, message, Checkbox } from 'antd';
 import { validators, masks } from './validator'
 import { getOneByCnpj } from '../../../services/company'
 import { getAllMarkByTypeService, getAllModelByMarkService, newEquip } from '../../../services/equip'
@@ -11,6 +11,12 @@ const { Option } = Select;
 class NewEquip extends Component {
 
   state = {
+    leitor: {
+      proximidade: false,
+      bio: false,
+      barras: false,
+      cartografico: false,
+    },
     message: {
       razaoSocial: '',
       cnpj: '',
@@ -36,7 +42,6 @@ class NewEquip extends Component {
     razaoSocial: '',
     cnpj: '',
     serialNumber: '',
-    leitor: 'NaoSeAplica',
     type: 'relogio',
     marksList: [],
     modelsList: [],
@@ -45,7 +50,24 @@ class NewEquip extends Component {
     companyId: '',
     equipModelId: '',
     messageError: false,
-    messageSuccess: false
+    messageSuccess: false,
+    corLeitor: 'Não se aplica',
+    crachas: 'Não se aplica',
+    proximidade: [
+      'Hid',
+      'Mifare',
+      'Wiegand',
+      'Abatrack',
+      'Serial'
+    ],
+    bio: [
+      'Branco',
+      'Azul',
+      'Verde',
+      'Vermelho'
+    ],
+    cracha: [],
+    corLeitores: [],
   }
 
   saveTargetNewEquip = async () => {
@@ -156,6 +178,35 @@ class NewEquip extends Component {
     }
   }
 
+  onChangeTypeLeitor = async (e) => {
+    await this.setState({
+      leitor: {
+        ...this.state.leitor,
+        [e.target.name]: e.target.checked
+      }
+    })
+
+    let crachas = []
+    let leitores = []
+
+    if (this.state.leitor.proximidade && !this.state.leitor.bio) {
+      Array.prototype.push.apply(crachas, this.state.proximidade)
+    } else if (!this.state.leitor.proximidade && this.state.leitor.bio) {
+      Array.prototype.push.apply(leitores, this.state.bio)
+    } else if(this.state.leitor.proximidade && this.state.leitor.bio) {
+      Array.prototype.push.apply(crachas, this.state.proximidade)
+      Array.prototype.push.apply(leitores, this.state.bio)
+    }
+
+    
+    await this.setState({
+      corLeitores: leitores,
+      cracha: crachas
+    })
+  }
+  
+
+
   onBlurValidator = (e) => {
     const {
       nome,
@@ -202,6 +253,20 @@ class NewEquip extends Component {
       fieldFalha,
       model: model,
       equipModelId: model,
+    });
+  }
+
+  changeCorLeitor = (corLeitor) => {
+
+    this.setState({
+      corLeitor,
+    });
+  }
+
+  changeTypeCracha = (tipoCracha) => {
+
+    this.setState({
+      crachas: tipoCracha,
     });
   }
 
@@ -331,20 +396,33 @@ class NewEquip extends Component {
                 </p> : null}
             </div>
 
+          </div>
+          <div className='div-newEquip-Linha'>
 
             <div className='div-newEquip-leitor'>
-              <h2 className='div-comp-label'>Leitor:</h2>
-              <Select value={this.state.leitor} style={{ width: '100%' }} onChange={(value) => this.handleChangeLeitor(value)}>
-                <Option value="Branco">Branco</Option>
-                <Option value="Vermelho">Vermelho</Option>
-                <Option value="Azul">Azul</Option>
-                <Option value="Verde">Verde</Option>
-                <Option value="DedoVivo">Dedo vivo</Option>
-                <Option value="BioLFD">BioLFD</Option>
-                <Option value="BioLC">BioLC</Option>
-                <Option value="NaoSeAplica">Não se aplica</Option>
-              </Select>
+              <h2 className='div-comp-label'>Tipo do leitor:</h2>
+              <div className='div-newEquip-checkbox'>
+                <Checkbox onChange={this.onChangeTypeLeitor} value={this.state.leitor.proximidade} checked={this.state.leitor.proximidade} name='proximidade'>Proximidade</Checkbox>
+                <Checkbox onChange={this.onChangeTypeLeitor} value={this.state.leitor.bio} checked={this.state.leitor.bio} name='bio'>Bio</Checkbox>
+                <Checkbox onChange={this.onChangeTypeLeitor} value={this.state.leitor.barras} checked={this.state.leitor.barras} name='barras'>Barras</Checkbox>
+                <Checkbox onChange={this.onChangeTypeLeitor} value={this.state.leitor.cartografico} checked={this.state.leitor.cartografico} name='cartografico'>Cartográfico</Checkbox>
+              </div>
             </div>
+
+            <div className='div-newEquip-corLeitor'>
+              <h2 className='div-comp-label'>Tipo do crachá (prox):</h2>
+              {this.state.cracha.length !== 0 ? <Select value={this.state.crachas} style={{ width: '[100%' }} onChange={(tipoCracha) => this.changeTypeCracha(tipoCracha)}><Option value='naoSeAplica'>Não se aplica</Option>{this.state.cracha.map(teste => <Option value={teste}>{teste}</Option>)}
+              </Select> : <Select value='Não se aplica' style={{ width: '100%' }} onChange={(tipoCracha) => this.changeTypeCracha(tipoCracha)}>
+              </Select>}
+            </div>
+
+            <div className='div-newEquip-corLeitor'>
+              <h2 className='div-comp-label'>Cor do leitor (bio):</h2>
+              {this.state.corLeitores.length !== 0 ? <Select value={this.state.corLeitor} style={{ width: '[100%' }} onChange={(corLeitor) => this.changeCorLeitor(corLeitor)}><Option value='naoSeAplica'>Não se aplica</Option>{this.state.corLeitores.map(teste => <Option value={teste}>{teste}</Option>)}
+              </Select> : <Select value='Não se aplica' style={{ width: '100%' }} onChange={(corLeitor) => this.changeCorLeitor(corLeitor)}>
+              </Select>}
+            </div>
+
 
           </div>
 

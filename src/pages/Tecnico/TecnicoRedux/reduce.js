@@ -19,9 +19,11 @@ const INICIAL_STATE_REDIRECT ={
 const INICIAL_COUNT = {
   analise: '',
   fabrica: '',
-  revisao: '',
-  aprovacao: '',
-  revisaoFinal: '',
+  revisao1: '',
+  revisao2: '',
+  liberadoEstoque: '',
+  liberadoSemConserto: '',
+  aguardando: '',
   pendente: '',
 }
 

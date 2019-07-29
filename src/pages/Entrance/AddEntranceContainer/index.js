@@ -23,6 +23,7 @@ class NewEntrance extends Component {
     messageSuccess: false,
     messageError: false,
     numeroSerie: '',
+    tipoCracha: '',
     equipId: '',
     corLeitor: '',
     type: '',
@@ -75,6 +76,7 @@ class NewEntrance extends Component {
       sinaisQueda: false,
     },
     message: {
+      tipoCracha: '',
       numeroSerie: '',
       corLeitor: '',
       tipo: '',
@@ -100,6 +102,7 @@ class NewEntrance extends Component {
       nameResponsavel: '',
     },
     fieldFalha: {
+      tipoCracha: false,
       numeroSerie: false,
       corLeitor: false,
       tipo: false,
@@ -544,7 +547,6 @@ class NewEntrance extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className='div-entrance-card'>
 
@@ -577,6 +579,23 @@ class NewEntrance extends Component {
                 {this.state.message.numeroSerie}
               </p> : null}
           </div>
+          <div className='div-entrance-condition'>
+            <h2 className='div-comp-label'>Tipo de serviço:</h2>
+            <Select value={this.state.conditionType} style={{ width: '100%' }} onChange={this.handleChangeCondition}>
+              <Option value="avulso">Avulso</Option>
+              <Option value="contrato">Contrato</Option>
+              <Option value="emprestimo">Empréstimo</Option>
+            </Select>
+          </div>
+          <div className='div-entrance-garantia'>
+            <h2 className='div-comp-label'>Garantia:</h2>
+            <Select value={this.state.garantia} style={{ width: '100%' }} onChange={this.handleChangeGalantia}>
+              <Option value="externo">Serviço externo</Option>
+              <Option value="laboratorio">Laboratório</Option>
+              <Option value="venda">Venda</Option>
+              <Option value="semGarantia">Sem garantia</Option>
+            </Select>
+          </div>
           <div className='div-entrance-cor'>
             <h2 className={
               this.state.fieldFalha.corLeitor ?
@@ -601,6 +620,8 @@ class NewEntrance extends Component {
                 {this.state.message.corLeitor}
               </p> : null}
           </div>
+          </div>
+        <div className='div-entrance-linha1'>
           <div className='div-entrance-tipo'>
             <h2 className={
               this.state.fieldFalha.tipo ?
@@ -649,8 +670,6 @@ class NewEntrance extends Component {
                 {this.state.message.marca}
               </p> : null}
           </div>
-        </div>
-        <div className='div-entrance-linha1'>
           <div className='div-entrance-modelo'>
             <h2 className={
               this.state.fieldFalha.modelo ?
@@ -675,22 +694,29 @@ class NewEntrance extends Component {
                 {this.state.message.modelo}
               </p> : null}
           </div>
-          <div className='div-entrance-condition'>
-            <h2 className='div-comp-label'>Tipo de serviço:</h2>
-            <Select value={this.state.conditionType} style={{ width: '100%' }} onChange={this.handleChangeCondition}>
-              <Option value="avulso">Avulso</Option>
-              <Option value="contrato">Contrato</Option>
-              <Option value="emprestimo">Empréstimo</Option>
-            </Select>
-          </div>
-          <div className='div-entrance-garantia'>
-            <h2 className='div-comp-label'>Garantia:</h2>
-            <Select value={this.state.garantia} style={{ width: '100%' }} onChange={this.handleChangeGalantia}>
-              <Option value="externo">Serviço externo</Option>
-              <Option value="laboratorio">Laboratório</Option>
-              <Option value="venda">Venda</Option>
-              <Option value="semGarantia">Sem garantia</Option>
-            </Select>
+          <div className='div-entrance-cracha'>
+            <h2 className={
+              this.state.fieldFalha.tipoCracha ?
+                'div-comp-labelError' :
+                'div-comp-label'
+            }>Tipo crachá:</h2>
+            <Input
+              className={
+                this.state.fieldFalha.tipoCracha ?
+                  'div-comp-inputError' :
+                  ''}
+              // placeholder='Digite a cor'
+              readOnly
+              name='tipoCracha'
+              value={this.state.tipoCracha}
+              onChange={this.onChange}
+              // onBlur={this.onBlurValidator}
+              onFocus={this.onChange}
+            />
+            {this.state.fieldFalha.tipoCracha ?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.tipoCracha}
+              </p> : null}
           </div>
         </div>
         <div className='div-entrance-linha1'>
