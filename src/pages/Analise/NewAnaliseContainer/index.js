@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
 import { Button, Input, Card, Modal, Select, message } from 'antd';
+import moment from 'moment'
 
 import './index.css'
 import { getAllParts } from '../../../services/peca'
@@ -250,12 +251,16 @@ class NewAnalise extends Component {
     }
 
     const values = {
+      init: this.props.crono.initDate,
+      end: new Date(),
       observations: this.state.observções,
       analysisPart: this.state.carrinho,
       processId: this.props.analyze.os,
       pause,
+      responsibleUser: this.props.username,
     }
 
+    console.log(values)
     const resposta = await newAnalyze(values)
 
     console.log(resposta)
@@ -337,10 +342,12 @@ class NewAnalise extends Component {
   componentDidMount = () => {
     this.getAll()
 
-    this.timerID = setInterval(
-      (prevState, props) => this.tick(),
-      1
-    );
+    this.comentario()
+
+    // this.timerID = setInterval(
+    //   (prevState, props) => this.tick(),
+    //   1
+    // );
 
   }
 
@@ -423,8 +430,40 @@ class NewAnalise extends Component {
     return `${cronoHours}:${cronoMinutes}:${cronoSeconds}:${cronoMilliseconds}`
   }
 
+  comentario = () => {
+    if (!this.props.analyze.analyze) return
+    
+    const { observations, init, end, arrayResponsibleUser } = this.props.analyze.analyze
+
+    let response = []
+
+    for (let i=0; i<observations.length; i++){
+
+
+      response[i] = {
+        observations: observations[i],
+        init: init[i],
+        end: end[i],
+        username: arrayResponsibleUser[i],
+      }
+    }
+
+    console.log(response)
+
+    return response
+  }
+
+   formatDateFunct = (date) => {
+      moment.locale('pt-br')
+      const formatDate = moment(date).format('L')
+      const formatHours = moment(date).format('LT')
+      const dateformated = `${formatDate} ${formatHours}`
+      return dateformated
+    }
+
+
   render() {
-    console.log(this.state.carrinho)
+    // console.log(this.props.analyze.analyze)
     return (
       <div className='div-card-analise'>
       {this.renderRedirect()}
@@ -567,6 +606,34 @@ class NewAnalise extends Component {
             </div>
 
           </Card>
+
+          {this.props.analyze.analyze?
+          <div className='div-feito-analise'>
+            <div className='div-feito-titulo-analise' >Comentários:</div>
+
+            <Card className='div-card-feito-analise'>
+
+              <div className='div-linhaDefeitos-analise'>
+                {/* {this.props.analyze.analyze.observations[0]} */}
+                {this.comentario().map((line) =>
+                <div>
+                  <div className='div-card-comentario-analise'>
+                    <label className='div-card-comentario-user-analise'>
+                      {line.username}
+                    </label>
+                    <label className='div-card-comentario-observacao-analise'>
+                      {line.observations}
+                    </label>
+                    <label className='div-card-comentario-inicio-fim-analise'>
+                      {`${this.formatDateFunct(line.init)} ${this.formatDateFunct(line.end)}`}
+                    </label>
+                  </div>
+                </div>
+                )}
+              </div>
+            </Card>
+          </div>
+          : null}
 
           <div className='div-linhaSpace-analise'>
 
@@ -738,6 +805,7 @@ function mapStateToProps(state) {
   return {
     analyze: state.analyze,
     crono: state.crono,
+    username: state.auth.username,
   }
 }
 

@@ -53,7 +53,9 @@ class TableAgAnalise extends Component {
   }
 
   redirectToAnalise = async (lineSelected) => {
+    console.log(lineSelected)
     const value = {
+      analyze: lineSelected.analyze,
       os: lineSelected.id,
       serialNumber: lineSelected.serialNumber,
       razaoSocial: lineSelected.razaoSocial,

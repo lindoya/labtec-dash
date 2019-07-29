@@ -312,15 +312,15 @@ class DashTecnico extends Component {
 
         <div className='div-linha-dashTec'>
 
-          <div className='text-info-dashTec'>Aguardando</div>
-          <TableAgAnalise className='div-tableRow-aguardando-dashTec' status='preAnalise' name='revisaoFinal' />
+          <div className='text-info-dashTec'>Aguardando orçamento</div>
+          <TableAgAnalise className='div-tableRow-aguardando-dashTec' status='orcamento' name='revisaoFinal' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Análises pendentes</div>
-          <TableAgAnalise status='pendente' name='pendente' />
+          <TableAgAnalise className='div-tableRow-analise-dashTec' status='pendente' name='pendente' />
 
         </div>
 
