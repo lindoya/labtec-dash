@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './index.css'
 import { Input, Select, Card, Checkbox, Button, message } from 'antd';
 import { getAllTypeAccount, getPermission } from '../../../services/typeAccount'
@@ -100,6 +101,7 @@ class NewUser extends Component {
       addAccessories: this.state.permission.addAccessories,
       addUser: this.state.permission.addUser,
       addTypeAccount: this.state.permission.addTypeAccount,
+      responsibleUser: this.props.username,      
     }
     console.log(values)
     const resposta = await newUser(values)
@@ -225,4 +227,11 @@ class NewUser extends Component {
   }
 }
 
-export default NewUser
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewUser)

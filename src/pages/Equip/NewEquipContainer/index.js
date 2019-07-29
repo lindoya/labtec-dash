@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Input, Button, Select, message } from 'antd';
 import { validators, masks } from './validator'
 import { getOneByCnpj } from '../../../services/company'
@@ -53,6 +54,7 @@ class NewEquip extends Component {
       readerColor: this.state.leitor,
       companyId: this.state.companyId,
       equipModelId: this.state.equipModelId,
+      responsibleUser: this.props.username,
     }
 
     const resposta = await newEquip(values)
@@ -360,4 +362,11 @@ class NewEquip extends Component {
   }
 }
 
-export default NewEquip
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewEquip)

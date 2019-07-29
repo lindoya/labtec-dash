@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './index.css'
 import { Input, Button, Card, Select, message, Spin } from 'antd'
 import { getAllMarkByTypeService, getAllModelByMarkService } from '../../../services/equip'
@@ -50,6 +51,7 @@ class NewPeca extends Component {
       type: this.state.type,
       mark: this.state.mark,
       equipModels: this.state.modelListCard,
+      responsibleUser: this.props.username,
     }
 
     const resposta = await add(values)
@@ -428,4 +430,11 @@ class NewPeca extends Component {
   }
 }
 
-export default NewPeca
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewPeca)

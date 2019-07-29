@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Input, Button, message } from 'antd';
 import * as R from 'ramda'
 import { newCompany, getAddressByZipCode } from '../../../services/company'
@@ -70,6 +71,7 @@ class NewCompany extends Component {
       email: this.state.email,
       nameContact: this.state.nameContact,
       complement: this.state.complement,
+      responsibleUser: this.props.username,
     }
 
     const resposta = await newCompany(values)
@@ -85,7 +87,8 @@ class NewCompany extends Component {
       })
       await this.error()
       this.setState({
-        messageError: false
+        messageError: false,
+        loading: false
       })
     } if (resposta.status === 200) {
 
@@ -536,4 +539,11 @@ class NewCompany extends Component {
 }
 
 
-export default NewCompany
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewCompany)

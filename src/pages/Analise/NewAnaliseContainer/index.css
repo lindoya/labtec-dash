@@ -100,6 +100,46 @@
   font-weight: bold;
   margin: 20px 0 10px 0
 }
+.div-feito-titulo-analise{
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  font-size: 17px;
+  font-weight: bold;
+  margin: 20px 0 10px 0
+}
+.div-feito-analise{
+  width: 76%;
+  /* display: flex; */
+  /* align-items: flex-start; */
+  /* font-size: 17px; */
+  /* font-weight: bold; */
+  margin: 20px 0 10px 0
+}
+.div-card-feito-analise{
+  width: 100%;
+  padding: 10px
+}
+
+.div-card-comentario-analise{
+  width: 100% !important;
+  display: flex;
+  margin: 10px 0;
+}
+
+.div-card-comentario-user-analise{
+  width: 10% !important;
+  display: flex;
+}
+.div-card-comentario-observacao-analise{
+  width: 70% !important;
+  display: flex;
+  padding: 5px;
+}
+.div-card-comentario-inicio-fim-analise{
+  width: 20% !important;
+  display: flex;
+}
 .div-linhaDefeitos-analise{
   display: flex;
   width: 100% !important;

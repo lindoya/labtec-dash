@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Input, Modal, Button, Card, Icon, Spin } from 'antd';
 import { Select } from 'antd';
 import { getAllMarkByTypeService, getAllModelByMarkService, addMark, addModel } from '../../../services/equip'
@@ -89,7 +90,8 @@ class NewTypeEquip extends Component {
   saveTargetMark = async () => {
     const marca = {
       type: this.state.type,
-      mark: this.state.newMark
+      mark: this.state.newMark,
+      responsibleUser: this.props.username,
     }
 
     await addMark(marca)
@@ -103,7 +105,8 @@ class NewTypeEquip extends Component {
     const modelo = {
       equipMarkId: this.state.mark.id,
       model: this.state.newModel,
-      description: this.state.description
+      description: this.state.description,
+      responsibleUser: this.props.username,
     }
 
     await addModel(modelo)
@@ -368,4 +371,11 @@ class NewTypeEquip extends Component {
   }
 }
 
-export default NewTypeEquip
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewTypeEquip)

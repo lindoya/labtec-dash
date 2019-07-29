@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './index.css'
 
 import { Input, Card, Button, message, Spin } from 'antd';
@@ -38,7 +39,8 @@ class NewAcessorio extends Component {
 
   saveTargetNewAcessorio = async () => {
     const values = {
-      accessories: this.state.inputAcessorio
+      accessories: this.state.inputAcessorio,
+      responsibleUser: this.props.username,
     }
 
     const resposta = await newAcessorio(values)
@@ -63,7 +65,7 @@ class NewAcessorio extends Component {
       await this.success()
       this.setState({
         messageSuccess: false
-      })
+      }, () => this.getAll())
     }
   }
 
@@ -127,4 +129,12 @@ class NewAcessorio extends Component {
   }
 }
 
-export default NewAcessorio
+
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewAcessorio)

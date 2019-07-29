@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Input, Modal, Button, Select, Radio, Card, Icon, message, Checkbox } from 'antd';
 
 import * as R from 'ramda'
@@ -475,8 +476,14 @@ class NewEntrance extends Component {
       accessories: this.state.acessorios,
       garantia: this.state.garantia,
       conditionType: this.state.conditionType,
+      brokenSeal: this.state.problems.violado,
+      misuse: this.state.problems.mauUso,
+      humidity: this.state.problems.humidade,
+      fall: this.state.problems.sinaisQueda,
+      responsibleUser: this.props.username,
     }
 
+    console.log(values)
     const resposta = await add(values)
 
     console.log(resposta)
@@ -1403,4 +1410,11 @@ class NewEntrance extends Component {
   }
 }
 
-export default NewEntrance
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(NewEntrance)

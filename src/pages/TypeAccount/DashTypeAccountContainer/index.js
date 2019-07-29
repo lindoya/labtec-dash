@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './index.css'
 import { Input, Card, Checkbox, Button, message } from 'antd';
 import { addTypeAccount } from '../../../services/typeAccount'
@@ -62,6 +63,7 @@ class DashTypeAccount extends Component {
       addUser: this.state.permission.addUser,
       addTypeAccount: this.state.permission.addTypeAccount,
       tecnico: this.state.permission.tecnico,
+      responsibleUser: this.props.username,
     }
 
     const resposta = await addTypeAccount(values)
@@ -150,4 +152,11 @@ class DashTypeAccount extends Component {
   }
 }
 
-export default DashTypeAccount
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  }
+}
+
+
+export default connect(mapStateToProps)(DashTypeAccount)
