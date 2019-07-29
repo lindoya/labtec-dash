@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu, Icon, Tooltip, message, } from 'antd';
+import { Menu, Icon, Tooltip, message } from 'antd';
 import './index.css'
 import { Redirect } from 'react-router-dom'
 import { Logout } from '../../pages/Login/LoginRedux/action'
@@ -218,7 +218,7 @@ class Sider extends Component {
           >
             <Menu.Item key="user_add" disabled={!this.props.auth.addUser}><Icon type="user-add" />Novo usuário</Menu.Item>
             <Menu.Item key="typeAccount_dash" disabled={!this.props.auth.addTypeAccount}><Icon type="profile" />Tipo conta</Menu.Item>
-            <Menu.Item key="screenControl_dash"><Icon type="profile" />Tela de controle</Menu.Item>
+            <Menu.Item key="screenControl_dash"><Icon type="area-chart" />Tela de controle</Menu.Item>
 
           </SubMenu>
   

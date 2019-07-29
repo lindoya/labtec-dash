@@ -25,7 +25,7 @@
   width: 75.5% !important
 }
 .div-entrance-ns{
-  width: 25% !important
+  width: 23% !important
 }
 .div-entrance-cor{
   width: 25% !important;
@@ -176,23 +176,27 @@
   width: 72% 
 }
 .div-entrance-tipo{
-  width: 25%;
-  padding-left: 15px;
+  width: 20%;
 }
 .div-entrance-marca{
   width: 25%;
   padding-left: 15px;
 }
 .div-entrance-modelo{
-  width: 40%;
+  width: 30%;
+  padding-left: 15px;
 }
 
 .div-entrance-garantia{
-  width: 30%;
+  width: 26%;
   padding-left: 15px; 
 }
 .div-entrance-condition{
-  width: 30%;
+  width: 26%;
+  padding-left: 15px;
+}
+.div-entrance-cracha{
+  width: 25%;
   padding-left: 15px;
 }
 .div-embaladoExterno{
@@ -230,7 +234,7 @@
   justify-content: flex-end
 }
 .ant-modal-content{
-  width: 800px !important
+  width: 750px !important
 }
 .p-carrinho-entrance-item{
   cursor: pointer;

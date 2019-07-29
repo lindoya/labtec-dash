@@ -192,10 +192,10 @@ class DashTecnico extends Component {
       </div>
       <div className='div-table-separeteLineMain-dashTec' />
       {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
-      {this.state.TableAgRetornoFabrica.rows === undefined ? 'Não há entradas cadastrada' :
+      {this.state.TableAgRetornoFabrica.rows === undefined ? 'Não há nada constando nessa tabela' :
         this.state.TableAgRetornoFabrica.rows.map((line) =>
           <div className='div-table-list-dashTec'>
-            <div className='div-tableRow-dashTec'>
+            <div className='div-tableRow-retornoFabrica-dashTec'>
               <div className='div-table-cel-Os-retornoFabrica-dashTec'>
                 <label className='div-table-label-cel-dashTec'>
                   {line.id}
@@ -241,23 +241,42 @@ class DashTecnico extends Component {
           </Card>
 
           <Card className='card-info-dashTec'>
-            <div className='div-card-agAnalise-dashTec'>Aguardando retorno</div>
+            <div className='div-card-agAnalise-dashTec'>Análises pendentes</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.pendente === undefined ? 0 : this.props.count.pendente}</div>
+          </Card>
+
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Revisão - 1</div>
+            <div className='div-card-numero-dashTec'>{this.state.count.revisao1 === undefined ? 0 : this.state.count.revisao1}</div>
+          </Card>
+
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Revisão - 2</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.revisao2 === undefined ? 0 : this.props.count.revisao2}</div>
+          </Card>
+
+          </div>
+
+          <div className='div-linha-cardsInfo-dashTec'>
+
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Liberado estoque</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.liberadoEstoque === undefined ? 0 : this.props.count.liberadoEstoque}</div>
+          </Card>
+
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Liberado sem conserto</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.liberadoSemConserto === undefined ? 0 : this.props.count.liberadoSemConserto}</div>
+          </Card>
+
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Aguardando orçamento</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.aguardando === undefined ? 0 : this.props.count.aguardando}</div>
+          </Card>
+
+          <Card className='card-info-dashTec'>
+            <div className='div-card-agAnalise-dashTec'>Retorno da fábrica</div>
             <div className='div-card-numero-dashTec'>{this.state.TableAgRetornoFabrica.count === undefined ? 0 : this.state.TableAgRetornoFabrica.count}</div>
-          </Card>
-
-          <Card className='card-info-dashTec'>
-            <div className='div-card-agAnalise-dashTec'>Revisão testes</div>
-            <div className='div-card-numero-dashTec'>{this.props.count.revisao === undefined ? 0 : this.props.count.revisao}</div>
-          </Card>
-
-          <Card className='card-info-dashTec'>
-            <div className='div-card-agAnalise-dashTec'>Aguardando aprov.</div>
-            <div className='div-card-numero-dashTec'>{this.props.count.aprovacao === undefined ? 0 : this.props.count.aprovacao}</div>
-          </Card>
-
-          <Card className='card-info-dashTec'>
-            <div className='div-card-agAnalise-dashTec'>Revisão final</div>
-            <div className='div-card-numero-dashTec'>{this.props.count.revisaoFinal === undefined ? 0 : this.props.count.revisaoFinal}</div>
           </Card>
 
         </div>
@@ -265,21 +284,28 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Aguardando análise</div>
-          <TableAgAnalise className='div-tableRow-analise-dashTec' status='preAnalise' name='analise' />
+          <TableAgAnalise className='div-tableRow-analise-dashTec' text='Não há equipamentos aguardando análise' status='preAnalise' name='analise' />
 
+        </div>
+        
+        <div className='div-linha-dashTec'>
+        
+          <div className='text-info-dashTec'>Análises pendentes</div>
+          <TableAgAnalise status='pendente' text='Não há equipamentos com análises pendentes' name='pendente' />
+        
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Revisão - 1</div>
-          <TableAgAnalise className='div-tableRow-revisao1-dashTec' status='preAnalise' name='analise' />
+          <TableAgAnalise className='div-tableRow-revisao1-dashTec' text='Não há equipamentos aguardando revisão' status='revisao1' name='revisao1' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Revisão - 2</div>
-          <TableAgAnalise className='div-tableRow-revisao2-dashTec' status='preAnalise' name='analise' />
+          <TableAgAnalise className='div-tableRow-revisao2-dashTec' text='Não há equipamentos aguardando revisão' status='revisao2' name='revisao2' />
 
         </div>
 
@@ -292,35 +318,28 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Retorno da fábrica</div>
-          <this.TableAgRetornoFabrica  />
-
-        </div>
-
-        <div className='div-linha-dashTec'>
-
-          <div className='text-info-dashTec'>Liberado estoque</div>
-          <TableAgAnalise className='div-tableRow-liberadoEstoque-dashTec' status='preAnalise' name='revisaoFinal' />
-
-        </div>
-
-        <div className='div-linha-dashTec'>
-
-          <div className='text-info-dashTec'>Liberado sem conserto</div>
-          <TableAgAnalise className='div-tableRow-liberadoSemConserto-dashTec' status='preAnalise' name='revisaoFinal' />
+          <this.TableAgRetornoFabrica />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Aguardando orçamento</div>
-          <TableAgAnalise className='div-tableRow-aguardando-dashTec' status='orcamento' name='revisaoFinal' />
+          <TableAgAnalise className='div-tableRow-aguardando-dashTec' text='Não há equipamentos aguardando orçamento' status='aguardando' name='aguardando' />
+
+        </div>
+        
+        <div className='div-linha-dashTec'>
+
+          <div className='text-info-dashTec'>Liberado estoque</div>
+          <TableAgAnalise className='div-tableRow-liberadoEstoque-dashTec' text='Não há equipamentos liberados estoque' status='liberadoEstoque' name='liberadoEstoque' />
 
         </div>
 
         <div className='div-linha-dashTec'>
 
-          <div className='text-info-dashTec'>Análises pendentes</div>
-          <TableAgAnalise className='div-tableRow-analise-dashTec' status='pendente' name='pendente' />
+          <div className='text-info-dashTec'>Liberado sem conserto</div>
+          <TableAgAnalise className='div-tableRow-liberadoSemConserto-dashTec' text='Não há equipamentos liberados sem conserto' status='liberadoSemConserto' name='liberadoSemConserto' />
 
         </div>
 
