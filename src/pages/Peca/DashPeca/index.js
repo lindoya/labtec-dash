@@ -1,18 +1,40 @@
 import React, { Component } from 'react'
-import { Select, Input, Button, Icon, Spin } from 'antd'
+import { connect } from 'react-redux'
+import { Select, Input, Button, Icon, Spin, Modal } from 'antd'
 import { getAllParts } from '../../../services/peca'
-// import { masks } from '../NewPeca/validator'
+import { validators, masks } from '../DashPeca/validator'
 
 import './index.css'
 
 const { Search } = Input;
 const { Option } = Select;
+const { TextArea } = Input;
 
 class DashPeca extends Component {
 
   state = {
     loading: false,
     searchAvancado: false,
+    modal: false,
+    editar: false,
+    pecaSelected: {
+      costPrice: '',
+      description: '',
+      item: '',
+      salePrice: '',
+    },
+    message: {
+      costPrice: '',
+      description: '',
+      item: '',
+      salePrice: '',
+    },
+    fieldFalha: {
+      costPrice: false,
+      description: false,
+      item: false,
+      salePrice: false,
+    },
     order: {
       field: 'item',
       acendent: true,
@@ -99,6 +121,32 @@ class DashPeca extends Component {
     })
   }
 
+  handleOk = () => {
+    this.setState({
+      modal: !this.state.modal,
+      editar: false,
+      fieldFalha: {
+        costPrice: false,
+        description: false,
+        item: false,
+        salePrice: false,
+      },
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({
+      modal: !this.state.modal,
+      editar: false,
+      fieldFalha: {
+        costPrice: false,
+        description: false,
+        item: false,
+        salePrice: false,
+      },
+    })
+  }
+
   changeTotal = (value) => {
     this.setState({
       page: 1,
@@ -108,35 +156,53 @@ class DashPeca extends Component {
     })
   }
 
-  // onChange = (e) => {
-  //   const { nome,
-  //     valor,
-  //   } = masks(e.target.name, e.target.value)
-
-  //   this.setState({
-  //     [ nome ]: valor,
-  //   }, () => {
-  //     this.getAll()
-  //   })
-  // }
-
   onChange = (e) => {
-    const evento = e.target
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
 
-    if (evento.name === 'cost' || evento.name === 'sale') {
-      this.setState({
-        [`${evento.name}Price`]: evento.value.replace(/\D/ig, ''),
-      }, () => {
-        this.getAll()
-      })
-    } else {
-      this.setState({
-        [evento.name]: evento.value,
-      }, () => {
-        this.getAll()
-      })
-    }
+    const { fieldFalha } = this.state
+
+    if (nome === 'item') fieldFalha.item = false
+    if (nome === 'description') fieldFalha.description = false
+    if (nome === 'costPrice') fieldFalha.costPrice = false
+    if (nome === 'salePrice') fieldFalha.salePrice = false
+
+
+    this.setState({
+      [nome]: valor,
+      fieldFalha,
+    })
   }
+
+  openModalDetalhes = async (peca) => {    
+    await this.setState({
+      modal: true,
+      pecaSelected: peca,
+    })
+  }
+
+  onBlurValidator = (e) => {
+    const {
+      nome,
+      valor,
+      fieldFalha,
+      message,
+    } = validators(e.target.name, e.target.value, this.state)
+
+    this.setState({
+      [nome]: valor,
+      fieldFalha,
+      message
+    })
+  }
+
+  buttonEditar = () => {
+    this.setState({
+      editar: !this.state.editar
+    })
+  }
+
 
   changeOrder = (field) => {
     this.setState({
@@ -157,6 +223,19 @@ class DashPeca extends Component {
     })
   }
 
+  onChangeEditar = (e) => {
+    
+    const { nome,
+      valor,
+    } = masks(e.target.name, e.target.value)
+
+    this.setState({
+      pecaSelected: {
+        ...this.state.pecaSelected,
+        [nome]: valor
+      },
+    })
+  }
 
 
   masks = (valor) => {
@@ -175,10 +254,122 @@ class DashPeca extends Component {
     }
 
     return value
-
   }
 
 
+  ModalDetalhes = () => (
+    <Modal
+      title="Detalhes da peça"
+      visible={this.state.modal}
+      onOk={this.handleOk}
+      onCancel={this.handleCancel}
+      footer={this.props.auth.addPart ? (
+        <div className='gercomp-div-button-modal'>
+          {!this.state.editar ?
+            <div className='gercomp-div-button-editFalse-modal'>
+              <Button
+                type="primary"
+                onClick={this.buttonEditar}
+              >
+                Editar
+                  <Icon type="edit" />
+              </Button>
+              <Button key="submit" type="primary" onClick={this.handleOk}>
+                OK
+            </Button>
+            </div>
+            :
+            <div className='gercomp-div-button-editTrue-modal'>
+              <Button onClick={this.handleOk}>
+                Cancelar
+              </Button>
+              <Button
+                type="primary"
+                // onClick={this.saveTargetUpdateEquip}
+                loading={this.state.loading}
+              >
+                Salvar
+                <Icon type="check" />
+              </Button>
+            </div>
+          }
+        </div>
+      )
+        : null}
+    >
+      <div className='div-form-modal-dashPeca'>
+        <h3 className='h3-modal-dashPeca'>Dados da peca</h3>
+        <div className='div-linhaModal-dashPeca'>
+          <div className='div-textPeca-modal-dashPeca'>
+            Peça
+            {!this.state.editar ? <p className='gercomp-p'>{this.state.pecaSelected.item}</p> : <Input
+              onBlur={this.onBlurValidator}
+              name='item'
+              className={this.state.fieldFalha.item ?
+              'div-comp-inputError' :
+              'div-dashPeca-inputModal'}
+              value={this.state.pecaSelected.item}
+              onChange={this.onChangeEditar}
+            />}
+            {this.state.fieldFalha.item ?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.item}
+              </p> : null}
+          </div>
+          <div className='div-textCusto-modal-dashPeca'>
+            Preço de custo
+            {!this.state.editar ? <p className='gercomp-p'>{this.masks(this.state.pecaSelected.costPrice)}</p> : <Input
+              onBlur={this.onBlurValidator}
+              name='costPrice'
+              className={this.state.fieldFalha.costPrice ?
+                'div-comp-inputError' :
+                'div-dashPeca-inputModal'}
+              value={this.masks(this.state.pecaSelected.costPrice)}
+              onChange={this.onChangeEditar}
+            />}
+            {this.state.fieldFalha.costPrice ?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.costPrice}
+              </p> : null}
+          </div>
+          <div className='div-textVenda-modal-dashPeca'>
+            Preço de venda
+            {!this.state.editar ? <p className='gercomp-p'>{this.masks(this.state.pecaSelected.salePrice)}</p> : <Input
+              onBlur={this.onBlurValidator}
+              name='salePrice'
+              className={this.state.fieldFalha.salePrice ?
+                'div-comp-inputError' :
+                'div-dashPeca-inputModal'}
+              value={this.masks(this.state.pecaSelected.salePrice)}
+              onChange={this.onChangeEditar}
+            />}
+            {this.state.fieldFalha.salePrice ?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.salePrice}
+              </p> : null}
+          </div>
+        </div>
+        <div className='div-linhaModal-dashPeca'>
+          <div className='div-textDescricao-modal-dashPeca'>
+            Descrição
+            {!this.state.editar ? <p className='gercomp-p'>{this.state.pecaSelected.description === '' ? '-' : this.state.pecaSelected.description}</p> :
+              <TextArea
+                name='description'
+                className='div-dashPeca-inputModal'
+                placeholder="Digite a descrição"
+                autosize={{ minRows: 3, maxRows: 6 }}
+                value={this.state.pecaSelected.description}
+                onChange={this.onChangeEditar}
+              />}
+            {this.state.fieldFalha.description ?
+              <p className='div-comp-feedbackError'>
+                {this.state.message.description}
+              </p> : null}
+          </div>
+        </div>
+      </div>
+    </Modal>
+  )
 
   SearchAdvanced = () => (
     <div className='div-advanced-dashPeca'>
@@ -323,7 +514,7 @@ class DashPeca extends Component {
       {
         this.state.rows === undefined ? '' : this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
-            <div className='gerCmp-div-tableRow'>
+            <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhes(line)}>
               <div className='div-table-cel-peca-dashPeca'>
                 <label className='div-table-label-dashPeca-cel'>
                   {line.item}
@@ -359,6 +550,7 @@ class DashPeca extends Component {
   render() {
     return (
       <div className='div-card-dashPeca'>
+        <this.ModalDetalhes />
 
         <div className='div-comp-Linha div-comp-header'>
           <h1 className='div-comp-title'>Gerenciar peças</h1>
@@ -407,4 +599,11 @@ class DashPeca extends Component {
   }
 }
 
-export default DashPeca
+
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  }
+}
+
+export default connect(mapStateToProps)(DashPeca)

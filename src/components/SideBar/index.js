@@ -12,7 +12,7 @@ class Sider extends Component {
   state = {
     current: '0',
     redirect: false,
-    open: ['LabTec'],
+    open: [],
   };
 
   onClose = e => {
@@ -216,8 +216,8 @@ class Sider extends Component {
               </span>
             }
           >
-            <Menu.Item key="user_add" disabled={!this.props.auth.addUser}><Icon type="user-add" />Novo usuário</Menu.Item>
             <Menu.Item key="typeAccount_dash" disabled={!this.props.auth.addTypeAccount}><Icon type="profile" />Tipo conta</Menu.Item>
+            <Menu.Item key="user_add" disabled={!this.props.auth.addUser}><Icon type="user-add" />Novo usuário</Menu.Item>
             <Menu.Item key="screenControl_dash"><Icon type="area-chart" />Tela de controle</Menu.Item>
 
           </SubMenu>
