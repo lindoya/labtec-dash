@@ -198,3 +198,49 @@
 .ant-spin-dot-item{
   background-color: #001429;
 }
+
+
+.div-dashPeca-inputModal{
+  width: 100%;
+  margin: 5px 0 2px 0;
+  padding: 0 0 1px 5px;
+}
+.div-form-modal-dashPeca{
+  display: flex;
+  flex-direction: column
+}
+.h3-modal-dashPeca{
+  width: 100%;
+  font-size: 15px;
+  font-weight: bold;
+  color: #9e9e9e
+}
+.div-linhaModal-dashPeca{
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between
+}
+.p-dashPeca{
+  color: black
+}
+.div-textPeca-modal-dashPeca{
+  width: 33%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textDescricao-modal-dashPeca{
+  width: 100%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textCusto-modal-dashPeca{
+  width: 30%;
+  font-size: 15px;
+  font-weight: bold
+}
+.div-textVenda-modal-dashPeca{
+  width: 30%;
+  font-size: 15px;
+  font-weight: bold;
+}

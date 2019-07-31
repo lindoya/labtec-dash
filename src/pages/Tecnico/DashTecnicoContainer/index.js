@@ -192,7 +192,7 @@ class DashTecnico extends Component {
       </div>
       <div className='div-table-separeteLineMain-dashTec' />
       {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
-      {this.state.TableAgRetornoFabrica.rows === undefined ? 'Não há nada constando nessa tabela' :
+      {this.state.TableAgRetornoFabrica.rows.length === 0 ? 'Não há equipamentos aguardando retorno da fábrica' :
         this.state.TableAgRetornoFabrica.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             <div className='div-tableRow-retornoFabrica-dashTec'>

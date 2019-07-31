@@ -15,6 +15,7 @@ import { getAllAccessories } from '../../../services/acessorio';
 
 
 const { Option } = Select;
+const { TextArea } = Input;
 
 class NewEntrance extends Component {
 
@@ -538,6 +539,12 @@ class NewEntrance extends Component {
         conditionType: 'avulso',
         garantia: 'semGarantia',
         messageSuccess: true,
+        problems: {
+          violado: false,
+          mauUso: false,
+          humidade: false,
+          sinaisQueda: false,
+        },
       })
       await this.success()
       this.setState({
@@ -922,18 +929,14 @@ class NewEntrance extends Component {
                 'div-comp-labelError' :
                 'div-comp-label'
             }>Observação (opcional):</h2>
-            <Input
-              className={
-                this.state.fieldFalha.descricao ?
-                  'div-comp-inputError' :
-                  ''}
-              placeholder='Observações'
-              name='descricao'
-              value={this.state.descricao}
-              onChange={this.onChange}
-              onBlur={this.onBlurValidator}
-              onFocus={this.onChange}
-            />
+              <TextArea
+                name='descricao'
+                className='div-dashPeca-inputModal'
+                placeholder="Digite as observações"
+                autosize={{ minRows: 3, maxRows: 6 }}
+                value={this.state.descricao}
+                onChange={this.onChange}
+              />
             {this.state.fieldFalha.descricao ?
               <p className='div-comp-feedbackError'>
                 {this.state.message.descricao}

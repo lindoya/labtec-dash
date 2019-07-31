@@ -654,7 +654,7 @@ class dashCompany extends Component {
           </div>
           <div className='gercomp-div-textTel-modal'>
             Telefone
-            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone}</p> : <div><Input
+            {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.telphone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3')}</p> : <div><Input
               onBlur={this.onBlurValidator}
               onFocus={this.onChangeEditar}
               onChange={this.onChangeEditar}
@@ -663,7 +663,7 @@ class dashCompany extends Component {
                 this.state.fieldFalha.telphone ?
                   'div-comp-inputError' :
                   'gerComp-inputModal'}
-              value={this.state.compSelected.telphone}
+              value={this.state.compSelected.telphone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3')}
             />
               {this.state.fieldFalha.telphone ?
                 <p className='div-comp-feedbackError'>

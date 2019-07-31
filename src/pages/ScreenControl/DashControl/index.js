@@ -1,4 +1,4 @@
-import * as R  from 'ramda'
+import * as R from 'ramda'
 
 import React, { Component } from 'react'
 import './index.css'
@@ -73,11 +73,11 @@ class DashScreenControl extends Component {
 
     let queryProcess = null
 
-    await status.map( async(status) => {
+    await status.map(async (status) => {
 
-      await this.state.users.map( async(item) => {
+      await this.state.users.map(async (item) => {
 
-        
+
         const responsibleUser = item.username
 
         queryProcess = {
@@ -94,14 +94,14 @@ class DashScreenControl extends Component {
             },
           },
         }
-    
+
         await getAllProcessToControl(queryProcess).then(
           resposta => this.setState({
             table: {
               ...this.state.table,
-              [ status ]: {
+              [status]: {
                 ...this.state.table[status],
-                [ responsibleUser ]: {
+                [responsibleUser]: {
                   count: resposta.data.count,
                   rows: resposta.data.rows,
                 }
@@ -109,9 +109,9 @@ class DashScreenControl extends Component {
             }
           })
         )
-          this.test()
-        })
+        this.test()
       })
+    })
 
   }
 
@@ -175,28 +175,28 @@ class DashScreenControl extends Component {
     const state = this.state
     const status = R.keys(state.table)
     let statusUserArray = {}
-    
-    
-    if (status !== []){  
+
+
+    if (status !== []) {
       const arrayTable = []
-      
-      status.map( key => {
-        arrayTable.push({[key]: state.table[key]})
+
+      status.map(key => {
+        arrayTable.push({ [key]: state.table[key] })
       })
-      status.map( key => {
+      status.map(key => {
         statusUserArray = {
           ...statusUserArray,
           [key]: [],
         }
-        if(state.table[key]) {
+        if (state.table[key]) {
           const user = R.keys(state.table[key])
           user.sort()
 
-          user.map( item => {
+          user.map(item => {
             const count = R.keys(state.table[key][item])
-            if ( count ) {
-              if (count.length !== 0){
-                
+            if (count) {
+              if (count.length !== 0) {
+
                 statusUserArray[key].push(state.table[key][item].count)
               }
             }
@@ -210,58 +210,31 @@ class DashScreenControl extends Component {
     })
   }
 
-  // test = () => {
-  //       const state = this.state
-  //   const table = R.keys(state.table)
-  //   const array = []
-  //   if (table !== []){
-  //     if (table.filter( value => value === 'orcamento')) {
-  //       if(state.table.orcamento) {
-  //         const user = R.keys(state.table.orcamento)
-  //         if (user) {
-  //           user.map( item => {
-  //             const count = R.keys(state.table.orcamento[item])
-  //             if ( count ) {
-  //               if (count.length !== 0){
-  //                 array.push(state.table.orcamento[item].count)
-  //               }
-  //             }
-  //           })
-  //         }
-  //       } 
-  //     }
-  //   }
-  //   if (array.length === 4){
-  //     this.setState({
-  //       array: array,
-  //     })
-  //   }
-  // }
 
-  lineTable (statusView, statusBack) {
+  lineTable(statusView, statusBack) {
     if (!this.state.statusUserArray) {
       return
-    } else if (!this.state.statusUserArray[statusBack]){
+    } else if (!this.state.statusUserArray[statusBack]) {
       return
-    } else if (this.state.statusUserArray[statusBack].length === 0){
+    } else if (this.state.statusUserArray[statusBack].length === 0) {
       return
     }
 
     return (
       <div className='div-table-cel-control'>
-            <div className='div-table-cel-username-control'>
-              <label className='div-table-label-cel-username-control'>
-                {statusView}
-              </label>
-            </div>
-              { this.state.statusUserArray[statusBack].map(count =>
-                <div className='div-table-cel-nomes-control'>
-                  <label className='div-table-label-cel-username-control'>
-                    {count}
-                  </label>
-                </div>
-              )}
+        <div className='div-table-cel-username-control'>
+          <label className='div-table-label-cel-username-control'>
+            {statusView}
+          </label>
+        </div>
+        {this.state.statusUserArray[statusBack].map(count =>
+          <div className='div-table-cel-nomes-control'>
+            <label className='div-table-label-cel-username-control'>
+              {count}
+            </label>
           </div>
+        )}
+      </div>
     )
   }
 
@@ -310,34 +283,18 @@ class DashScreenControl extends Component {
         <div className='div-mainHeader-control'>
           <div className='div-table-separeteLineMain-control' />
           <div className='div-table-header-control'>
-              <div className='div-table-cel-status-control'>
-                <h2 className='div-table-label-control'>Status</h2>
-              </div>
-              {
-                this.state.users.map((line) =>
+            <div className='div-table-cel-status-control'>
+              <h2 className='div-table-label-control'>Status</h2>
+            </div>
+            {
+              this.state.users.map((line) =>
                 <div className='div-table-cel-nomes-control'>
                   <h2 className='div-table-label-control'>{line.username}</h2>
                 </div>
-                )
-              }
+              )
+            }
           </div>
           <div className='div-table-separeteLineMain-control' />
-          
-          {/* <div className='div-table-cel-control'>
-            <div className='div-table-cel-username-control'>
-              <label className='div-table-label-cel-username-control'>
-                Aguardando
-              </label>
-            </div>
-              { this.state.array.length > 0? this.state.array.map(count =>
-                <div className='div-table-cel-nomes-control'>
-                  <label className='div-table-label-cel-username-control'>
-                    {count}
-                  </label>
-                </div>
-              )
-              :null }
-          </div> */}
           {this.lineTable('Aguardando', 'orcamento')}
           {this.lineTable('Analise', 'analise')}
           {this.lineTable('Fabricante ida', 'fabricaIda')}

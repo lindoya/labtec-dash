@@ -228,7 +228,7 @@ class TableAgAnalise extends Component {
         </div>
         <div className='div-table-separeteLineMain-dashTec' />
         {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
-        {this.state.rows === undefined ? this.props.text : this.state.rows.map((line) =>
+        {this.state.rows === undefined || this.state.rows.length === 0 ? this.props.text : this.state.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             {this.renderRedirect()}
             <div className={this.props.className} onClick={() => this.redirectToAnalise(line)}>

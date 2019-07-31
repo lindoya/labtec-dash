@@ -281,7 +281,10 @@
 .div-textLeitor-modal-dashEquip{
   width: 35%;
   font-size: 15px;
-  font-weight: bold
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around
 }
 .div-linhaModal2-dashEquip{
   width: 100%;
