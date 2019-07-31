@@ -247,7 +247,7 @@ class DashTecnico extends Component {
 
           <Card className='card-info-dashTec'>
             <div className='div-card-agAnalise-dashTec'>Revisão - 1</div>
-            <div className='div-card-numero-dashTec'>{this.state.count.revisao1 === undefined ? 0 : this.state.count.revisao1}</div>
+            <div className='div-card-numero-dashTec'>{this.props.count.revisao1 === undefined ? 0 : this.props.count.revisao1}</div>
           </Card>
 
           <Card className='card-info-dashTec'>
@@ -291,7 +291,7 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
         
           <div className='text-info-dashTec'>Análises pendentes</div>
-          <TableAgAnalise status='pendente' text='Não há equipamentos com análises pendentes' name='pendente' />
+          <TableAgAnalise className='div-tableRow-pendente-dashTec' status='pendente' text='Não há equipamentos com análises pendentes' name='pendente' />
         
         </div>
 
@@ -325,7 +325,7 @@ class DashTecnico extends Component {
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Aguardando orçamento</div>
-          <TableAgAnalise className='div-tableRow-aguardando-dashTec' text='Não há equipamentos aguardando orçamento' status='aguardando' name='aguardando' />
+          <TableAgAnalise className='div-tableRow-aguardando-dashTec' text='Não há equipamentos aguardando orçamento' status='orcamento' name='aguardando' />
 
         </div>
         

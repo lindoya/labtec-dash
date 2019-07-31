@@ -711,7 +711,7 @@ class NewAnalise extends Component {
           <div className='div-linhaButton-analise'>
 
             <Select defaultValue={this.state.status} onChange={this.changeSelect} className='select-analise'>
-              <Option value="fabrica">Ir para fábrica</Option>
+              <Option value="fabricaIda">Ir para fábrica</Option>
               <Option value="revisao1">Ir para testes</Option>
               <Option value="orcamento">Pronto para orçamento</Option>
               <Option value="pendente">Pendente</Option>

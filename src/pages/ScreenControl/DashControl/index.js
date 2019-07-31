@@ -1,8 +1,11 @@
+import * as R  from 'ramda'
+
 import React, { Component } from 'react'
 import './index.css'
 import { DatePicker, Input, Button } from 'antd'
 
-
+import { getUsers } from '../../../services/newUser'
+import { getAllProcessToControl } from '../../../services/process'
 
 const Search = Input.Search;
 
@@ -16,6 +19,10 @@ class DashScreenControl extends Component {
       usuario: '',
       status: '',
     },
+    users: [],
+    table: {},
+    array: [],
+    statusUserArray: {},
   }
 
   buttonLimpar = () => {
@@ -41,6 +48,75 @@ class DashScreenControl extends Component {
     this.setState({
       avancado: !this.state.avancado
     })
+  }
+
+
+  getAll = async () => {
+
+    const query = {
+      filters: {
+        typeAccount: {
+          specific: {
+            typeName: 'TecnicoLab',
+          },
+        },
+      },
+    }
+
+    await getUsers(query).then(
+      resposta => this.setState({
+        users: resposta.data,
+      })
+    )
+
+    const status = ['orcamento', 'analise', 'manutencao', 'fabricaIda', 'fabricaVolta', 'estoque', 'semConserto', 'revisao1', 'revisao2']
+
+    let queryProcess = null
+
+    await status.map( async(status) => {
+
+      await this.state.users.map( async(item) => {
+
+        
+        const responsibleUser = item.username
+
+        queryProcess = {
+          filters: {
+            process: {
+              specific: {
+                status,
+              },
+            },
+            analyze: {
+              specific: {
+                responsibleUser,
+              },
+            },
+          },
+        }
+    
+        await getAllProcessToControl(queryProcess).then(
+          resposta => this.setState({
+            table: {
+              ...this.state.table,
+              [ status ]: {
+                ...this.state.table[status],
+                [ responsibleUser ]: {
+                  count: resposta.data.count,
+                  rows: resposta.data.rows,
+                }
+              }
+            }
+          })
+        )
+          this.test()
+        })
+      })
+
+  }
+
+  componentDidMount = async () => {
+    await this.getAll()
   }
 
   // Pages = () => (
@@ -94,7 +170,103 @@ class DashScreenControl extends Component {
     </div>
   )
 
+  test = () => {
+
+    const state = this.state
+    const status = R.keys(state.table)
+    let statusUserArray = {}
+    
+    
+    if (status !== []){  
+      const arrayTable = []
+      
+      status.map( key => {
+        arrayTable.push({[key]: state.table[key]})
+      })
+      status.map( key => {
+        statusUserArray = {
+          ...statusUserArray,
+          [key]: [],
+        }
+        if(state.table[key]) {
+          const user = R.keys(state.table[key])
+          user.sort()
+
+          user.map( item => {
+            const count = R.keys(state.table[key][item])
+            if ( count ) {
+              if (count.length !== 0){
+                
+                statusUserArray[key].push(state.table[key][item].count)
+              }
+            }
+          })
+        }
+      })
+    }
+
+    this.setState({
+      statusUserArray,
+    })
+  }
+
+  // test = () => {
+  //       const state = this.state
+  //   const table = R.keys(state.table)
+  //   const array = []
+  //   if (table !== []){
+  //     if (table.filter( value => value === 'orcamento')) {
+  //       if(state.table.orcamento) {
+  //         const user = R.keys(state.table.orcamento)
+  //         if (user) {
+  //           user.map( item => {
+  //             const count = R.keys(state.table.orcamento[item])
+  //             if ( count ) {
+  //               if (count.length !== 0){
+  //                 array.push(state.table.orcamento[item].count)
+  //               }
+  //             }
+  //           })
+  //         }
+  //       } 
+  //     }
+  //   }
+  //   if (array.length === 4){
+  //     this.setState({
+  //       array: array,
+  //     })
+  //   }
+  // }
+
+  lineTable (statusView, statusBack) {
+    if (!this.state.statusUserArray) {
+      return
+    } else if (!this.state.statusUserArray[statusBack]){
+      return
+    } else if (this.state.statusUserArray[statusBack].length === 0){
+      return
+    }
+
+    return (
+      <div className='div-table-cel-control'>
+            <div className='div-table-cel-username-control'>
+              <label className='div-table-label-cel-username-control'>
+                {statusView}
+              </label>
+            </div>
+              { this.state.statusUserArray[statusBack].map(count =>
+                <div className='div-table-cel-nomes-control'>
+                  <label className='div-table-label-cel-username-control'>
+                    {count}
+                  </label>
+                </div>
+              )}
+          </div>
+    )
+  }
+
   render() {
+    // console.log(this.state.statusUserArray)
     return (
       <div className='div-card-control'>
         <div className='div-comp-Linha div-comp-header'>
@@ -138,101 +310,42 @@ class DashScreenControl extends Component {
         <div className='div-mainHeader-control'>
           <div className='div-table-separeteLineMain-control' />
           <div className='div-table-header-control'>
-            <div className='div-table-cel-status-control'>
-              <h2 className='div-table-label-control'>Status</h2>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <h2 className='div-table-label-control'>Alvaro</h2>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <h2 className='div-table-label-control'>Teste</h2>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <h2 className='div-table-label-control'>Teste</h2>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <h2 className='div-table-label-control'>Teste</h2>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <h2 className='div-table-label-control'>Teste</h2>
-            </div>
+              <div className='div-table-cel-status-control'>
+                <h2 className='div-table-label-control'>Status</h2>
+              </div>
+              {
+                this.state.users.map((line) =>
+                <div className='div-table-cel-nomes-control'>
+                  <h2 className='div-table-label-control'>{line.username}</h2>
+                </div>
+                )
+              }
           </div>
           <div className='div-table-separeteLineMain-control' />
-          {/* {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
-          {this.state.rows === undefined ? 'Não há entradas cadastrada' : this.state.rows.map((line) =>
-            <div className='div-table-list-dashTec'>
-              {this.renderRedirect()}
-              <div className={this.props.className} onClick={() => this.redirectToAnalise(line)}>
-                <div className='div-table-cel-Os-dashTec'>
-                  <label className='div-table-label-cel-dashTec'>
-                    dadwa
-                  </label>
-                </div>
-                <div className='div-table-cel-contrato-dashTec'>
-                  <label className='div-table-label-cel-dashTec'>
-                    {line.conditionType}
-                  </label>
-                </div>
-                <div className='div-table-cel-garantia-dashTec'>
-                  <label className='div-table-label-cel-dashTec'>
-                    {line.garantia}
-                  </label>
-                </div>
-                <div className='div-table-cel-serialNumber-dashTec'>
-                  <label className='div-table-label-cel-dashTec'>
-                    {line.serialNumber}
-                  </label>
-                </div>
-                <div className='div-table-cel-razaoSocial-dashTec'>
-                  <label className='div-table-label-cel-dashTec'>
-                    {line.razaoSocial}
-                  </label>
-                </div>
-                <div className='div-table-cel-modelo-dashTec'>
-                  <label className='div-table-label-cel-dashTec'>
-                    {`${line.type} - ${line.mark} - ${line.model}`}
-                  </label>
-                </div>
-              </div>
-              <div className='div-table-separeteLinerow-dashTec' />
-            </div> */}
-          {/* <div className='gerCmp-div-table-footer'>
-          <this.Pages />
-        </div> */}
-         <div className='teste' >
-          <div className='div-table-list-control'>
-            <div className='div-table-cel-status-control'>
-              <label className='div-table-label-cel-control'>
-                dadwa
+          
+          {/* <div className='div-table-cel-control'>
+            <div className='div-table-cel-username-control'>
+              <label className='div-table-label-cel-username-control'>
+                Aguardando
               </label>
             </div>
-            <div className='div-table-cel-nomes-control'>
-              <label className='div-table-label-cel-control'>
-                0
-              </label>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <label className='div-table-label-cel-control'>
-                0
-              </label>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <label className='div-table-label-cel-control'>
-                0
-              </label>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <label className='div-table-label-cel-control'>
-                0
-              </label>
-            </div>
-            <div className='div-table-cel-nomes-control'>
-              <label className='div-table-label-cel-control'>
-                0
-              </label>
-            </div>
-          </div>
-          </div>
+              { this.state.array.length > 0? this.state.array.map(count =>
+                <div className='div-table-cel-nomes-control'>
+                  <label className='div-table-label-cel-username-control'>
+                    {count}
+                  </label>
+                </div>
+              )
+              :null }
+          </div> */}
+          {this.lineTable('Aguardando', 'orcamento')}
+          {this.lineTable('Analise', 'analise')}
+          {this.lineTable('Fabricante ida', 'fabricaIda')}
+          {this.lineTable('Fabricante volta', 'fabricaVolta')}
+          {this.lineTable('Liberado estoque', 'estoque')}
+          {/* {this.lineTable('Liberado sem concerto', 'semConserto')} */}
+          {this.lineTable('Revisão 1', 'revisao1')}
+          {this.lineTable('Revisão 2', 'revisao2')}
         </div>
       </div>
     )

@@ -66,6 +66,13 @@
   color: black
 }
 
+.div-tableRow-pendente-dashTec {
+  padding-top: 3px;
+  display: flex;
+  background-color: red;
+  color: black
+}
+
 
 .div-tableRow-revisao1-dashTec{
   padding-top: 3px;

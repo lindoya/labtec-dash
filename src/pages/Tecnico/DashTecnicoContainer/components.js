@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 
 
 // import { getAllEntrance } from '../../../services/entrance'
-import { getAllProcess } from '../../../services/process'
+import { getAllProcess, updateProcess } from '../../../services/process'
 import { redirectAnalyze, count } from '../TecnicoRedux/action'
 import { setCrono } from '../../Analise/AnaliseRedux/actions'
 
@@ -85,6 +85,15 @@ class TableAgAnalise extends Component {
       analiseSelected: lineSelected,
       redirect: true
     })
+
+    const valueProcess = {
+      id: lineSelected.id,
+      updateProcessMock: {
+        status: 'analise',
+      },
+    }
+
+    await updateProcess(valueProcess)
   }
 
   renderRedirect = () => {
