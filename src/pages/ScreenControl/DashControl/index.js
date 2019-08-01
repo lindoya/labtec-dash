@@ -2,7 +2,7 @@ import * as R from 'ramda'
 
 import React, { Component } from 'react'
 import './index.css'
-import { DatePicker, Input, Button } from 'antd'
+import { DatePicker, Input, Button, Spin } from 'antd'
 
 import { getUsers } from '../../../services/newUser'
 import { getAllProcessToControl } from '../../../services/process'
@@ -12,6 +12,7 @@ const Search = Input.Search;
 class DashScreenControl extends Component {
 
   state = {
+    loading: false,
     order: 'Os',
     avancado: false,
     search: {
@@ -53,6 +54,10 @@ class DashScreenControl extends Component {
 
   getAll = async () => {
 
+    this.setState({
+      loading: true
+    })
+
     const query = {
       filters: {
         typeAccount: {
@@ -66,6 +71,7 @@ class DashScreenControl extends Component {
     await getUsers(query).then(
       resposta => this.setState({
         users: resposta.data,
+        loading: false
       })
     )
 
@@ -180,9 +186,11 @@ class DashScreenControl extends Component {
     if (status !== []) {
       const arrayTable = []
 
+      // eslint-disable-next-line array-callback-return
       status.map(key => {
         arrayTable.push({ [key]: state.table[key] })
       })
+      // eslint-disable-next-line array-callback-return
       status.map(key => {
         statusUserArray = {
           ...statusUserArray,
@@ -192,6 +200,7 @@ class DashScreenControl extends Component {
           const user = R.keys(state.table[key])
           user.sort()
 
+          // eslint-disable-next-line array-callback-return
           user.map(item => {
             const count = R.keys(state.table[key][item])
             if (count) {
@@ -222,7 +231,8 @@ class DashScreenControl extends Component {
 
     return (
       <div className='div-table-cel-control'>
-        <div className='div-table-cel-username-control'>
+      <div className='div-linha-control'>
+        <div className='div-table-cel-status-control'>
           <label className='div-table-label-cel-username-control'>
             {statusView}
           </label>
@@ -235,11 +245,12 @@ class DashScreenControl extends Component {
           </div>
         )}
       </div>
+      <div className='div-table-separeteLinerow-control' />
+      </div>
     )
   }
 
   render() {
-    // console.log(this.state.statusUserArray)
     return (
       <div className='div-card-control'>
         <div className='div-comp-Linha div-comp-header'>
@@ -294,7 +305,7 @@ class DashScreenControl extends Component {
               )
             }
           </div>
-          <div className='div-table-separeteLineMain-control' />
+          {this.state.loading ? <div className='spin-control'><Spin spinning={this.state.loading} /></div> : null}
           {this.lineTable('Aguardando', 'orcamento')}
           {this.lineTable('Analise', 'analise')}
           {this.lineTable('Fabricante ida', 'fabricaIda')}
@@ -303,6 +314,8 @@ class DashScreenControl extends Component {
           {/* {this.lineTable('Liberado sem concerto', 'semConserto')} */}
           {this.lineTable('Revisão 1', 'revisao1')}
           {this.lineTable('Revisão 2', 'revisao2')}
+        <div className='div-table-footer-control'>
+        </div>
         </div>
       </div>
     )

@@ -481,10 +481,11 @@ class DashEquip extends Component {
   }
 
   saveTargetUpdateEquip = async () => {
+    
     this.setState({
       loading: true
-
     })
+
     const values = {
       id: this.state.equipSelected.id,
       serialNumber: this.state.equipSelected.serialNumber,
@@ -521,7 +522,6 @@ class DashEquip extends Component {
       })
       await this.error()
       this.setState({
-        loading: false,
         messageError: false
       })
     } if (resposta.status === 200) {
@@ -913,8 +913,7 @@ class DashEquip extends Component {
         </div>
         <div className='div-table-information-count-dashEquip'>
           <label className='label-table-information-dashEquip'>
-            Mostrando sla quantos
-            {/* {`Mostrando ${this.state.show}/${this.state.count} empresas.`} */}
+            {`Mostrando ${this.state.show > this.state.count ? this.state.count : this.state.show}/${this.state.count} empresas.`}
           </label>
         </div>
       </div>
@@ -989,8 +988,7 @@ class DashEquip extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashEquip' />
-      {this.state.loading ? <div className='spin-dashEquip'><Spin spinning={this.state.loading} /></div> : null}
-      {this.state.rows ?
+      {this.state.loading ? <div className='spin-dashEquip'><Spin spinning={this.state.loading} /></div> : 
         this.state.rows.map((line) =>
           <div className='div-table-list-dashEquip'>
             <div className='div-tableRow-dashEquip' onClick={() => this.openModalDetalhes(line)}>
@@ -1029,7 +1027,6 @@ class DashEquip extends Component {
             <div className='div-table-separeteLinerow-dashEquip' />
           </div>
         )
-        : ''
       }
       <div className='gerCmp-div-table-footer'>
         <this.Pages />

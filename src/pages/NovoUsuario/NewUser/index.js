@@ -11,6 +11,7 @@ const { Option } = Select;
 class NewUser extends Component {
 
   state = {
+    loading: false,
     messageError: false,
     messageSuccess: true,
     checkboxAble: false,
@@ -87,6 +88,10 @@ class NewUser extends Component {
 
   saveTargetNewUser = async () => {
 
+    this.setState({
+      loading: true
+    })
+
     const values = {
       username: this.state.inputNewUser,
       typeName: this.state.select,
@@ -113,6 +118,7 @@ class NewUser extends Component {
       })
       await this.error()
       this.setState({
+        loading: false,
         messageError: false
       })
     } if (resposta.status === 200) {
@@ -137,6 +143,7 @@ class NewUser extends Component {
       })
       await this.success()
       this.setState({
+        loading: false,
         messageSuccess: false
       })
     }
@@ -148,7 +155,6 @@ class NewUser extends Component {
 
 
   render() {
-    console.log(this.state)
     return (
       <div className='card-bg-newUser'>
 
@@ -165,7 +171,7 @@ class NewUser extends Component {
               <h2 className='div-comp-label'>Novo usuário:</h2>
 
               <Input
-                value={this.state.inputNewUser}
+                value={this.state.inputNewUser.slice(0, 12)}
                 placeholder="Digite o nome do usuário"
                 onChange={this.onChangeInputNewUser}
               />
@@ -203,21 +209,21 @@ class NewUser extends Component {
                 <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addUser} name='addUser' disabled>Adicionar usuário</Checkbox>
                 <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquipType} name='addEquipType' disabled>Adicionar tipo de equipamento</Checkbox>
                 <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.tecnico} name='tecnico' disabled>Acesso a tela técnico</Checkbox> </div> : <div className='div-insideCard-newUser'>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addAccessories} name='addAccessories'>Adicionar acessórios</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addTypeAccount} name='addTypeAccount'>Adicionar tipo de conta</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addUser} name='addUser'>Adicionar usuário</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquipType} name='addEquipType'>Adicionar tipo de equipamento</Checkbox>
-                  <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.tecnico} name='tecnico'>Acesso a tela técnico</Checkbox> </div>}
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEntry} name='addEntry'>Adicionar entrada</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addPart} name='addPart'>Adicionar peça</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addCompany} name='addCompany'>Adicionar empresa</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addAnalyze} name='addAnalyze'>Adicionar analise</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquip} name='addEquip'>Adicionar equipamento</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addAccessories} name='addAccessories'>Adicionar acessórios</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addTypeAccount} name='addTypeAccount'>Adicionar tipo de conta</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addUser} name='addUser'>Adicionar usuário</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.addEquipType} name='addEquipType'>Adicionar tipo de equipamento</Checkbox>
+                <Checkbox className='checkbox-dashTypeAccount' onChange={this.onChangePermission} checked={this.state.permission.tecnico} name='tecnico'>Acesso a tela técnico</Checkbox> </div>}
             </Card>
           </div>
 
           <div className='div-linhaButton-newUser'>
-            <Button type="primary" onClick={this.saveTargetNewUser}>Salvar</Button>
+            <Button type="primary" onClick={this.saveTargetNewUser} loading={this.state.loading}>Salvar</Button>
           </div>
 
         </div>

@@ -114,7 +114,7 @@ class DashTecnico extends Component {
       filters: {
         process: {
           specific: {
-            status: 'fabrica',
+            status: 'fabricaIda',
           },
         },
       },
@@ -149,7 +149,7 @@ class DashTecnico extends Component {
       {this.state.page + 2 < (this.state.count / this.state.total) && this.state.page < 3 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 3)}>{this.state.page + 3}</Button> : ''}
       {this.state.page + 3 < (this.state.count / this.state.total) && this.state.page < 2 ? <Button type="primary" onClick={() => this.changePages(this.state.page + 4)}>{this.state.page + 4}</Button> : ''}
     </div>
-  )  
+  )
 
   TableAgRetornoFabrica = () => (
     <div className='div-mainHeader-dashTec'>
@@ -192,7 +192,7 @@ class DashTecnico extends Component {
       </div>
       <div className='div-table-separeteLineMain-dashTec' />
       {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
-      {this.state.TableAgRetornoFabrica.rows.length === 0 ? 'Não há equipamentos aguardando retorno da fábrica' :
+      {this.state.TableAgRetornoFabrica.rows.length === 0  ? 'Não há equipamentos aguardando retorno da fábrica' :
         this.state.TableAgRetornoFabrica.rows.map((line) =>
           <div className='div-table-list-dashTec'>
             <div className='div-tableRow-retornoFabrica-dashTec'>
@@ -255,9 +255,9 @@ class DashTecnico extends Component {
             <div className='div-card-numero-dashTec'>{this.props.count.revisao2 === undefined ? 0 : this.props.count.revisao2}</div>
           </Card>
 
-          </div>
+        </div>
 
-          <div className='div-linha-cardsInfo-dashTec'>
+        <div className='div-linha-cardsInfo-dashTec'>
 
           <Card className='card-info-dashTec'>
             <div className='div-card-agAnalise-dashTec'>Liberado estoque</div>
@@ -287,12 +287,12 @@ class DashTecnico extends Component {
           <TableAgAnalise className='div-tableRow-analise-dashTec' text='Não há equipamentos aguardando análise' status='preAnalise' name='analise' />
 
         </div>
-        
+
         <div className='div-linha-dashTec'>
-        
+
           <div className='text-info-dashTec'>Análises pendentes</div>
           <TableAgAnalise className='div-tableRow-pendente-dashTec' status='pendente' text='Não há equipamentos com análises pendentes' name='pendente' />
-        
+
         </div>
 
         <div className='div-linha-dashTec'>
@@ -328,7 +328,7 @@ class DashTecnico extends Component {
           <TableAgAnalise className='div-tableRow-aguardando-dashTec' text='Não há equipamentos aguardando orçamento' status='orcamento' name='aguardando' />
 
         </div>
-        
+
         <div className='div-linha-dashTec'>
 
           <div className='text-info-dashTec'>Liberado estoque</div>

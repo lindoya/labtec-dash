@@ -8,6 +8,7 @@ import { addTypeAccount } from '../../../services/typeAccount'
 class DashTypeAccount extends Component {
 
   state = {
+    loading: false,
     messageError: false,
     messageSuccess: false,
     input: '',
@@ -26,7 +27,7 @@ class DashTypeAccount extends Component {
   }
 
   success = () => {
-    message.success('Tipo de conta salvo com sucesso');
+    message.success('Tipo de conta cadastrado com sucesso');
   };
 
   error = () => {
@@ -50,6 +51,10 @@ class DashTypeAccount extends Component {
   }
 
   saveTargetTypeAccount = async () => {
+
+    this.setState({
+      loading: true,
+    })
 
     const values = {
       typeName: this.state.input,
@@ -75,6 +80,7 @@ class DashTypeAccount extends Component {
       })
       await this.error()
       this.setState({
+        loading: false,
         messageError: false
       })
     } if (resposta.status === 200) {
@@ -97,6 +103,7 @@ class DashTypeAccount extends Component {
       })
       await this.success()
       this.setState({
+        loading: false,
         messageSuccess: false
       })
     }
@@ -142,7 +149,7 @@ class DashTypeAccount extends Component {
           </div>
 
           <div className='div-linhaButton-dashTypeAccount'>
-            <Button type="primary" onClick={this.saveTargetTypeAccount}>Salvar</Button>
+            <Button type="primary" onClick={this.saveTargetTypeAccount} loading={this.state.loading}>Salvar</Button>
           </div>
 
         </div>

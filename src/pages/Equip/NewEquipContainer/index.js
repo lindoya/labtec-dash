@@ -11,6 +11,7 @@ const { Option } = Select;
 class NewEquip extends Component {
 
   state = {
+    loading: false,
     leitor: {
       proximidade: false,
       bio: false,
@@ -71,6 +72,11 @@ class NewEquip extends Component {
   }
 
   saveTargetNewEquip = async () => {
+
+    this.setState({
+      loading: true
+    })
+
     const values = {
       serialNumber: this.state.serialNumber,
       readerColor: this.state.leitor,
@@ -90,6 +96,7 @@ class NewEquip extends Component {
       })
       await this.error()
       this.setState({
+        loading: false,
         messageError: false
       })
     } if (resposta.status === 200) {
@@ -110,6 +117,7 @@ class NewEquip extends Component {
       }, this.getAllMarkByType)
       await this.success()
       this.setState({
+        loading: false,
         messageSuccess: false
       })
     }
@@ -385,8 +393,8 @@ class NewEquip extends Component {
               <Select
                 className={
                   this.state.fieldFalha.equipModelId ?
-                    'div-comp-inputError' :
-                    ''}
+                    'div-comp-selectError' :
+                    'div-comp-label'}
                 defaultValue="Não selecionado" style={{ width: '100%' }} value={this.state.model} onChange={(model) => this.handleChangeModel(model)}>
                 {this.state.modelsList.length === 0 ? null : this.state.modelsList.map(model => <Option key={model.id} value={model.id}>{model.model}</Option>)}
               </Select>
@@ -429,6 +437,7 @@ class NewEquip extends Component {
           <div className='div-comp-button'>
             <Button
               className='comp-button'
+              loading={this.state.loading}
               onClick={this.saveTargetNewEquip}
               type="primary">Salvar
             </Button>

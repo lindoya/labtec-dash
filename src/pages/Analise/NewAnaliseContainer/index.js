@@ -21,21 +21,7 @@ const { Option } = Select;
 
 
 class NewAnalise extends Component {
-
-  garantia() {
-    if (this.props.analyze.garantia.length > 1) {
-      return this.props.analyze.garantia.slice(0, 1).toUpperCase() + this.props.analyze.garantia.slice(1, 15)
-    }
-    return ''
-  }
-
-  conditionType() {
-    if (this.props.analyze.conditionType.length > 1) {
-      return this.props.analyze.conditionType.slice(0, 1).toUpperCase() + this.props.analyze.conditionType.slice(1, 15)
-    }
-    return ''
-  }
-
+  
   state = {
     redirect: false,
     messageError: false,
@@ -70,6 +56,7 @@ class NewAnalise extends Component {
     message: {
       motivoPausa: '',
     },
+    historico: [],
     observções: '',
     modalPausa: false,
     rows: [],
@@ -81,6 +68,20 @@ class NewAnalise extends Component {
     motivoPausaList: [],
     inicio: [this.props.crono.initDate],
     final: [],
+  }
+
+  garantia() {
+    if (this.props.analyze.garantia.length > 1) {
+      return this.props.analyze.garantia.slice(0, 1).toUpperCase() + this.props.analyze.garantia.slice(1, 15)
+    }
+    return ''
+  }
+
+  conditionType() {
+    if (this.props.analyze.conditionType.length > 1) {
+      return this.props.analyze.conditionType.slice(0, 1).toUpperCase() + this.props.analyze.conditionType.slice(1, 15)
+    }
+    return ''
   }
 
   success = () => {
@@ -240,6 +241,11 @@ class NewAnalise extends Component {
   }
 
   saveTargetNewAnalyze = async () => {
+    
+    this.setState({
+      loading: true
+    })
+
     const  pause = []
 
     for (let i = 0; i < this.state.final.length; i++) {
@@ -299,6 +305,7 @@ class NewAnalise extends Component {
           observções: '',
           carrinho: [],
           messageSuccess: true,
+          loading: false
         })
 
         const INICIAL_STATE_REDIRECT = {
@@ -344,10 +351,10 @@ class NewAnalise extends Component {
 
     this.comentario()
 
-    // this.timerID = setInterval(
-    //   (prevState, props) => this.tick(),
-    //   1
-    // );
+    this.timerID = setInterval(
+      (prevState, props) => this.tick(),
+      1
+    );
 
   }
 
@@ -585,18 +592,17 @@ class NewAnalise extends Component {
 
           </div>
 
-          <div className='div-historico-analise'>Histórico do equipamento</div>
-
+          {this.state.historico.length === 0 ? null : <div className='div-historicoMain-analise'><div className='div-historico-analise'>Histórico do equipamento</div>
+          
           <Card className='card-analise'>
-
-            <div className='div-linha-analise'>
-
-
-
+           
+            <div className='div-linhaDefeitos-analise'>   
+              {this.state.historico.length === 0 ? 'Este equipamento não tem historico em nosso banco de dados' : this.state.historico}
             </div>
 
-          </Card>
+          </Card></div>}
 
+          <div className='div-historicoMain-analise'>
           <div className='div-defeito-analise' >Defeitos</div>
 
           <Card className='card-analise'>
@@ -606,6 +612,7 @@ class NewAnalise extends Component {
             </div>
 
           </Card>
+          </div>
 
           {this.props.analyze.analyze?
           <div className='div-feito-analise'>
@@ -618,15 +625,26 @@ class NewAnalise extends Component {
                 {this.comentario().map((line) =>
                 <div>
                   <div className='div-card-comentario-analise'>
+                  <div className='div-card-comentarioMenor-analise'>
                     <label className='div-card-comentario-user-analise'>
                       {line.username}
                     </label>
                     <label className='div-card-comentario-observacao-analise'>
-                      {line.observations}
+                      {line.observations.length === 0 ? '*Não há observações*' : line.observations}
                     </label>
                     <label className='div-card-comentario-inicio-fim-analise'>
                       {`${this.formatDateFunct(line.init)} ${this.formatDateFunct(line.end)}`}
                     </label>
+                  </div>
+                  <div className='div-card-pecas-analise'>
+                    <label className='div-card-pecas-peca-analise'>
+                      peca
+                    </label>
+                    <label className='div-card-pecas-motivo-analise'>
+                      motivo troca
+                    </label>
+                  </div>
+                    <div className='div-separeteLineMain-analise'/>
                   </div>
                 </div>
                 )}
@@ -712,13 +730,17 @@ class NewAnalise extends Component {
 
             <Select defaultValue={this.state.status} onChange={this.changeSelect} className='select-analise'>
               <Option value="fabricaIda">Ir para fábrica</Option>
-              <Option value="revisao1">Ir para testes</Option>
+              <Option value="revisao1">Ir para revisão</Option>
+              <Option value="revisao2" disabled>Ir para revisão final</Option>
               <Option value="orcamento">Pronto para orçamento</Option>
               <Option value="pendente">Pendente</Option>
+              <Option value="liberadoEstoque" disabled>Liberado estoque</Option>
+              <Option value="liberadoSemConserto" disabled>Liberado sem conserto</Option>
             </Select>
             <Button
               type="primary"
               onClick={this.saveTargetNewAnalyze}
+              loading={this.state.loading}
             >
               Salvar
             </Button>

@@ -84,7 +84,7 @@
   margin: 20px 0 10px 0
 }
 .card-analise{
-  width: 76%;
+  width: 100%;
   padding: 10px
 }
 
@@ -123,8 +123,20 @@
 
 .div-card-comentario-analise{
   width: 100% !important;
+  flex-direction: column;
+  display: flex;
+}
+
+.div-card-comentarioMenor-analise{
+  width: 100%;
   display: flex;
   margin: 10px 0;
+}
+
+.div-separeteLineMain-analise{
+  width: 100%;
+  height: 1px;
+  background-color: #001529;
 }
 
 .div-card-comentario-user-analise{
@@ -134,8 +146,26 @@
 .div-card-comentario-observacao-analise{
   width: 70% !important;
   display: flex;
-  padding: 5px;
+  justify-content: center
 }
+.div-card-pecas-analise{
+  width: 100%;
+  display: flex;
+}
+
+.div-card-pecas-peca-analise{
+  width: 25% !important;
+  display: flex;
+}
+
+.div-card-pecas-motivo-analise{
+  width: 75% !important;
+  display: flex;
+}
+.div-historicoMain-analise{
+  width: 76%;
+}
+
 .div-card-comentario-inicio-fim-analise{
   width: 20% !important;
   display: flex;

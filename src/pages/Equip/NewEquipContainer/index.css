@@ -58,3 +58,9 @@
   display: flex;
   justify-content: space-between
 }
+
+.div-comp-selectError{
+  width: 100%;
+  border: 1px solid #ff0000 !important;
+  background-color: #ff6c6c3b !important;
+}
