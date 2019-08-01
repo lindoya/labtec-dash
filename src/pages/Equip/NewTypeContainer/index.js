@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Input, Modal, Button, Card, Icon, Spin } from 'antd';
+import { Input, Modal, Button, Card, Icon, Spin, message } from 'antd';
 import { Select } from 'antd';
 import { getAllMarkByTypeService, getAllModelByMarkService, addMark, addModel } from '../../../services/equip'
 
@@ -14,6 +14,9 @@ const Option = Select.Option;
 class NewTypeEquip extends Component {
 
   state = {
+    messageError: false,
+    messageSuccess: false,
+    loadingButton: false,
     loading: {
       modelo: false,
       marca: false,
@@ -33,6 +36,14 @@ class NewTypeEquip extends Component {
     description: '',
     disable: true
   }
+
+  success = () => {
+    message.success('Sucesso ao cadastrar');
+  };
+
+  error = () => {
+    message.error('Ocorreu um erro ao fazer o cadastro');
+  };
 
   getModelsByMark = async () => {
 
@@ -88,20 +99,49 @@ class NewTypeEquip extends Component {
   }
 
   saveTargetMark = async () => {
+
+    this.setState({
+      loadingButton: true
+    })
+
     const marca = {
       type: this.state.type,
       mark: this.state.newMark,
       responsibleUser: this.props.username,
     }
 
-    await addMark(marca)
-    this.setState({
-      newMark: '',
-      ModalVisibleMarca: false,
-    }, this.getAllMarkByType)
+    const resposta = await addMark(marca)
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+      })
+      await this.error()
+      this.setState({
+        loadingButton: false,
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
+      this.setState({
+        newMark: '',
+        ModalVisibleMarca: false,
+      }, this.getAllMarkByType)
+      await this.success()
+      this.setState({
+        loadingButton: false,
+        messageSuccess: false
+      })
+    }
   }
 
   saveTargetModel = async () => {
+
+    this.setState({
+      loadingButton: true
+    })
+
     const modelo = {
       equipMarkId: this.state.mark.id,
       model: this.state.newModel,
@@ -109,12 +149,31 @@ class NewTypeEquip extends Component {
       responsibleUser: this.props.username,
     }
 
-    await addModel(modelo)
+    const resposta = await addModel(modelo)
+
+    if (resposta.status === 422) {
+
+      this.setState({
+        messageError: true,
+      })
+      await this.error()
+      this.setState({
+        loadingButton: false,
+        messageError: false
+      })
+    } if (resposta.status === 200) {
+
     this.setState({
       newModel: '',
       description: '',
       ModalVisibleModelo: false,
     }, this.getModelsByMark)
+    await this.success()
+      this.setState({
+        loadingButton: false,
+        messageSuccess: false
+      })
+    }
   }
 
   componentDidMount = () => {
@@ -297,7 +356,8 @@ class NewTypeEquip extends Component {
                 <Button
                   className='equipType-button'
                   onClick={this.openModalModelo}
-                  ype="primary">Adicionar
+                  loading={this.state.loadingButton}
+                  type="primary">Adicionar
                 </Button>
                 <Modal
                   title="Adicionar modelo"

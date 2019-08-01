@@ -453,6 +453,10 @@ class NewEntrance extends Component {
   }
 
   saveTargetEntrance = async () => {
+    
+    this.setState({
+      loading: true
+    })
 
     const values = {
       serialNumber: this.state.numeroSerie,
@@ -495,6 +499,7 @@ class NewEntrance extends Component {
     if (resposta.status === 422) {
 
       this.setState({
+        loading: false,
         messageError: true,
         fieldFalha: resposta.data.fields[0].field,
         message: resposta.data.fields[0].message,
@@ -548,6 +553,7 @@ class NewEntrance extends Component {
       })
       await this.success()
       this.setState({
+        loading: false,
         messageSuccess: false
       })
     }
@@ -1431,7 +1437,7 @@ class NewEntrance extends Component {
         </div> : null}
 
         <div className='div-button-entrance'>
-          <Button className='button-entrance' onClick={this.saveTargetEntrance}>Salvar</Button>
+          <Button className='button-entrance' onClick={this.saveTargetEntrance} loading={this.state.loading}>Salvar</Button>
         </div>
 
       </div>

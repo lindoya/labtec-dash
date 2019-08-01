@@ -496,7 +496,7 @@ class dashCompany extends Component {
                 this.state.fieldFalha.zipCode ?
                   'div-comp-inputError' :
                   'gerComp-inputModal'}
-              value={this.state.compSelected.zipCode}
+              value={this.state.compSelected.zipCode.replace(/(\d{5})(\d{3})/, '$1-$2')}
             />
               {this.state.fieldFalha.zipCode ?
                 <p className='div-comp-feedbackError'>
@@ -807,8 +807,7 @@ class dashCompany extends Component {
         </div>
       </div>
       <div className='gerCmp-div-table-separeteLineMain' />
-      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading} /></div> : null}
-      {
+      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading} /></div> : 
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list' >
             <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhesCompany(line)}>

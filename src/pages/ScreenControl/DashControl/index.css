@@ -37,8 +37,13 @@
 .div-table-cel-control{
   display: flex;
   width: 100%;
+  flex-direction: column
 }
 .div-table-list-control{
+  width: 100%;
+  display: flex;
+}
+.div-linha-control{
   width: 100%;
   display: flex;
 }
@@ -49,6 +54,8 @@
 }
 .div-table-cel-nomes-control{
   width: 10% !important;
+  display: flex;
+  justify-content: center;
   display: flex;
 }
 .div-table-label-control{
@@ -62,7 +69,19 @@
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
 }
-
+.div-table-separeteLinerow-control {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(153, 153, 153, 0.788);
+}
+.div-table-footer-control{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 25px;
+  background-color: #001529;
+}
 .teste{
   padding-top: 3px;
   display: flex;
@@ -82,15 +101,14 @@
 .div-table-cel-username-control{
   width: 20% !important;
   display: flex;
-  cursor: pointer;
   padding: 1px;
 }
 
 .div-table-label-cel-username-control{
   margin-left: 15px;
+  font-size: 15px;
   display: flex;
   flex-wrap: wrap;
-  cursor: pointer;
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -102,7 +120,6 @@
   margin-left: 10px;
   display: flex;
   flex-wrap: wrap;
-  cursor: pointer;
   user-select: none; /* supported by Chrome and Opera */
   -webkit-user-select: none; /* Safari */
   -khtml-user-select: none; /* Konqueror HTML */
@@ -114,4 +131,12 @@
   width: 100%;
   height: 1px;
   background-color: rgba(153, 153, 153, 0.788);
+}
+
+.spin-control{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
 }

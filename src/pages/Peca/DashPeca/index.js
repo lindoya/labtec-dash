@@ -510,8 +510,7 @@ class DashPeca extends Component {
         </div>
       </div>
       <div className='div-table-separeteLineMain-dashPeca' />
-      {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : null}
-      {
+      {this.state.loading ? <div className='spin-dashPeca'><Spin spinning={this.state.loading} /></div> : 
         this.state.rows === undefined ? '' : this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list'>
             <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhes(line)}>

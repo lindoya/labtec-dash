@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { message } from 'antd';
 
 import * as R from 'ramda'
 
@@ -11,16 +12,23 @@ class LoginPage extends Component {
   hasAuth = R.has('auth')
   hasToken = R.has('token')
 
-  render () {
+  success = () => {
+    message.success('Bem-vindo a Lab-Tec')
+  }
 
-    if (this.hasAuth(this.props)){
+  render() {
+
+    if(this.hasAuth(this.props)){
       if (this.hasToken(this.props.auth)){
-        if(uuidValidate(this.props.auth.token)){
+        if(uuidValidate(this.props.auth.token)){ 
+          
+          this.success()
+          
           return <Redirect to='/logged/dash' />
         }
-      }  
-    }
-    
+      }
+    }    
+
     return (
       <LoginContainer />
     )

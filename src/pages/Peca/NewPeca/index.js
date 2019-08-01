@@ -11,6 +11,7 @@ const { Option } = Select;
 class NewPeca extends Component {
 
   state = {
+    loadingButton: false,
     loading: false,
     type: 'relogio',
     mark: 'Nao selecionado',
@@ -43,6 +44,11 @@ class NewPeca extends Component {
   }
 
   saveTargetNewCompany = async () => {
+
+    this.setState({
+      loadingButton: true
+    })
+
     const values = {
       item: this.state.item,
       description: this.state.description,
@@ -65,6 +71,7 @@ class NewPeca extends Component {
       })
       await this.error()
       this.setState({
+        loadingButton: false,
         messageError: false
       })
     } if (resposta.status === 200) {
@@ -86,6 +93,7 @@ class NewPeca extends Component {
       })
       await this.success()
       this.setState({
+        loadingButton:false,
         messageSuccess: false
       })
     }
@@ -420,6 +428,7 @@ class NewPeca extends Component {
             <Button
               className='comp-button'
               onClick={this.saveTargetNewCompany}
+              loading={this.state.loadingButton}
               type="primary">Salvar
             </Button>
 

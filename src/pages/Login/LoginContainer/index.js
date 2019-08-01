@@ -3,18 +3,16 @@ import React, { Component } from 'react'
 import './index.css'
 import { Input, Icon, Button, message } from 'antd';
 import 'antd/dist/antd.css';
+import * as R from 'ramda'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { changeValue, onSubmit } from '../LoginRedux/action'
+import uuidValidate from 'uuid-validate'
 
 class Login extends Component {
-
-  state = {
-    loading: false,
-    messageSuccess: false,
-    messageError: false,
-  }
+  hasAuth = R.has('auth')
+  hasToken = R.has('token')
 
   enterKey = async (e) => {
     if (e.which === 13 || e.keyCode === 13) {
@@ -22,17 +20,25 @@ class Login extends Component {
     }
   }
 
-  onSubmit = async (e) => {
-    await this.props.onSubmit(this.props.value)
+  error = () => {
+    message.error('Erro ao logar');
   }
 
   success = () => {
-    message.success('Equipamento cadastrada com sucesso');
+    message.success('Bem-vindo a Lab-Tec');
   };
 
-  error = () => {
-    message.error('Erro ao cadastrar equipamento');
-  };
+
+  onSubmit = async (e) => {
+    await this.props.onSubmit(this.props.value)
+    if(this.hasAuth(this.props)){
+      if (this.hasToken(this.props.auth)){
+        if(uuidValidate(this.props.auth.token)){
+        }
+      }
+    }
+    this.error()
+  }
 
   render() {
     return (
@@ -79,6 +85,7 @@ function mapDispacthToProps(dispach) {
 function mapStateToProps(state) {
   return {
     value: state.login,
+    auth: state.auth,
   }
 }
 

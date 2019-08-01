@@ -39,6 +39,7 @@ class NewCompany extends Component {
       email: false,
       nameContact: false,
     },
+    loading: false,
     razaoSocial: '',
     cnpj: '',
     street: '',
@@ -57,6 +58,11 @@ class NewCompany extends Component {
   }
 
   saveTargetNewCompany = async () => {
+
+    this.setState({
+      loading: true
+    })
+
     const values = {
       razaoSocial: this.state.razaoSocial,
       cnpj: this.state.cnpj,
@@ -87,8 +93,8 @@ class NewCompany extends Component {
       })
       await this.error()
       this.setState({
+        loading:false,
         messageError: false,
-        loading: false
       })
     } if (resposta.status === 200) {
 
@@ -110,6 +116,7 @@ class NewCompany extends Component {
       })
       await this.success()
       this.setState({
+        loading:false,
         messageSuccess: false
       })
     }
@@ -528,6 +535,7 @@ class NewCompany extends Component {
             <Button
               className='comp-button'
               onClick={this.saveTargetNewCompany}
+              loading={this.state.loading}
               type="primary">Salvar
             </Button>
           </div>

@@ -10,6 +10,7 @@ import { newAcessorio, getAllAccessories } from '../../../services/acessorio';
 class NewAcessorio extends Component {
 
   state = {
+    loadingButton: false,
     loading: false,
     messageError: false,
     messageSuccess: false,
@@ -30,7 +31,7 @@ class NewAcessorio extends Component {
   }
 
   success = () => {
-    message.success('Empresa cadastrada com sucesso');
+    message.success('Acessório cadastrado com sucesso');
   };
 
   error = () => {
@@ -38,6 +39,11 @@ class NewAcessorio extends Component {
   };
 
   saveTargetNewAcessorio = async () => {
+
+    this.setState({
+      loadingButton: true
+    })
+
     const values = {
       accessories: this.state.inputAcessorio,
       responsibleUser: this.props.username,
@@ -54,6 +60,7 @@ class NewAcessorio extends Component {
       })
       await this.error()
       this.setState({
+        loadingButton: false,
         messageError: false
       })
     } if (resposta.status === 200) {
@@ -64,6 +71,7 @@ class NewAcessorio extends Component {
       })
       await this.success()
       this.setState({
+        loadingButton: false,
         messageSuccess: false
       }, () => this.getAll())
     }
@@ -119,7 +127,7 @@ class NewAcessorio extends Component {
           </div>
 
           <div className='div-button-newAcessorio'>
-            <Button type='primary' onClick={this.saveTargetNewAcessorio}>Salvar</Button>
+            <Button type='primary' onClick={this.saveTargetNewAcessorio} loading={this.state.loadingButton}>Salvar</Button>
           </div>
 
         </div>
