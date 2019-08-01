@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Select, Input, Button, DatePicker, Icon, Modal, message, Spin } from 'antd'
-import { getAllCompany, updateCompany } from '../../../services/company'
+import * as R from 'ramda'
+import { getAllCompany, updateCompany, getAddressByZipCode } from '../../../services/company'
 import { validators, masks } from './validator'
 
 import 'antd/dist/antd.css'
@@ -10,6 +11,9 @@ import './index.css'
 
 const Search = Input.Search;
 const { Option } = Select;
+
+// const now = new Date('2017')
+const now = new Date(1995,1,17,3,24,0)
 
 class dashCompany extends Component {
 
@@ -72,11 +76,13 @@ class dashCompany extends Component {
     nameContact: '',
     telphone: '',
     createdAt: '',
+    valueDate: {start: '2019/01/01'},
     page: 1,
     total: 25,
     count: 0,
     show: 0,
     rows: [],
+    teste: now,
   }
 
   success = () => {
@@ -116,6 +122,52 @@ class dashCompany extends Component {
     }, () => {
       this.getAll()
     })
+  }
+
+  getAddress = async (e) => {
+    const zipCode = e.target.value
+    try {
+      const { fieldFalha, message } = this.state
+
+      fieldFalha.state = false
+      fieldFalha.city = false
+      fieldFalha.neighborhood = false
+      fieldFalha.street = false
+      const address = await getAddressByZipCode(zipCode)
+
+      // console.log(address)
+
+      if (R.has('erro', address.data)) {
+        fieldFalha.zipCode = true
+        message.zipCode = 'Cep inválido.'
+
+        this.setState({
+          fieldFalha,
+          message,
+        })
+      } else {
+        this.setState({
+          compSelected: {
+            ...this.state.compSelected,
+            street: address.data.logradouro,
+            city: address.data.localidade,
+            neighborhood: address.data.bairro,
+            state: address.data.uf,
+          }
+        })
+      }
+
+    } catch (error) {
+      const { fieldFalha, message } = this.state
+
+      fieldFalha.zipCode = true
+      message.zipCode = 'Cep inválido.'
+
+      this.setState({
+        fieldFalha,
+        message
+      })
+    }
   }
 
   onBlurValidator = async (e) => {
@@ -224,6 +276,32 @@ class dashCompany extends Component {
     this.setState({
       modalDetalhesCompany: !this.state.modalDetalhesCompany,
       editar: false,
+      fieldFalha: {
+        nameContact: false,
+        razaoSocial: false,
+        zipCode: false,
+        state: false,
+        number: false,
+        telphone: false,
+        email: false,
+        city: false,
+        neighborhood: false,
+        street: false,
+        referencePoint: false
+      },
+      message: {
+        nameContact: '',
+        razaoSocial: '',
+        zipCode: '',
+        state: '',
+        number: '',
+        telphone: '',
+        email: '',
+        city: '',
+        neighborhood: '',
+        street: '',
+        referencePoint: ''
+      },
     })
   }
 
@@ -236,7 +314,7 @@ class dashCompany extends Component {
       filters: {
         company: {
           global: {
-            fields: ['cnpj', 'razaoSocial', 'nameContact', 'telphone'],
+            fields: ['cnpj', 'razaoSocial', 'nameContact', 'telphone', 'createdAt'],
             value: this.state.global,
           },
           specific: {
@@ -244,6 +322,7 @@ class dashCompany extends Component {
             razaoSocial: this.state.razaoSocial,
             nameContact: this.state.nameContact,
             telphone: this.state.telphone,
+            createdAt: this.state.valueDate,
           }
         }
       },
@@ -354,7 +433,41 @@ class dashCompany extends Component {
     this.setState({
       modalDetalhesCompany: false,
       editar: false,
+      fieldFalha: {
+        nameContact: false,
+        razaoSocial: false,
+        zipCode: false,
+        state: false,
+        number: false,
+        telphone: false,
+        email: false,
+        city: false,
+        neighborhood: false,
+        street: false,
+        referencePoint: false
+      },
+      message: {
+        nameContact: '',
+        razaoSocial: '',
+        zipCode: '',
+        state: '',
+        number: '',
+        telphone: '',
+        email: '',
+        city: '',
+        neighborhood: '',
+        street: '',
+        referencePoint: ''
+      },
     })
+  }
+
+  searchDate = async(e) => {
+    if( !e[0] || !e[1] ) return
+    await this.setState({
+      valueDate: {start: e[0]._d, end: e[1]._d},
+    })
+    await this.getAll()
   }
 
   SearchAdvanced = () => (
@@ -410,6 +523,8 @@ class dashCompany extends Component {
           placeholder='Digite a data'
           format='DD/MM/YYYY'
           dropdownClassName='poucas'
+          onChange={this.searchDate}
+          onOk={this.searchDate}
         />
       </div>
     </div>
@@ -488,7 +603,7 @@ class dashCompany extends Component {
           <div className='gercomp-div-textCep-modal'>
             Cep
             {this.state.editar === false ? <p className='gercomp-p'>{this.state.compSelected.zipCode.replace(/(\d{5})(\d{3})?/, '$1-$2')}</p> : <div><Input
-              onBlur={this.onBlurValidator}
+              onBlur={this.getAddress}
               onFocus={this.onChangeEditar}
               onChange={this.onChangeEditar}
               name='zipCode'
@@ -849,9 +964,9 @@ class dashCompany extends Component {
   )
 
   render() {
-    console.log(this.state)
     return (
       <div className='gerCmp-div-card' >
+
         <this.ModalDetalhes />
 
         <div className='gerCmp-div-header'>
