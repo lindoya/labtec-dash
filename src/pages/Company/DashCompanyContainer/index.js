@@ -12,9 +12,6 @@ import './index.css'
 const Search = Input.Search;
 const { Option } = Select;
 
-// const now = new Date('2017')
-const now = new Date(1995,1,17,3,24,0)
-
 class dashCompany extends Component {
 
   state = {
@@ -82,7 +79,6 @@ class dashCompany extends Component {
     count: 0,
     show: 0,
     rows: [],
-    teste: now,
   }
 
   success = () => {
@@ -922,7 +918,7 @@ class dashCompany extends Component {
         </div>
       </div>
       <div className='gerCmp-div-table-separeteLineMain' />
-      {this.state.loading ? <div className='gerCmp-spin'><Spin spinning={this.state.loading} /></div> : 
+      {this.state.loading || this.state.rows === undefined? <div className='gerCmp-spin'><Spin spinning={this.state.loading} /></div> : 
         this.state.rows.map((line) =>
           <div className='gerCmp-div-table-list' >
             <div className='gerCmp-div-tableRow' onClick={() => this.openModalDetalhesCompany(line)}>

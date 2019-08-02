@@ -52,8 +52,8 @@ class NewEquip extends Component {
     equipModelId: '',
     messageError: false,
     messageSuccess: false,
-    corLeitor: 'Não se aplica',
-    crachas: 'Não se aplica',
+    corLeitor: 'NaoSeAplica',
+    crachas: 'NaoSeAplica',
     proximidade: [
       'Hid',
       'Mifare',
@@ -82,6 +82,12 @@ class NewEquip extends Component {
       readerColor: this.state.leitor,
       companyId: this.state.companyId,
       equipModelId: this.state.equipModelId,
+      proximidade: this.state.leitor.proximidade,
+      bio: this.state.leitor.bio,
+      barras: this.state.leitor.barras,
+      cartografico: this.state.leitor.cartografico,
+      tipoCracha: this.state.crachas,
+      corLeitor: this.state.corLeitor,
       responsibleUser: this.props.username,
     }
 
@@ -100,6 +106,8 @@ class NewEquip extends Component {
         messageError: false
       })
     } if (resposta.status === 200) {
+
+      console.log(resposta)
 
       this.setState({
         razaoSocial: '',
@@ -206,6 +214,16 @@ class NewEquip extends Component {
       Array.prototype.push.apply(leitores, this.state.bio)
     }
 
+    if(!this.state.leitor.bio) {
+      await this.setState({
+        corLeitor: 'NaoSeAplica',
+      })
+    }
+    if(!this.state.leitor.proximidade) {
+      await this.setState({
+        crachas: 'NaoSeAplica',
+      })
+    }
     
     await this.setState({
       corLeitores: leitores,
@@ -285,6 +303,7 @@ class NewEquip extends Component {
   }
 
   render() {
+    // console.log(this.state)
     return (
       <div className='card-bg-newEquip'>
 
@@ -419,15 +438,15 @@ class NewEquip extends Component {
 
             <div className='div-newEquip-corLeitor'>
               <h2 className='div-comp-label'>Tipo do crachá (prox):</h2>
-              {this.state.cracha.length !== 0 ? <Select value={this.state.crachas} style={{ width: '[100%' }} onChange={(tipoCracha) => this.changeTypeCracha(tipoCracha)}><Option value='naoSeAplica'>Não se aplica</Option>{this.state.cracha.map(teste => <Option value={teste}>{teste}</Option>)}
+              {this.state.cracha.length !== 0 ? <Select value={this.state.crachas} style={{ width: '[100%' }} onChange={(tipoCracha) => this.changeTypeCracha(tipoCracha)}><Option value='NaoSeAplica'>Não se aplica</Option>{this.state.cracha.map(teste => <Option value={teste}>{teste}</Option>)}
               </Select> : <Select value='Não se aplica' style={{ width: '100%' }} onChange={(tipoCracha) => this.changeTypeCracha(tipoCracha)}>
               </Select>}
             </div>
 
             <div className='div-newEquip-corLeitor'>
               <h2 className='div-comp-label'>Cor do leitor (bio):</h2>
-              {this.state.corLeitores.length !== 0 ? <Select value={this.state.corLeitor} style={{ width: '[100%' }} onChange={(corLeitor) => this.changeCorLeitor(corLeitor)}><Option value='naoSeAplica'>Não se aplica</Option>{this.state.corLeitores.map(teste => <Option value={teste}>{teste}</Option>)}
-              </Select> : <Select value='Não se aplica' style={{ width: '100%' }} onChange={(corLeitor) => this.changeCorLeitor(corLeitor)}>
+              {this.state.corLeitores.length !== 0 ? <Select value={this.state.corLeitor} style={{ width: '[100%' }} onChange={(corLeitor) => this.changeCorLeitor(corLeitor)}><Option value='NaoSeAplica'>Não se aplica</Option>{this.state.corLeitores.map(teste => <Option value={teste}>{teste}</Option>)}
+              </Select> : <Select value='Não se aplica' style={{ width: '100%' }} onChange={(corLeitor) => this.changeCorLeitor(corLeitor)}> 
               </Select>}
             </div>
 
